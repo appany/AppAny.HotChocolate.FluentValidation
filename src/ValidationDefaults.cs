@@ -51,7 +51,5 @@ namespace AppAny.HotChocolate.FluentValidation
 				return (IEnumerable<IValidator>)validatorFactoryContext.ServiceProvider.GetServices(validatorType);
 			}
 		}
-		
-		
 	}
 }

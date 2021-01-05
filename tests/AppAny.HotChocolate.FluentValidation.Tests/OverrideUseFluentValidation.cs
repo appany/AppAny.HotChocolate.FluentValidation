@@ -251,7 +251,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						});
 				});
 		}
-		
+
 		[Fact]
 		public async Task Should_UseMultipleCustomValidators_SameProperty()
 		{
@@ -393,7 +393,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			Assert.Null(result.Errors);
 		}
-		
+
 		[Fact]
 		public async Task Should_Execute_SkipValidation_WithCustomValidator()
 		{
@@ -425,7 +425,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			Assert.Null(result.Errors);
 		}
-		
+
 		[Fact]
 		public async Task Should_Execute_SkipValidation_WithCustomValidatorFactory()
 		{
@@ -441,7 +441,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						.Type<StringType>()
 						.Argument("input", arg => arg.Type<NonNullType<TestInputType>>().UseFluentValidation(configurator =>
 						{
-							configurator.SkipValidation().UseValidatorFactories(_ => new []
+							configurator.SkipValidation().UseValidatorFactories(_ => new[]
 							{
 								new NotEmptyNameValidator()
 							});

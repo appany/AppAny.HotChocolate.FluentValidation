@@ -51,7 +51,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					Assert.Equal(ValidationDefaults.ErrorCode, code.Value);
 				});
 		}
-		
+
 		[Fact]
 		public async Task Should_Pass_Values_UseFluentValidation()
 		{

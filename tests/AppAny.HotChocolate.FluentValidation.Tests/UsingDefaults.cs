@@ -123,7 +123,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						});
 				});
 		}
-		
+
 		[Fact]
 		public async Task Should_UseValidatorByConvention_DoubleProperty()
 		{
