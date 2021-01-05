@@ -1,0 +1,25 @@
+name: Hotchocolate | FluentValidation
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Hotchocolate | FluentValidation | Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: Hotchocolate | FluentValidation | Checkout
+      uses: actions/checkout@v2
+
+    - name: Hotchocolate | FluentValidation | .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Hotchocolate | FluentValidation | Tests
+      run: dotnet test --verbosity normal
