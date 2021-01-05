@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<Authors>sergeyshaykhullin</Authors>
+		<Description>HotChocolate FluentValidation integration</Description>
+		<PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</PackageProjectUrl>
+		<LangVersion>9</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup Label="Packages">
+		<PackageReference Include="FluentValidation" Version="9.3.0" />
+		<PackageReference Include="HotChocolate.Execution" Version="11.0.6" />
+	</ItemGroup>
+
+	<ItemGroup Label="Logo">
+		<Resource Include="../assets/logo.png" Link="assets/logo.png" />
+	</ItemGroup>
+
+</Project>
