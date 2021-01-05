@@ -22,4 +22,4 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Hotchocolate | FluentValidation | Tests
-      run: dotnet test --verbosity normal
+      run: dotnet test
