@@ -9,7 +9,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			return (InputFieldValidationOptions?)inputField
 				.ContextData
-				.GetValueOrDefault(ValidationDefaults.InputFieldOptions);
+				.GetValueOrDefault(ValidationDefaults.InputFieldOptionsKey);
 		}
 	}
 }

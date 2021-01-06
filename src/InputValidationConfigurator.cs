@@ -2,9 +2,19 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
+	/// <summary>
+	/// Configures global validation options
+	/// </summary>
 	public interface IInputValidationConfigurator
 	{
+		/// <summary>
+		/// Overrides default <see cref="ErrorMapper"/>
+		/// </summary>
 		IInputValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers);
+
+		/// <summary>
+		/// Overrides default <see cref="InputValidatorFactory"/>
+		/// </summary>
 		IInputValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories);
 	}
 

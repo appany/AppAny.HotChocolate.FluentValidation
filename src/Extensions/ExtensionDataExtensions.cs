@@ -7,12 +7,12 @@ namespace AppAny.HotChocolate.FluentValidation
 	{
 		public static InputFieldValidationOptions GetOrCreateInputFieldOptions(this ExtensionData extensionData)
 		{
-			var options = extensionData.GetValueOrDefault(ValidationDefaults.InputFieldOptions);
+			var options = extensionData.GetValueOrDefault(ValidationDefaults.InputFieldOptionsKey);
 
 			if (options is null)
 			{
 				options = new InputFieldValidationOptions();
-				extensionData.Add(ValidationDefaults.InputFieldOptions, options);
+				extensionData.Add(ValidationDefaults.InputFieldOptionsKey, options);
 			}
 
 			return (InputFieldValidationOptions)options;

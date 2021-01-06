@@ -9,10 +9,19 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	public static class ValidationDefaults
 	{
+		/// <summary>
+		/// Default graphql error code for failed validation
+		/// </summary>
 		public const string Code = "ValidationFailed";
 
-		public const string InputFieldOptions = "ValidationInputFieldOptions";
+		/// <summary>
+		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="InputFieldValidationOptions"/>
+		/// </summary>
+		public const string InputFieldOptionsKey = "ValidationInputFieldOptions";
 
+		/// <summary>
+		/// Default graphql error extensions keys
+		/// </summary>
 		public static class ExtensionKeys
 		{
 			public const string CodeKey = "code";
@@ -25,8 +34,14 @@ namespace AppAny.HotChocolate.FluentValidation
 			public const string FormattedMessagePlaceholderValuesKey = "formattedMessagePlaceholderValues";
 		}
 
+		/// <summary>
+		/// Default <see cref="ErrorMapper"/> implementations
+		/// </summary>
 		public static class ErrorMappers
 		{
+			/// <summary>
+			/// Maps graphql error code, path and message
+			/// </summary>
 			public static void Default(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
@@ -35,6 +50,9 @@ namespace AppAny.HotChocolate.FluentValidation
 					.SetMessage(mappingContext.ValidationFailure.ErrorMessage);
 			}
 
+			/// <summary>
+			/// Maps useful extensions about input field, property, used validator, invalid value and severity
+			/// </summary>
 			public static void Details(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
@@ -45,6 +63,9 @@ namespace AppAny.HotChocolate.FluentValidation
 					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue);
 			}
 
+			/// <summary>
+			/// Maps custom state and formatted message placeholder values
+			/// </summary>
 			public static void Extended(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
@@ -55,8 +76,14 @@ namespace AppAny.HotChocolate.FluentValidation
 			}
 		}
 
+		/// <summary>
+		/// Default <see cref="InputValidatorFactory"/> implementations
+		/// </summary>
 		public static class ValidatorFactories
 		{
+			/// <summary>
+			/// Resolves all <see cref="IValidator{T}"/> implementations
+			/// </summary>
 			public static IEnumerable<IInputValidator> Default(InputValidatorFactoryContext inputValidatorFactoryContext)
 			{
 				var validatorType = inputValidatorFactoryContext.MakeGenericValidatorType();
@@ -67,8 +94,15 @@ namespace AppAny.HotChocolate.FluentValidation
 			}
 		}
 
+		/// <summary>
+		/// Default <see cref="ValidationStrategy{T}"/> implementations
+		/// </summary>
 		public static class ValidationStrategies
 		{
+			/// <summary>
+			/// Doing nothing by default.
+			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator{TValidator}"/> on <see cref="IInputFieldValidationConfigurator"/>
+			/// </summary>
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
 			{
 			}

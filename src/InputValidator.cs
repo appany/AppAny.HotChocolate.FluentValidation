@@ -7,6 +7,10 @@ using FluentValidation.Results;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
+	/// <summary>
+	/// Used to combine <see cref="IValidator{T}"/> and <see cref="ValidationStrategy{T}"/>.
+	/// To create new <see cref="IInputValidator"/> use <see cref="FromValidator"/> or <see cref="FromValidatorWithStrategy{TInput}"/>
+	/// </summary>
 	public interface IInputValidator
 	{
 		Task<ValidationResult> ValidateAsync(object argument, CancellationToken cancellationToken);
