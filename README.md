@@ -32,7 +32,12 @@ descriptor.Field(x => x.Example(default!))
 
 # Customizations
 services.AddGraphQLServer()
-  .AddFluentValidation(options => options.UseErrorMappers(...).UseInputValidatorFactories(...));
+  .AddFluentValidation(options =>
+  {
+    options.SkipValidation(...)
+      .UseErrorMappers(...)
+      .UseInputValidatorFactories(...)
+  });
 
 descriptor.Field(x => x.Example(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
