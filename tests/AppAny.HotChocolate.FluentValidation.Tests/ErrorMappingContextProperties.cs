@@ -36,7 +36,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync("mutation { test(input: { name: \"\" }) }"));
+				await executor.ExecuteAsync(TestMutations.EmptyName));
 
 			result.AssertNullResult();
 
@@ -82,7 +82,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync("mutation { test(input: { name: \"\" }) }"));
+				await executor.ExecuteAsync(TestMutations.EmptyName));
 
 			result.AssertNullResult();
 
