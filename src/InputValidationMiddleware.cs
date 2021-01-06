@@ -22,8 +22,6 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			var inputFields = middlewareContext.Field.Arguments;
 
-			var hasErrors = false;
-
 			if (inputFields is { Count: > 0 })
 			{
 				var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<InputValidationOptions>>().Value;
@@ -31,12 +29,10 @@ namespace AppAny.HotChocolate.FluentValidation
 				await foreach (var error in Validate(middlewareContext, inputFields, options).ConfigureAwait(false))
 				{
 					middlewareContext.ReportError(error);
-
-					hasErrors = true;
 				}
 			}
 
-			if (hasErrors is false)
+			if (middlewareContext.HasErrors is false)
 			{
 				await next(middlewareContext).ConfigureAwait(false);
 			}
