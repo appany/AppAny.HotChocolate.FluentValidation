@@ -14,9 +14,9 @@ Input field `HotChocolate` + `FluentValidation` validation integration
 
 ## Features
 
-- Global + per-argument + multiple `ErrorMapper` configuration support
-- Global + per-argument + multiple `InputValidationFactory` configuration support
-- Per-argument + multiple `IValidator` support
+- Global + per-argument multiple `ErrorMapper` configuration support
+- Global + per-argument multiple `InputValidationFactory` configuration support
+- Per-argument multiple `IValidator` support
 - Per-validator `ValidationStrategy` support
 
 ## Usage
