@@ -4,7 +4,6 @@ using FluentValidation;
 using FluentValidation.Validators;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -20,18 +19,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default);
-						}))
-						.Resolve("test");
-				})
+					fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default);
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -60,18 +51,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default, ValidationDefaults.ErrorMappers.Details);
-						}))
-						.Resolve("test");
-				})
+					fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default, ValidationDefaults.ErrorMappers.Details);
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -125,18 +108,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidator<NotEmptyNameValidator>();
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidator<NotEmptyNameValidator>();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -165,20 +140,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidatorFactories(context => context.ServiceProvider
-								.GetServices<NotEmptyNameValidator>()
-								.Select(validator => IInputValidator.FromValidator(validator)));
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidatorFactories(context => context.ServiceProvider
+						.GetServices<NotEmptyNameValidator>()
+						.Select(validator => IInputValidator.FromValidator(validator)));
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -208,19 +175,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidator<NotEmptyNameValidator>()
-								.UseValidator<NotEmptyAddressValidator>();
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidator<NotEmptyNameValidator>()
+						.UseValidator<NotEmptyAddressValidator>();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -264,19 +223,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidator<TestPersonInput, NotEmptyNameValidator>()
-								.UseValidator<TestPersonInput, NotEmptyAddressValidator>();
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidator<TestPersonInput, NotEmptyNameValidator>()
+						.UseValidator<TestPersonInput, NotEmptyAddressValidator>();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -320,21 +271,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidator<NotEmptyNameValidator>()
-								.UseValidator<TestPersonInput, NotEmptyAddressValidator>(strategy =>
-									// Validates address, but includes only name
-									strategy.IncludeProperties(x => x.Name));
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidator<NotEmptyNameValidator>()
+						.UseValidator<TestPersonInput, NotEmptyAddressValidator>(strategy =>
+							// Validates address, but includes only name
+							strategy.IncludeProperties(x => x.Name));
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -366,19 +309,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidator<NotEmptyNameValidator>()
-								.UseValidator<NotEmptyNameValidator>();
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidator<NotEmptyNameValidator>()
+						.UseValidator<NotEmptyNameValidator>();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -421,18 +356,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-						{
-							fv.UseValidator<DoubleNotEmptyNameValidator>();
-						}))
-						.Resolve("test");
-				})
+					fv.UseValidator<DoubleNotEmptyNameValidator>();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -474,18 +401,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation()
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(configurator =>
-						{
-							configurator.SkipValidation();
-						}))
-						.Resolve("test");
-				})
+					configurator.SkipValidation();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -506,18 +425,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation()
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(configurator =>
-						{
-							configurator.SkipValidation().UseValidator<NotEmptyNameValidator>();
-						}))
-						.Resolve("test");
-				})
+					configurator.SkipValidation().UseValidator<NotEmptyNameValidator>();
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -538,21 +449,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation()
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(configurator =>
-						{
-							configurator.SkipValidation().UseValidatorFactories(_ => new[]
-							{
-								IInputValidator.FromValidator(new NotEmptyNameValidator())
-							});
-						}))
-						.Resolve("test");
-				})
+					configurator.SkipValidation().UseValidatorFactories(_ => new[]
+					{
+						IInputValidator.FromValidator(new NotEmptyNameValidator())
+					});
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(

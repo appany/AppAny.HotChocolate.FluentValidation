@@ -3,7 +3,6 @@ using FluentValidation;
 using FluentValidation.Validators;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -18,15 +17,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation()
-				.AddMutationType(descriptor =>
-				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
-						.Resolve("test");
-				})
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -81,15 +72,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
-				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
-						.Resolve("test");
-				})
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -132,15 +115,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(descriptor =>
-				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
-						.Resolve("test");
-				})
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(

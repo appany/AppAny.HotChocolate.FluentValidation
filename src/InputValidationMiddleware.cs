@@ -57,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					var validatorFactories = inputFieldOptions.ValidatorFactories ?? options.ValidatorFactories;
 
 					await foreach (var validationResult in ValidateInputField(
-							middlewareContext, inputField, validatorFactories).ConfigureAwait(false))
+						middlewareContext, inputField, validatorFactories).ConfigureAwait(false))
 					{
 						if (validationResult.IsValid is false)
 						{

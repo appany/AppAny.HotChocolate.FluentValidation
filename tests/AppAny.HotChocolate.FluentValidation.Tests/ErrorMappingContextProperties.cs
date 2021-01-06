@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate.Execution;
-using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -24,15 +23,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							Assert.Single(context.ValidationResult.Errors);
 							Assert.Equal(nameof(TestPersonInput.Name), context.ValidationFailure.PropertyName);
 						}))
-				.AddMutationType(descriptor =>
-				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
-						.Resolve("test");
-				})
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
@@ -60,25 +51,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation()
-				.AddMutationType(descriptor =>
+				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					descriptor.Name("Mutation");
-
-					descriptor.Field("test")
-						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(configurator =>
+					configurator.UseErrorMappers(
+						ValidationDefaults.ErrorMappers.Default,
+						(_, context) =>
 						{
-							configurator.UseErrorMappers(
-								ValidationDefaults.ErrorMappers.Default,
-								(_, context) =>
-								{
-									Assert.Equal("input", context.InputField.Name);
-									Assert.Single(context.ValidationResult.Errors);
-									Assert.Equal(nameof(TestPersonInput.Name), context.ValidationFailure.PropertyName);
-								});
-						}))
-						.Resolve("test");
-				})
+							Assert.Equal("input", context.InputField.Name);
+							Assert.Single(context.ValidationResult.Errors);
+							Assert.Equal(nameof(TestPersonInput.Name), context.ValidationFailure.PropertyName);
+						});
+				})))
 				.BuildRequestExecutorAsync();
 
 			var result = Assert.IsType<QueryResult>(
