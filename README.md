@@ -4,6 +4,21 @@
 
 Input field `HotChocolate` + `FluentValidation` validation integration
 
+## Abstractions
+
+- `ErrorMapper` delegate
+  - Maps `FluentValidation` validation result to `HotChocolate` error
+
+- `InputValidationFactory` delegate
+  - Configures conventions to resolve `FluentValidation` validators
+
+## Features
+
+- Global + per-argument + multiple `ErrorMapper` configuration support
+- Global + per-argument + multiple `InputValidationFactory` configuration support
+- Per-argument + multiple `IValidator` support
+- Per-validator `ValidationStrategy` support
+
 ## Usage
 
 ```cs
