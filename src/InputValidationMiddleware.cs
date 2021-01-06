@@ -28,9 +28,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<InputValidationOptions>>().Value;
 
-				var errors = Validate(middlewareContext, inputFields, options).ConfigureAwait(false);
-
-				await foreach (var error in errors)
+				await foreach (var error in Validate(middlewareContext, inputFields, options).ConfigureAwait(false))
 				{
 					middlewareContext.ReportError(error);
 
@@ -58,10 +56,8 @@ namespace AppAny.HotChocolate.FluentValidation
 					var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
 					var validatorFactories = inputFieldOptions.ValidatorFactories ?? options.ValidatorFactories;
 
-					var validationResults = ValidateInputField(middlewareContext, inputField, validatorFactories)
-						.ConfigureAwait(false);
-
-					await foreach (var validationResult in validationResults)
+					await foreach (var validationResult in ValidateInputField(
+							middlewareContext, inputField, validatorFactories).ConfigureAwait(false))
 					{
 						if (validationResult.IsValid is false)
 						{
