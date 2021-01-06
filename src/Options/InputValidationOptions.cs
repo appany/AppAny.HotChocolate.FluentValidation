@@ -4,8 +4,10 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal sealed class InputValidationOptions
 	{
-		public IList<ErrorMapper> ErrorMappers { get; set; } = default!;
+		public SkipValidation SkipValidation { get; set; } = default!;
 
-		public IList<InputValidatorFactory> ValidatorFactories { get; set; } = default!;
+		public ICollection<ErrorMapper> ErrorMappers { get; set; } = default!;
+
+		public ICollection<InputValidatorFactory> ValidatorFactories { get; set; } = default!;
 	}
 }

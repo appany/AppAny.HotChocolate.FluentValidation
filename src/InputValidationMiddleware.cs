@@ -51,10 +51,12 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				var inputFieldOptions = inputField.TryGetInputFieldOptions();
 
-				if (inputFieldOptions?.SkipValidation is false)
+				var skipValidation = inputFieldOptions?.SkipValidation ?? options.SkipValidation;
+
+				if (skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)) is false)
 				{
-					var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
-					var validatorFactories = inputFieldOptions.ValidatorFactories ?? options.ValidatorFactories;
+					var errorMappers = inputFieldOptions?.ErrorMappers ?? options.ErrorMappers;
+					var validatorFactories = inputFieldOptions?.ValidatorFactories ?? options.ValidatorFactories;
 
 					await foreach (var validationResult in ValidateInputField(
 						middlewareContext, inputField, validatorFactories).ConfigureAwait(false))

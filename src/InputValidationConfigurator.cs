@@ -27,6 +27,13 @@ namespace AppAny.HotChocolate.FluentValidation
 			this.services = services;
 		}
 
+		public IInputValidationConfigurator SkipValidation(SkipValidation skipValidation)
+		{
+			services.Configure<InputValidationOptions>(options => options.SkipValidation = skipValidation);
+
+			return this;
+		}
+
 		public IInputValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers)
 		{
 			services.Configure<InputValidationOptions>(options => options.ErrorMappers = errorMappers);

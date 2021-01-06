@@ -35,6 +35,28 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
+		/// Default <see cref="FluentValidation.SkipValidation"/> implementations
+		/// </summary>
+		public static class SkipValidation
+		{
+			/// <summary>
+			/// Default <see cref="SkipValidation"/> implementation. Never skips validation
+			/// </summary>
+			public static bool Default(SkipValidationContext skipValidationContext)
+			{
+				return false;
+			}
+
+			/// <summary>
+			/// Always skip <see cref="SkipValidation"/> implementation
+			/// </summary>
+			public static bool Skip(SkipValidationContext skipValidationContext)
+			{
+				return true;
+			}
+		}
+
+		/// <summary>
 		/// Default <see cref="ErrorMapper"/> implementations
 		/// </summary>
 		public static class ErrorMappers

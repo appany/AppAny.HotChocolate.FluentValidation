@@ -18,6 +18,7 @@ Input field `HotChocolate` + `FluentValidation` validation integration
 - Global + per-argument multiple `InputValidationFactory` configuration support
 - Per-argument multiple `IValidator` support
 - Per-validator `ValidationStrategy` support
+- Conditionally skipping validation support
 
 ## Usage
 
@@ -31,12 +32,17 @@ descriptor.Field(x => x.Example(default!))
 
 # Customizations
 services.AddGraphQLServer()
-  .AddFluentValidation(options => options.UseErrorMappers(...).UseInputValidatorFactories(...));
+  .AddFluentValidation(options =>
+  {
+    options.SkipValidation(...)
+      .UseErrorMappers(...)
+      .UseInputValidatorFactories(...)
+  });
 
 descriptor.Field(x => x.Example(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
-    options.SkipValidation()
+    options.SkipValidation(...)
       .UseErrorMappers(...)
       .UseInputValidatorFactories(...)
       .UseValidator<ExampleInputValidator>()
