@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public class FluentValidationInputFieldOptions
+	internal sealed class InputFieldValidationOptions
 	{
 		public bool SkipValidation { get; set; }
 
 		public IList<ErrorMapper>? ErrorMappers { get; set; }
 
-		public IList<ValidatorFactory>? ValidatorFactories { get; set; }
+		public IList<InputValidatorFactory>? ValidatorFactories { get; set; }
 	}
 }

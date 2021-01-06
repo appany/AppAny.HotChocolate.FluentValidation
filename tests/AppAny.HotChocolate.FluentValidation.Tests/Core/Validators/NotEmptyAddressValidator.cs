@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class NotEmptyAddressValidator : AbstractValidator<TestInput>
+	public class NotEmptyAddressValidator : AbstractValidator<TestPersonInput>
 	{
 		public const string Message = "Address is empty";
 

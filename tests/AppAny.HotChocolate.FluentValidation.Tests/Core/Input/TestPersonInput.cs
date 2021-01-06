@@ -1,6 +1,6 @@
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class TestInput
+	public class TestPersonInput
 	{
 		public string Name { get; set; } = default!;
 
