@@ -30,6 +30,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				configurator.AddDefaultErrorMapperWithDetails();
 				configurator.AddDefaultValidatorFactory();
+				configurator.SkipValidation(ValidationDefaults.SkipValidation.Default);
 
 				configure.Invoke(configurator);
 			});

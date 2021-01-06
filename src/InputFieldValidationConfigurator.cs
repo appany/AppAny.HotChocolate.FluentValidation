@@ -8,9 +8,9 @@ namespace AppAny.HotChocolate.FluentValidation
 	public interface IInputFieldValidationConfigurator
 	{
 		/// <summary>
-		/// Sets field options to skip validation
+		/// Overrides global validation options. Conditionally skips validation
 		/// </summary>
-		IInputFieldValidationConfigurator SkipValidation();
+		IInputFieldValidationConfigurator SkipValidation(SkipValidation skipValidation);
 
 		/// <summary>
 		/// Overrides global validation options. Adds new <see cref="InputValidatorFactory"/> for input field
@@ -32,9 +32,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			this.options = options;
 		}
 
-		public IInputFieldValidationConfigurator SkipValidation()
+		public IInputFieldValidationConfigurator SkipValidation(SkipValidation skipValidation)
 		{
-			options.SkipValidation = true;
+			options.SkipValidation = skipValidation;
 
 			return this;
 		}

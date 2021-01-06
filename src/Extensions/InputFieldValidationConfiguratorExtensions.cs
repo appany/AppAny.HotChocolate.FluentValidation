@@ -9,6 +9,15 @@ namespace AppAny.HotChocolate.FluentValidation
 	public static class InputFieldValidationConfiguratorExtensions
 	{
 		/// <summary>
+		/// Overrides global <see cref="ValidationDefaults.SkipValidation.Default"/>.
+		/// Always skips validation <see cref="ValidationDefaults.SkipValidation.Skip"/>
+		/// </summary>
+		public static IInputFieldValidationConfigurator SkipValidation(this IInputFieldValidationConfigurator configurator)
+		{
+			return configurator.SkipValidation(ValidationDefaults.SkipValidation.Skip);
+		}
+
+		/// <summary>
 		/// Overrides global <see cref="InputValidatorFactory"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="IInputValidator"/>
 		/// </summary>
