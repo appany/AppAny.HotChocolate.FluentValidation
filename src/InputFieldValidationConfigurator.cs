@@ -15,7 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Overrides global validation options. Adds new <see cref="InputValidatorFactory"/> for input field
 		/// </summary>
-		IInputFieldValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories);
+		IInputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories);
 
 		/// <summary>
 		/// Overrides global validation options. Adds new <see cref="ErrorMapper"/> for input field
@@ -39,7 +39,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public IInputFieldValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories)
+		public IInputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
 		{
 			options.ValidatorFactories ??= new List<InputValidatorFactory>();
 

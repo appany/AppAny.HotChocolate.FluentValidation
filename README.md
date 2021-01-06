@@ -1,0 +1,35 @@
+# AppAny.HotChocolate.FluentValidation
+
+[![Nuget](https://img.shields.io/nuget/v/AppAny.HotChocolate.FluentValidation.svg)](https://www.nuget.org/packages/AppAny.HotChocolate.FluentValidation) ![Hotchocolate | FluentValidation](https://github.com/appany/AppAny.HotChocolate.FluentValidation/workflows/Hotchocolate%20%7C%20FluentValidation/badge.svg)
+
+Input field `HotChocolate` + `FluentValidation` validation integration
+
+## Usage
+
+```cs
+# Basic
+services.AddGraphQLServer()
+  .AddFluentValidation();
+
+descriptor.Field(x => x.Example(default!))
+  .Argument("input", argument => argument.UseFluentValidation());
+
+# Customizations
+services.AddGraphQLServer()
+  .AddFluentValidation(options => options.UseErrorMappers(...).UseInputValidatorFactories(...));
+
+descriptor.Field(x => x.Example(default!))
+  .Argument("input", argument => argument.UseFluentValidation(options =>
+  {
+    options.SkipValidation()
+      .UseErrorMappers(...)
+      .UseInputValidatorFactories(...)
+      .UseValidator<ExampleInputValidator>()
+      .UseValidator<ExampleInput, ExampleInputValidator>()
+      .UseValidator<ExampleInput, ExampleInputValidator>(strategy =>
+      {
+        strategy.IncludeProperties(input => input.ExampleProperty);
+        // ...
+      })
+  }))
+```

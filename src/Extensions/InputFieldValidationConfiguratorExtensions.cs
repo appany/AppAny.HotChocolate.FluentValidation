@@ -16,7 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			this IInputFieldValidationConfigurator configurator)
 			where TValidator : class, IValidator
 		{
-			return configurator.UseValidatorFactories(context => context
+			return configurator.UseInputValidatorFactories(context => context
 				.ServiceProvider
 				.GetServices<TValidator>()
 				.Select(validator => IInputValidator.FromValidator(validator)));
@@ -42,7 +42,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			Action<ValidationStrategy<TInput>> strategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return configurator.UseValidatorFactories(context => context
+			return configurator.UseInputValidatorFactories(context => context
 				.ServiceProvider
 				.GetServices<TValidator>()
 				.Select(validator => IInputValidator.FromValidatorWithStrategy(validator, strategy)));

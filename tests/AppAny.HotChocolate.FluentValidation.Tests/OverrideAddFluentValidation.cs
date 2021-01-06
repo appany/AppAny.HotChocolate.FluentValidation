@@ -99,7 +99,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await new ServiceCollection()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator.UseValidatorFactories(_ => default!))
+				.AddFluentValidation(configurator => configurator.UseInputValidatorFactories(_ => default!))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
@@ -118,7 +118,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await new ServiceCollection()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator.UseValidatorFactories(_ => Array.Empty<IInputValidator>()))
+				.AddFluentValidation(configurator => configurator.UseInputValidatorFactories(_ => Array.Empty<IInputValidator>()))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 

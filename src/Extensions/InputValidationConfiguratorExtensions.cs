@@ -29,7 +29,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static IInputValidationConfigurator AddDefaultValidatorFactory(
 			this IInputValidationConfigurator configurator)
 		{
-			return configurator.UseValidatorFactories(ValidationDefaults.ValidatorFactories.Default);
+			return configurator.UseInputValidatorFactories(ValidationDefaults.ValidatorFactories.Default);
 		}
 	}
 }

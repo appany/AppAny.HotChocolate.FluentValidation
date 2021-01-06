@@ -15,7 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Overrides default <see cref="InputValidatorFactory"/>
 		/// </summary>
-		IInputValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories);
+		IInputValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories);
 	}
 
 	internal sealed class InputValidationConfigurator : IInputValidationConfigurator
@@ -34,7 +34,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public IInputValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories)
+		public IInputValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
 		{
 			services.Configure<InputValidationOptions>(options => options.ValidatorFactories = validatorFactories);
 
