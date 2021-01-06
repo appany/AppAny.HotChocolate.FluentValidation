@@ -5,11 +5,11 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class InputFieldExtensions
 	{
-		public static FluentValidationInputFieldOptions? TryGetInputFieldOptions(this IInputField inputField)
+		public static ValidationInputFieldOptions? TryGetInputFieldOptions(this IInputField inputField)
 		{
-			return (FluentValidationInputFieldOptions?)inputField
+			return (ValidationInputFieldOptions?)inputField
 				.ContextData
-				.GetValueOrDefault(ValidationDefaults.Keys.InputFieldOptions);
+				.GetValueOrDefault(ValidationDefaults.InputFieldOptions);
 		}
 	}
 }

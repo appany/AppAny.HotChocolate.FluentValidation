@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public class FluentValidationInputFieldOptions
+	internal sealed class ValidationInputFieldOptions
 	{
 		public bool SkipValidation { get; set; }
 

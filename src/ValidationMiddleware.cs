@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using HotChocolate;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
-using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal class FluentValidationMiddleware
+	internal sealed class ValidationMiddleware
 	{
 		private readonly FieldDelegate next;
 
-		public FluentValidationMiddleware(FieldDelegate next)
+		public ValidationMiddleware(FieldDelegate next)
 		{
 			this.next = next;
 		}
@@ -27,9 +26,11 @@ namespace AppAny.HotChocolate.FluentValidation
 
 			if (inputFields is { Count: > 0 })
 			{
-				var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<FluentValidationOptions>>().Value;
+				var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<ValidationOptions>>().Value;
 
-				await foreach (var error in Validate(middlewareContext, inputFields, options))
+				var errors = Validate(middlewareContext, inputFields, options).ConfigureAwait(false);
+
+				await foreach (var error in errors)
 				{
 					middlewareContext.ReportError(error);
 
@@ -46,7 +47,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		private static async IAsyncEnumerable<IError> Validate(
 			IMiddlewareContext middlewareContext,
 			IEnumerable<IInputField> inputFields,
-			FluentValidationOptions options)
+			ValidationOptions options)
 		{
 			foreach (var inputField in inputFields)
 			{
@@ -57,7 +58,10 @@ namespace AppAny.HotChocolate.FluentValidation
 					var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
 					var validatorFactories = inputFieldOptions.ValidatorFactories ?? options.ValidatorFactories;
 
-					await foreach (var validationResult in ValidateArguments(middlewareContext, inputField, validatorFactories))
+					var validationResults = ValidateInputField(middlewareContext, inputField, validatorFactories)
+						.ConfigureAwait(false);
+
+					await foreach (var validationResult in validationResults)
 					{
 						if (validationResult.IsValid is false)
 						{
@@ -80,22 +84,21 @@ namespace AppAny.HotChocolate.FluentValidation
 			}
 		}
 
-		private static async IAsyncEnumerable<ValidationResult> ValidateArguments(
+		private static async IAsyncEnumerable<ValidationResult> ValidateInputField(
 			IMiddlewareContext middlewareContext,
 			IInputField inputField,
-			IEnumerable<ValidatorFactory> validatorsFactories)
+			IEnumerable<ValidatorFactory> validatorFactories)
 		{
-			foreach (var validatorFactory in validatorsFactories)
+			var argument = middlewareContext.ArgumentValue<object>(inputField.Name);
+
+			foreach (var validatorFactory in validatorFactories)
 			{
 				var validators = validatorFactory.Invoke(
 					new ValidatorFactoryContext(middlewareContext.Services, inputField.RuntimeType));
 
 				foreach (var validator in validators)
 				{
-					var validationContext = new ValidationContext<object>(
-						middlewareContext.ArgumentValue<object>(inputField.Name));
-
-					yield return await validator.ValidateAsync(validationContext, middlewareContext.RequestAborted);
+					yield return await validator.ValidateAsync(argument, middlewareContext.RequestAborted);
 				}
 			}
 		}

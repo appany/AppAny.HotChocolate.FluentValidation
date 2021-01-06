@@ -13,7 +13,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_SetExtension_AddFluentValidation()
 		{
 			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestInput>, NotEmptyNameValidator>()
+				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(
@@ -25,7 +25,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 					descriptor.Field("test")
 						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestInputType>>().UseFluentValidation())
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
 						.Resolve("test");
 				})
 				.BuildRequestExecutorAsync();
@@ -37,14 +37,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error = Assert.Single(result.Errors);
 
-			Assert.Equal(ValidationDefaults.ErrorCode, error.Code);
+			Assert.Equal(ValidationDefaults.Code, error.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
 			Assert.Collection(error.Extensions,
 				code =>
 				{
-					Assert.Equal(ValidationDefaults.Keys.ErrorCodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.ErrorCode, code.Value);
+					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+					Assert.Equal(ValidationDefaults.Code, code.Value);
 				},
 				test =>
 				{
@@ -57,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_SetExtension_UseFluentValidation()
 		{
 			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestInput>, NotEmptyNameValidator>()
+				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
@@ -67,7 +67,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 					descriptor.Field("test")
 						.Type<StringType>()
-						.Argument("input", arg => arg.Type<NonNullType<TestInputType>>().UseFluentValidation(configurator =>
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(configurator =>
 						{
 							configurator.UseErrorMappers(
 								ValidationDefaults.ErrorMappers.Default,
@@ -84,14 +84,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error = Assert.Single(result.Errors);
 
-			Assert.Equal(ValidationDefaults.ErrorCode, error.Code);
+			Assert.Equal(ValidationDefaults.Code, error.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
 			Assert.Collection(error.Extensions,
 				code =>
 				{
-					Assert.Equal(ValidationDefaults.Keys.ErrorCodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.ErrorCode, code.Value);
+					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+					Assert.Equal(ValidationDefaults.Code, code.Value);
 				},
 				test =>
 				{

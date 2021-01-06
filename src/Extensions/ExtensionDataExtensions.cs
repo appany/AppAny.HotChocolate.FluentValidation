@@ -5,17 +5,17 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ExtensionDataExtensions
 	{
-		public static FluentValidationInputFieldOptions GetOrCreateInputFieldOptions(this ExtensionData extensionData)
+		public static ValidationInputFieldOptions GetOrCreateInputFieldOptions(this ExtensionData extensionData)
 		{
-			var options = extensionData.GetValueOrDefault(ValidationDefaults.Keys.InputFieldOptions);
+			var options = extensionData.GetValueOrDefault(ValidationDefaults.InputFieldOptions);
 
 			if (options is null)
 			{
-				options = new FluentValidationInputFieldOptions();
-				extensionData.Add(ValidationDefaults.Keys.InputFieldOptions, options);
+				options = new ValidationInputFieldOptions();
+				extensionData.Add(ValidationDefaults.InputFieldOptions, options);
 			}
 
-			return (FluentValidationInputFieldOptions)options;
+			return (ValidationInputFieldOptions)options;
 		}
 	}
 }
