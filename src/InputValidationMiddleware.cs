@@ -18,7 +18,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			this.next = next;
 		}
 
-		public async Task Invoke(IMiddlewareContext middlewareContext)
+		public async ValueTask Invoke(IMiddlewareContext middlewareContext)
 		{
 			var inputFields = middlewareContext.Field.Arguments;
 

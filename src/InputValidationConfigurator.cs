@@ -2,10 +2,20 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
+	/// <summary>
+	/// Configures global validation options
+	/// </summary>
 	public interface IInputValidationConfigurator
 	{
+		/// <summary>
+		/// Overrides default <see cref="ErrorMapper"/>
+		/// </summary>
 		IInputValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers);
-		IInputValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories);
+
+		/// <summary>
+		/// Overrides default <see cref="InputValidatorFactory"/>
+		/// </summary>
+		IInputValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories);
 	}
 
 	internal sealed class InputValidationConfigurator : IInputValidationConfigurator
@@ -24,7 +34,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public IInputValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories)
+		public IInputValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
 		{
 			services.Configure<InputValidationOptions>(options => options.ValidatorFactories = validatorFactories);
 

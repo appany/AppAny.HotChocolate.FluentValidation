@@ -16,7 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTestGraphQL()
 				.AddFluentValidation(configurator => configurator
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
-					.UseValidatorFactories(context =>
+					.UseInputValidatorFactories(context =>
 					{
 						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
 
@@ -53,7 +53,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.UseValidatorFactories(context =>
+					configurator.UseInputValidatorFactories(context =>
 					{
 						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
 

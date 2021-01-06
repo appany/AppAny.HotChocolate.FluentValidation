@@ -2,10 +2,24 @@ using System.Collections.Generic;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
+	/// <summary>
+	/// Configures input field validation options
+	/// </summary>
 	public interface IInputFieldValidationConfigurator
 	{
+		/// <summary>
+		/// Sets field options to skip validation
+		/// </summary>
 		IInputFieldValidationConfigurator SkipValidation();
-		IInputFieldValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories);
+
+		/// <summary>
+		/// Overrides global validation options. Adds new <see cref="InputValidatorFactory"/> for input field
+		/// </summary>
+		IInputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories);
+
+		/// <summary>
+		/// Overrides global validation options. Adds new <see cref="ErrorMapper"/> for input field
+		/// </summary>
 		IInputFieldValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers);
 	}
 
@@ -25,7 +39,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public IInputFieldValidationConfigurator UseValidatorFactories(params InputValidatorFactory[] validatorFactories)
+		public IInputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
 		{
 			options.ValidatorFactories ??= new List<InputValidatorFactory>();
 

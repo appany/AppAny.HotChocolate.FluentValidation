@@ -5,6 +5,9 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	public static class ArgumentDescriptorExtensions
 	{
+		/// <summary>
+		/// Configures argument for validation
+		/// </summary>
 		public static IArgumentDescriptor UseFluentValidation(this IArgumentDescriptor argumentDescriptor)
 		{
 			return argumentDescriptor.UseFluentValidation(_ =>
@@ -12,6 +15,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			});
 		}
 
+		/// <summary>
+		/// Configures argument for validation
+		/// </summary>
 		public static IArgumentDescriptor UseFluentValidation(
 			this IArgumentDescriptor argumentDescriptor,
 			Action<IInputFieldValidationConfigurator> configure)

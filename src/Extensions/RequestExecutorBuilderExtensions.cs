@@ -7,6 +7,9 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	public static class RequestExecutorBuilderExtensions
 	{
+		/// <summary>
+		/// Adds default validation services
+		/// </summary>
 		public static IRequestExecutorBuilder AddFluentValidation(this IRequestExecutorBuilder builder)
 		{
 			return builder.AddFluentValidation(_ =>
@@ -14,6 +17,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			});
 		}
 
+		/// <summary>
+		/// Adds default validation services with <see cref="IInputValidationConfigurator"/> overrides
+		/// </summary>
 		public static IRequestExecutorBuilder AddFluentValidation(
 			this IRequestExecutorBuilder builder,
 			Action<IInputValidationConfigurator> configure)

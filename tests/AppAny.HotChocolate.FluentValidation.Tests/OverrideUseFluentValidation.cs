@@ -142,7 +142,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					fv.UseValidatorFactories(context => context.ServiceProvider
+					fv.UseInputValidatorFactories(context => context.ServiceProvider
 						.GetServices<NotEmptyNameValidator>()
 						.Select(validator => IInputValidator.FromValidator(validator)));
 				})))
@@ -451,7 +451,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation()
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.SkipValidation().UseValidatorFactories(_ => new[]
+					configurator.SkipValidation().UseInputValidatorFactories(_ => new[]
 					{
 						IInputValidator.FromValidator(new NotEmptyNameValidator())
 					});
