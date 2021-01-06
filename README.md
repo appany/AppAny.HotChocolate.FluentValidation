@@ -52,5 +52,5 @@ descriptor.Field(x => x.Example(default!))
         strategy.IncludeProperties(input => input.ExampleProperty);
         // ...
       })
-  }))
+  }));
 ```
