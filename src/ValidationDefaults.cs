@@ -57,11 +57,11 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public static class ValidatorFactories
 		{
-			public static IEnumerable<IInputValidator> Default(ValidatorFactoryContext validatorFactoryContext)
+			public static IEnumerable<IInputValidator> Default(InputValidatorFactoryContext inputValidatorFactoryContext)
 			{
-				var validatorType = validatorFactoryContext.MakeGenericValidatorType();
+				var validatorType = inputValidatorFactoryContext.MakeGenericValidatorType();
 
-				return validatorFactoryContext.ServiceProvider.GetServices(validatorType)
+				return inputValidatorFactoryContext.ServiceProvider.GetServices(validatorType)
 					.OfType<IValidator>()
 					.Select(validator => IInputValidator.FromValidator(validator));
 			}

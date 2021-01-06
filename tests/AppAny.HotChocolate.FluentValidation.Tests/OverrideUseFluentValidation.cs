@@ -256,6 +256,108 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
+		public async Task Should_UseMultipleCustomValidators_ExplicitInputType()
+		{
+			var executor = await new ServiceCollection()
+				.AddTransient<NotEmptyNameValidator>()
+				.AddTransient<NotEmptyAddressValidator>()
+				.AddTestGraphQL()
+				.AddFluentValidation(configurator => configurator
+					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddMutationType(descriptor =>
+				{
+					descriptor.Name("Mutation");
+
+					descriptor.Field("test")
+						.Type<StringType>()
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
+						{
+							fv.UseValidator<TestPersonInput, NotEmptyNameValidator>()
+								.UseValidator<TestPersonInput, NotEmptyAddressValidator>();
+						}))
+						.Resolve("test");
+				})
+				.BuildRequestExecutorAsync();
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync("mutation { test(input: { name: \"\", address: \"\" }) }"));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				name =>
+				{
+					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+
+					Assert.Collection(name.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				},
+				address =>
+				{
+					Assert.Equal(ValidationDefaults.Code, address.Code);
+					Assert.Equal(NotEmptyAddressValidator.Message, address.Message);
+
+					Assert.Collection(address.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				});
+		}
+
+		[Fact]
+		public async Task Should_UseMultipleCustomValidators_WithValidationStrategy_IgnoreAddress()
+		{
+			var executor = await new ServiceCollection()
+				.AddTransient<NotEmptyNameValidator>()
+				.AddTransient<NotEmptyAddressValidator>()
+				.AddTestGraphQL()
+				.AddFluentValidation(configurator => configurator
+					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddMutationType(descriptor =>
+				{
+					descriptor.Name("Mutation");
+
+					descriptor.Field("test")
+						.Type<StringType>()
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
+						{
+							fv.UseValidator<NotEmptyNameValidator>()
+								.UseValidator<TestPersonInput, NotEmptyAddressValidator>(strategy =>
+									// Validates address, but includes only name
+									strategy.IncludeProperties(x => x.Name));
+						}))
+						.Resolve("test");
+				})
+				.BuildRequestExecutorAsync();
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync("mutation { test(input: { name: \"\", address: \"\" }) }"));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				name =>
+				{
+					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+
+					Assert.Collection(name.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				});
+		}
+
+		[Fact]
 		public async Task Should_UseMultipleCustomValidators_SameProperty()
 		{
 			var executor = await new ServiceCollection()

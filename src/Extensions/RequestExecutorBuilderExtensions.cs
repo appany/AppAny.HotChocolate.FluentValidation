@@ -16,24 +16,21 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public static IRequestExecutorBuilder AddFluentValidation(
 			this IRequestExecutorBuilder builder,
-			Action<IValidationConfigurator> configure)
+			Action<IInputValidationConfigurator> configure)
 		{
 			builder.ConfigureSchemaServices(services =>
 			{
-				var configurator = new ValidationConfigurator(services);
+				var configurator = new InputValidationConfigurator(services);
 
-				configurator.UseErrorMappers(
-					ValidationDefaults.ErrorMappers.Default,
-					ValidationDefaults.ErrorMappers.Details);
-
-				configurator.UseValidatorFactories(ValidationDefaults.ValidatorFactories.Default);
+				configurator.AddDefaultErrorMapperWithDetails();
+				configurator.AddDefaultValidatorFactory();
 
 				configure.Invoke(configurator);
 			});
 
 			builder.ConfigureSchema(schemaBuilder =>
 			{
-				schemaBuilder.Use<ValidationMiddleware>();
+				schemaBuilder.Use<InputValidationMiddleware>();
 			});
 
 			return builder;

@@ -14,13 +14,13 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public static IArgumentDescriptor UseFluentValidation(
 			this IArgumentDescriptor argumentDescriptor,
-			Action<IValidationInputFieldConfigurator> configure)
+			Action<IInputFieldValidationConfigurator> configure)
 		{
 			argumentDescriptor.Extend().OnBeforeCreate(definition =>
 			{
 				var options = definition.ContextData.GetOrCreateInputFieldOptions();
 
-				var configurator = new ValidationInputFieldConfigurator(options);
+				var configurator = new InputFieldValidationConfigurator(options);
 
 				configure.Invoke(configurator);
 			});

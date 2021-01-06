@@ -5,9 +5,9 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class InputFieldExtensions
 	{
-		public static ValidationInputFieldOptions? TryGetInputFieldOptions(this IInputField inputField)
+		public static InputFieldValidationOptions? TryGetInputFieldOptions(this IInputField inputField)
 		{
-			return (ValidationInputFieldOptions?)inputField
+			return (InputFieldValidationOptions?)inputField
 				.ContextData
 				.GetValueOrDefault(ValidationDefaults.InputFieldOptions);
 		}
