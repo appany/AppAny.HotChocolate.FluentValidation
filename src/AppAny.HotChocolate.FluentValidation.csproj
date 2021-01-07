@@ -3,14 +3,20 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<Authors>sergeyshaykhullin</Authors>
-		<Description>HotChocolate FluentValidation integration</Description>
-		<PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
+		<Version>0.0.1</Version>
+		<LangVersion>9</LangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</PackageProjectUrl>
-		<LangVersion>9</LangVersion>
-		<Nullable>enable</Nullable>
+		<PackageIcon>content/logo.png</PackageIcon>
+		<PackageLicenseFile>content/LICENSE</PackageLicenseFile>
+		<Copyright>Copyright ©2021 AppAny</Copyright>
+		<Authors>sergeyshaykhullin</Authors>
+		<Description>HotChocolate FluentValidation integration</Description>
+		<PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup Label="Packages">
@@ -18,8 +24,9 @@
 		<PackageReference Include="HotChocolate.Execution" Version="11.0.7" />
 	</ItemGroup>
 
-	<ItemGroup Label="Logo">
-		<Resource Include="../assets/logo.png" Link="assets/logo.png" />
+	<ItemGroup Label="Assets">
+		<None Include="../assets/logo.png" Pack="true" />
+		<None Include="../LICENSE" Pack="true" />
 	</ItemGroup>
 
 </Project>
