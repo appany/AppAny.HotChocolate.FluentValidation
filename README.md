@@ -38,7 +38,7 @@ services.AddGraphQLServer()
   {
     options.SkipValidation(...)
       .UseErrorMappers(...)
-      .UseInputValidatorFactories(...)
+      .UseInputValidatorFactories(...);
   });
 
 descriptor.Field(x => x.Example(default!))
@@ -53,6 +53,6 @@ descriptor.Field(x => x.Example(default!))
       {
         strategy.IncludeProperties(input => input.ExampleProperty);
         // ...
-      })
+      });
   }));
 ```
