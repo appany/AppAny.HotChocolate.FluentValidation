@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Internal;
@@ -31,7 +32,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				.ServiceProvider
 				.GetServices(validatorType)
 				.OfType<IValidator>()
-				.Select(validator => InputValidator.FromValidator(validator)));
+				.Select(validator => validator.ToInputValidator()));
 		}
 
 		/// <summary>
@@ -56,8 +57,8 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			return configurator.UseInputValidatorFactories(context => context
 				.ServiceProvider
-				.GetServices<TValidator>()
-				.Select(validator => InputValidator.FromValidatorWithStrategy(validator, strategy)));
+				.GetRequiredService<IEnumerable<TValidator>>()
+				.Select(validator => validator.ToInputValidatorWithStrategy(strategy)));
 		}
 	}
 }

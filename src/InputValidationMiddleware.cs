@@ -26,7 +26,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<InputValidationOptions>>().Value;
 
-				await foreach (var error in Validate(middlewareContext, inputFields, options).ConfigureAwait(false))
+				await foreach (var error in Validate(middlewareContext, inputFields, options)
+					.WithCancellation(middlewareContext.RequestAborted)
+					.ConfigureAwait(false))
 				{
 					middlewareContext.ReportError(error);
 				}
@@ -40,11 +42,13 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		private static async IAsyncEnumerable<IError> Validate(
 			IMiddlewareContext middlewareContext,
-			IEnumerable<IInputField> inputFields,
+			IFieldCollection<IInputField> inputFields,
 			InputValidationOptions options)
 		{
-			foreach (var inputField in inputFields)
+			for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
 			{
+				var inputField = inputFields[inputFieldIndex];
+
 				var inputFieldOptions = inputField.TryGetInputFieldOptions();
 
 				var skipValidation = inputFieldOptions?.SkipValidation ?? options.SkipValidation;
@@ -54,17 +58,22 @@ namespace AppAny.HotChocolate.FluentValidation
 					var errorMappers = inputFieldOptions?.ErrorMappers ?? options.ErrorMappers;
 					var validatorFactories = inputFieldOptions?.ValidatorFactories ?? options.ValidatorFactories;
 
-					await foreach (var validationResult in ValidateInputField(
-						middlewareContext, inputField, validatorFactories).ConfigureAwait(false))
+					await foreach (var validationResult in ValidateInputField(middlewareContext, inputField, validatorFactories)
+						.WithCancellation(middlewareContext.RequestAborted)
+						.ConfigureAwait(false))
 					{
 						if (validationResult.IsValid is false)
 						{
-							foreach (var validationFailure in validationResult.Errors)
+							for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
 							{
+								var validationFailure = validationResult.Errors[errorIndex];
+
 								var errorBuilder = ErrorBuilder.New();
 
-								foreach (var errorMapper in errorMappers)
+								for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
 								{
+									var errorMapper = errorMappers[errorMapperIndex];
+
 									errorMapper.Invoke(
 										errorBuilder,
 										new ErrorMappingContext(middlewareContext, inputField, validationResult, validationFailure));
@@ -81,18 +90,25 @@ namespace AppAny.HotChocolate.FluentValidation
 		private static async IAsyncEnumerable<ValidationResult> ValidateInputField(
 			IMiddlewareContext middlewareContext,
 			IInputField inputField,
-			IEnumerable<InputValidatorFactory> validatorFactories)
+			IList<InputValidatorFactory> validatorFactories)
 		{
-			var argument = middlewareContext.ArgumentValue<object>(inputField.Name);
+			var argument = middlewareContext.ArgumentValue<object?>(inputField.Name);
 
-			foreach (var validatorFactory in validatorFactories)
+			if (argument is null)
 			{
+				yield break;
+			}
+
+			for (var validatorFactoryIndex = 0; validatorFactoryIndex < validatorFactories.Count; validatorFactoryIndex++)
+			{
+				var validatorFactory = validatorFactories[validatorFactoryIndex];
+
 				var validators = validatorFactory.Invoke(
 					new InputValidatorFactoryContext(middlewareContext.Services, inputField.RuntimeType));
 
 				foreach (var validator in validators)
 				{
-					yield return await validator.ValidateAsync(argument, middlewareContext.RequestAborted);
+					yield return await validator.Invoke(argument, middlewareContext.RequestAborted);
 				}
 			}
 		}

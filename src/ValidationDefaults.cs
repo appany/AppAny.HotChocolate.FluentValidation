@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using HotChocolate;
 using FluentValidation;
 using FluentValidation.Internal;
@@ -42,6 +42,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Default <see cref="SkipValidation"/> implementation. Never skips validation
 			/// </summary>
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static bool Default(SkipValidationContext skipValidationContext)
 			{
 				return false;
@@ -50,6 +51,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Always skip <see cref="SkipValidation"/> implementation
 			/// </summary>
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static bool Skip(SkipValidationContext skipValidationContext)
 			{
 				return true;
@@ -108,11 +110,12 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// </summary>
 			public static IEnumerable<InputValidator> Default(InputValidatorFactoryContext inputValidatorFactoryContext)
 			{
-				var validatorType = inputValidatorFactoryContext.MakeGenericValidatorType();
+				var validatorType = inputValidatorFactoryContext.GetGenericValidatorType();
 
-				return inputValidatorFactoryContext.ServiceProvider.GetServices(validatorType)
-					.OfType<IValidator>()
-					.Select(validator => InputValidator.FromValidator(validator));
+				foreach (IValidator validator in inputValidatorFactoryContext.ServiceProvider.GetServices(validatorType))
+				{
+					yield return validator.ToInputValidator();
+				}
 			}
 		}
 
@@ -125,6 +128,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// Doing nothing by default.
 			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator{TValidator}"/> on <see cref="InputFieldValidationConfigurator"/>
 			/// </summary>
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
 			{
 			}
