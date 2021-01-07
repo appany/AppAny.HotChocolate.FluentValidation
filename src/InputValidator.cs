@@ -9,18 +9,24 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	/// <summary>
 	/// Used to combine <see cref="IValidator{T}"/> and <see cref="ValidationStrategy{T}"/>.
-	/// To create new <see cref="IInputValidator"/> use <see cref="FromValidator"/> or <see cref="FromValidatorWithStrategy{TInput}"/>
+	/// To create new <see cref="InputValidator"/> use <see cref="FromValidator"/> or <see cref="FromValidatorWithStrategy{TInput}"/>
 	/// </summary>
-	public interface IInputValidator
+	public interface InputValidator
 	{
 		Task<ValidationResult> ValidateAsync(object argument, CancellationToken cancellationToken);
 
-		public static IInputValidator FromValidator(IValidator validator)
+		/// <summary>
+		/// Creates new <see cref="InputValidator"/> with default <see cref="ValidationStrategy{T}"/>
+		/// </summary>
+		public static InputValidator FromValidator(IValidator validator)
 		{
 			return FromValidatorWithStrategy<object>(validator, ValidationDefaults.ValidationStrategies.Default);
 		}
 
-		public static IInputValidator FromValidatorWithStrategy<TInput>(
+		/// <summary>
+		/// Creates new <see cref="InputValidator"/> with custom <see cref="ValidationStrategy{T}"/>
+		/// </summary>
+		public static InputValidator FromValidatorWithStrategy<TInput>(
 			IValidator validator,
 			Action<ValidationStrategy<TInput>> validationStrategy)
 		{
@@ -28,7 +34,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 	}
 
-	internal sealed class InputValidator<TInput> : IInputValidator
+	internal sealed class InputValidator<TInput> : InputValidator
 	{
 		private readonly IValidator validator;
 		private readonly Action<ValidationStrategy<TInput>> validationStrategy;

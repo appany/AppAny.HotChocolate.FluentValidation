@@ -106,13 +106,13 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Resolves all <see cref="IValidator{T}"/> implementations
 			/// </summary>
-			public static IEnumerable<IInputValidator> Default(InputValidatorFactoryContext inputValidatorFactoryContext)
+			public static IEnumerable<InputValidator> Default(InputValidatorFactoryContext inputValidatorFactoryContext)
 			{
 				var validatorType = inputValidatorFactoryContext.MakeGenericValidatorType();
 
 				return inputValidatorFactoryContext.ServiceProvider.GetServices(validatorType)
 					.OfType<IValidator>()
-					.Select(validator => IInputValidator.FromValidator(validator));
+					.Select(validator => InputValidator.FromValidator(validator));
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator{TValidator}"/> on <see cref="IInputFieldValidationConfigurator"/>
+			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator{TValidator}"/> on <see cref="InputFieldValidationConfigurator"/>
 			/// </summary>
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
 			{
