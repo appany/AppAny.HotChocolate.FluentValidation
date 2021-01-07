@@ -12,8 +12,11 @@ Input field `HotChocolate` + `FluentValidation` validation integration
 - `ErrorMapper` delegate
   - Maps `FluentValidation` validation result to `HotChocolate` error
 
-- `InputValidationFactory` delegate
-  - Configures conventions to resolve `FluentValidation` validators
+- `InputValidator` delegate
+  - Wraps `IValidator` + `ValidationStrategy` and executes `ValidateAsync`
+
+- `InputValidatorFactory` delegate
+  - Configures conventions to resolve `FluentValidation` validators wrapped in `InputValidator`
 
 ## Features
 
