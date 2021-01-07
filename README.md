@@ -21,7 +21,7 @@ Input field `HotChocolate` + `FluentValidation` validation integration
 - Global + per-argument multiple `InputValidationFactory` configuration
 - Per-argument multiple `IValidator`
 - Per-validator `ValidationStrategy`
-- Conditional skipping
+- Conditional validation skipping
 - Basic attribute-based configuration, code-first preferred
 
 ## Usage
