@@ -6,6 +6,9 @@ Input field `HotChocolate` + `FluentValidation` validation integration
 
 ## Abstractions
 
+- `SkipValidation` delegate
+  - Configures predicate to skip validation
+
 - `ErrorMapper` delegate
   - Maps `FluentValidation` validation result to `HotChocolate` error
 
@@ -14,11 +17,12 @@ Input field `HotChocolate` + `FluentValidation` validation integration
 
 ## Features
 
-- Global + per-argument multiple `ErrorMapper` configuration support
-- Global + per-argument multiple `InputValidationFactory` configuration support
-- Per-argument multiple `IValidator` support
-- Per-validator `ValidationStrategy` support
-- Conditionally skipping validation support
+- Global + per-argument multiple `ErrorMapper` configuration
+- Global + per-argument multiple `InputValidationFactory` configuration
+- Per-argument multiple `IValidator`
+- Per-validator `ValidationStrategy`
+- Conditional skipping
+- Basic attribute-based configuration, code-first preferred
 
 ## Usage
 
@@ -55,4 +59,6 @@ descriptor.Field(x => x.Example(default!))
         // ...
       });
   }));
+
+... Example([UseFluentValidation(typeof(ExampleInputValidator))] ExampleInput input) { ... }
 ```
