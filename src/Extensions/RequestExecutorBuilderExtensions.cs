@@ -18,18 +18,18 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
-		/// Adds default validation services with <see cref="IInputValidationConfigurator"/> overrides
+		/// Adds default validation services with <see cref="InputValidationConfigurator"/> overrides
 		/// </summary>
 		public static IRequestExecutorBuilder AddFluentValidation(
 			this IRequestExecutorBuilder builder,
-			Action<IInputValidationConfigurator> configure)
+			Action<InputValidationConfigurator> configure)
 		{
 			builder.ConfigureSchemaServices(services =>
 			{
-				var configurator = new InputValidationConfigurator(services);
+				var configurator = new DefaultInputValidationConfigurator(services);
 
 				configurator.UseDefaultErrorMapperWithDetails();
-				configurator.UseDefaultValidatorFactory();
+				configurator.UseDefaultInputValidatorFactory();
 				configurator.SkipValidation(ValidationDefaults.SkipValidation.Default);
 
 				configure.Invoke(configurator);
