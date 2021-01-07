@@ -144,7 +144,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				{
 					fv.UseInputValidatorFactories(context => context.ServiceProvider
 						.GetServices<NotEmptyNameValidator>()
-						.Select(validator => InputValidator.FromValidator(validator)));
+						.Select(validator => validator.ToInputValidator()));
 				})))
 				.BuildRequestExecutorAsync();
 
@@ -429,7 +429,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				{
 					configurator.SkipValidation().UseInputValidatorFactories(_ => new[]
 					{
-						InputValidator.FromValidator(new NotEmptyNameValidator())
+						new NotEmptyNameValidator().ToInputValidator()
 					});
 				})))
 				.BuildRequestExecutorAsync();

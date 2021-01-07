@@ -99,7 +99,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_GlobalSkipValidationDefault_OverrideToSkip()
+		public async Task Should_Execute_GlobalSkipValidationDefault_OverrideSkip()
 		{
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
