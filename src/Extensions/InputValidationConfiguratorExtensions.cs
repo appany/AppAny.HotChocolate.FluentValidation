@@ -5,9 +5,17 @@ namespace AppAny.HotChocolate.FluentValidation
 	public static class InputValidationConfiguratorExtensions
 	{
 		/// <summary>
+		/// Always skips validation <see cref="ValidationDefaults.SkipValidation.Skip"/>
+		/// </summary>
+		public static IInputValidationConfigurator SkipValidation(this IInputValidationConfigurator configurator)
+		{
+			return configurator.SkipValidation(ValidationDefaults.SkipValidation.Skip);
+		}
+
+		/// <summary>
 		/// Adds default <see cref="ErrorMapper"/>. See <see cref="ValidationDefaults.ErrorMappers.Default"/>
 		/// </summary>
-		public static IInputValidationConfigurator AddDefaultErrorMapper(
+		public static IInputValidationConfigurator UseDefaultErrorMapper(
 			this IInputValidationConfigurator configurator,
 			params ErrorMapper[] errorMappers)
 		{
@@ -20,7 +28,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Adds default <see cref="ErrorMapper"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
 		/// </summary>
-		public static IInputValidationConfigurator AddDefaultErrorMapperWithDetails(
+		public static IInputValidationConfigurator UseDefaultErrorMapperWithDetails(
 			this IInputValidationConfigurator configurator,
 			params ErrorMapper[] errorMappers)
 		{
@@ -33,7 +41,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Adds default <see cref="InputValidatorFactory"/>. See <see cref="ValidationDefaults.ValidatorFactories.Default"/>
 		/// </summary>
-		public static IInputValidationConfigurator AddDefaultValidatorFactory(
+		public static IInputValidationConfigurator UseDefaultValidatorFactory(
 			this IInputValidationConfigurator configurator,
 			params InputValidatorFactory[] inputValidatorFactories)
 		{

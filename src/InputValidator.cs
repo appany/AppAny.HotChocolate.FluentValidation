@@ -15,11 +15,17 @@ namespace AppAny.HotChocolate.FluentValidation
 	{
 		Task<ValidationResult> ValidateAsync(object argument, CancellationToken cancellationToken);
 
+		/// <summary>
+		/// Creates new <see cref="IInputValidator"/> with default <see cref="ValidationStrategy{T}"/>
+		/// </summary>
 		public static IInputValidator FromValidator(IValidator validator)
 		{
 			return FromValidatorWithStrategy<object>(validator, ValidationDefaults.ValidationStrategies.Default);
 		}
 
+		/// <summary>
+		/// Creates new <see cref="IInputValidator"/> with custom <see cref="ValidationStrategy{T}"/>
+		/// </summary>
 		public static IInputValidator FromValidatorWithStrategy<TInput>(
 			IValidator validator,
 			Action<ValidationStrategy<TInput>> validationStrategy)

@@ -395,30 +395,6 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation()
-		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation()
-				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
-				{
-					configurator.SkipValidation();
-				})))
-				.BuildRequestExecutorAsync();
-
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
-
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
-		}
-
-		[Fact]
 		public async Task Should_Execute_SkipValidation_WithCustomValidator()
 		{
 			var executor = await new ServiceCollection()

@@ -8,6 +8,11 @@ namespace AppAny.HotChocolate.FluentValidation
 	public interface IInputValidationConfigurator
 	{
 		/// <summary>
+		/// Overrides default skip validation predecate <see cref="ValidationDefaults.SkipValidation.Default"/>
+		/// </summary>
+		IInputValidationConfigurator SkipValidation(SkipValidation skipValidation);
+
+		/// <summary>
 		/// Overrides default <see cref="ErrorMapper"/>
 		/// </summary>
 		IInputValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers);

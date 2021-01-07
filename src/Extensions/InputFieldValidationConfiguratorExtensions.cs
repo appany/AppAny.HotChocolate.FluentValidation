@@ -25,9 +25,21 @@ namespace AppAny.HotChocolate.FluentValidation
 			this IInputFieldValidationConfigurator configurator)
 			where TValidator : class, IValidator
 		{
+			return configurator.UseValidator(typeof(TValidator));
+		}
+
+		/// <summary>
+		/// Overrides global <see cref="InputValidatorFactory"/>.
+		/// Uses type to resolve <see cref="IInputValidator"/>
+		/// </summary>
+		public static IInputFieldValidationConfigurator UseValidator(
+			this IInputFieldValidationConfigurator configurator,
+			Type validatorType)
+		{
 			return configurator.UseInputValidatorFactories(context => context
 				.ServiceProvider
-				.GetServices<TValidator>()
+				.GetServices(validatorType)
+				.OfType<IValidator>()
 				.Select(validator => IInputValidator.FromValidator(validator)));
 		}
 

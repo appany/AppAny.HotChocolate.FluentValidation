@@ -30,6 +30,8 @@ services.AddGraphQLServer()
 descriptor.Field(x => x.Example(default!))
   .Argument("input", argument => argument.UseFluentValidation());
 
+... Example([UseFluentValidation] ExampleInput input) { ... }
+
 # Customizations
 services.AddGraphQLServer()
   .AddFluentValidation(options =>
