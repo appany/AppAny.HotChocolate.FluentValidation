@@ -72,5 +72,17 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		{
 			return fairyBreadValidation.ExecuteAsync("mutation { test(input: { name: \"\" }) }");
 		}
+
+		[Benchmark]
+		public Task Validation()
+		{
+			var validationContext = ValidationContext<TestInput>.CreateWithOptions(new TestInput(), _ =>
+			{
+			});
+
+			var validator = new TestInputValidator();
+
+			return validator.ValidateAsync(validationContext);
+		}
 	}
 }

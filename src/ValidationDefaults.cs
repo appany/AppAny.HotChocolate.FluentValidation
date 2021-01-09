@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using HotChocolate;
 using FluentValidation;
 using FluentValidation.Internal;
+using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -18,6 +19,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="InputFieldValidationOptions"/>
 		/// </summary>
 		public const string InputFieldOptionsKey = "ValidationInputFieldOptions";
+
+		/// <summary>
+		/// Default validation field middleware
+		/// </summary>
+		public static FieldMiddleware Middleware { get; } = ValidationFieldMiddleware.Use;
 
 		/// <summary>
 		/// Default graphql error extensions keys

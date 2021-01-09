@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using HotChocolate;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -7,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation
 	{
 		public static InputFieldValidationOptions GetOrCreateInputFieldOptions(this ExtensionData extensionData)
 		{
-			var options = extensionData.GetValueOrDefault(ValidationDefaults.InputFieldOptionsKey);
+			var options = extensionData.TryGetInputFieldOptions();
 
 			if (options is null)
 			{
@@ -15,7 +14,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				extensionData.Add(ValidationDefaults.InputFieldOptionsKey, options);
 			}
 
-			return (InputFieldValidationOptions)options;
+			return options;
 		}
 	}
 }

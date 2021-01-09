@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class InputFieldExtensions
 	{
-		public static InputFieldValidationOptions? TryGetInputFieldOptions(this IInputField inputField)
+		public static InputFieldValidationOptions? TryGetInputFieldOptions(this IReadOnlyDictionary<string, object?> contextData)
 		{
-			return (InputFieldValidationOptions?)inputField
-				.ContextData
-				.GetValueOrDefault(ValidationDefaults.InputFieldOptionsKey);
+			return contextData.TryGetValue(ValidationDefaults.InputFieldOptionsKey, out var data)
+				&& data is InputFieldValidationOptions options
+					? options
+					: null;
 		}
 	}
 }
