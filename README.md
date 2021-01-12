@@ -51,3 +51,7 @@ descriptor.Field(x => x.Example(default!))
 - Examples
   - [Root validator segregation](docs/examples/root-validator-segregation.md)
   - [Argument level overrides](docs/examples/argument-level-overrides.md)
+
+## Benchmarks
+
+- [I **swear** I will check correctness, run these benchmarks on my own environment and only after that I will make conclusions](tests/AppAny.HotChocolate.FluentValidation.Benchmarks/README.md)
