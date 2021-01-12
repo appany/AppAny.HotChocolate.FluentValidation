@@ -1,6 +1,7 @@
 # Argument level overrides
 
 Not all rules, configured globally, suites for corner cases
+
 This library allows to override all globals for field-specific rules
 
 I will use notifications. It is not well designed schema, but can explain thats and whys, when you have same inputs in multiple mutations, etc.
@@ -40,6 +41,7 @@ descriptor.Field(x => x.SendSystemNotification(default!))
 ```
 
 But what if regular notifications should validate only `Message` with `notification` rule set using all available validators (and system too, why not?), but system only with one?
+
 You can pass not only a concrete validator class, but an interface to resolve all available validators and override `ValidationStrategy<Notification>`
 
 ```cs
@@ -62,6 +64,7 @@ descriptor.Field(x => x.SendSystemNotification(default!))
 ```
 
 Also for system notifications you want to have extended validation details in graphql errors
+
 To achieve this, you can override error mappers
 
 ```cs
