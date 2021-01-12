@@ -2,7 +2,7 @@
 # ErrorMappers
 
 - Error mappers are functions converting validation failure to graphql error
-- All methods has overrides to pass more error mappers
+- All extension methods has overrides to pass more error mappers
 - All error mappers executes sequentially and can be composed with other
 
 ```json
