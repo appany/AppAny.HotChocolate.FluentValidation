@@ -106,7 +106,7 @@ descriptor.Field(x => x.CreateExternalUser(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
     options.UseValidator<UserValidator>()
-      // For external users we will use only Custom address validator
+      // For external users we will use Custom address validator
       .UseValidator<CustomAddressUserValidator>();
   }));
 
