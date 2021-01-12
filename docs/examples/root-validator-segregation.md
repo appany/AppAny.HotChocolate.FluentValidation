@@ -35,7 +35,7 @@ public class DefaultUserAddressValidator : AbstractValidator<string>
 }
 ```
 
-But it is tightly couple two validators. What if you have another way to validate address? Or to validate address with first name?
+But it is tightly coupling two validators. What if you have another way to validate address? Or to validate address with first name?
 
 ```cs
 public class CustomUserAddressValidator : AbstractValidator<string>
