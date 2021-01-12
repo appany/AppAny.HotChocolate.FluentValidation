@@ -8,7 +8,8 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		{
 			BenchmarkSwitcher
 				.FromAssembly(typeof(Program).Assembly)
-				.Run(args//, DefaultConfig.Instance.AddDiagnoser(new EtwProfiler())
+				.Run(args
+					//, DefaultConfig.Instance.AddDiagnoser(new EtwProfiler())
 				);
 		}
 	}

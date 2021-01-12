@@ -17,7 +17,10 @@ namespace AppAny.HotChocolate.FluentValidation
 			this InputFieldValidationConfigurator configurator)
 			where TValidator : class, IValidator
 		{
-			return configurator.UseValidator(typeof(TValidator));
+			return configurator.UseInputValidatorFactories(context => context
+				.ServiceProvider
+				.GetServices<TValidator>()
+				.Select(validator => validator.ToInputValidator()));
 		}
 
 		/// <summary>
@@ -37,7 +40,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorFactory"/>.
-		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, <see cref="TInput"/> used only for constraint
+		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
 		public static InputFieldValidationConfigurator UseValidator<TInput, TValidator>(
 			this InputFieldValidationConfigurator configurator)
@@ -48,7 +51,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorFactory"/>.
-		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, <see cref="TInput"/> used for <see cref="ValidationStrategy{T}"/>
+		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
 		/// </summary>
 		public static InputFieldValidationConfigurator UseValidator<TInput, TValidator>(
 			this InputFieldValidationConfigurator configurator,

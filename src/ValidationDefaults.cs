@@ -109,7 +109,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Default <see cref="InputValidatorFactory"/> implementations
 		/// </summary>
-		public static class ValidatorFactories
+		public static class InputValidatorFactories
 		{
 			/// <summary>
 			/// Resolves all <see cref="IValidator{T}"/> implementations
@@ -132,7 +132,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator{TValidator}"/> on <see cref="InputFieldValidationConfigurator"/>
+			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)

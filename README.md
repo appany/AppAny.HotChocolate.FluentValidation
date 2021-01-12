@@ -46,22 +46,102 @@ descriptor.Field(x => x.Example(default!))
 ## Abstractions
 
 - `SkipValidation` delegate
-  - Configures predicate to skip validation
+  - Configures skip validation predicate
 
 - `ErrorMapper` delegate
   - Maps `FluentValidation` validation result to `HotChocolate` error
 
 - `InputValidator` delegate
-  - Abstracts `IValidator` execution
+  - Wraps `IValidator` execution
 
 - `InputValidatorFactory` delegate
-  - Configures conventions to resolve `FluentValidation` validators wrapped in `InputValidator`
+  - Configures conventions to resolve `InputValidator`
 
 ## Features
 
 - Global + per-argument multiple `ErrorMapper` configuration
 - Global + per-argument multiple `InputValidationFactory` configuration
-- Per-argument multiple `IValidator`
+- Per-argument multiple `InputValidator`
 - Per-validator `ValidationStrategy`
 - Conditional validation skipping
 - Basic attribute-based configuration, code-first preferred
+
+## ErrorMappers
+
+- .UseDefaultErrorMapper()
+
+```json
+{
+  "errors": [
+    {
+      "message": "Name is empty",
+      "path": [
+        "createUser"
+      ],
+      "extensions": {
+        "code": "ValidationFailed"
+      }
+    }
+  ],
+  "data": {
+    "createUser": null
+  }
+}
+```
+
+- .UseDefaultErrorMapperWithDetails()
+
+```json
+{
+  "errors": [
+    {
+      "message": "Name is empty",
+      "path": [
+        "createUser"
+      ],
+      "extensions": {
+        "code": "ValidationFailed",
+        "validator": "NotEmptyValidator",
+        "inputField": "input",
+        "property": "Name",
+        "severity": "Error",
+        "attemptedValue": ""
+      }
+    }
+  ],
+  "data": {
+    "createUser": null
+  }
+}
+```
+
+- .UseDefaultErrorMapperWithExtendedDetails()
+
+```json
+{
+  "errors": [
+    {
+      "message": "Name is empty",
+      "path": [
+        "createUser"
+      ],
+      "extensions": {
+        "code": "ValidationFailed",
+        "validator": "NotEmptyValidator",
+        "inputField": "input",
+        "property": "Name",
+        "severity": "Error",
+        "attemptedValue": "",
+        "customState": null,
+        "formattedMessagePlaceholderValues": {
+          "PropertyName": "Name",
+          "PropertyValue": ""
+        }
+      }
+    }
+  ],
+  "data": {
+    "createUser": null
+  }
+}
+```
