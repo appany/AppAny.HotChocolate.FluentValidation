@@ -25,7 +25,12 @@ namespace AppAny.HotChocolate.FluentValidation
 
 						var inputFieldOptions = inputField.ContextData.TryGetInputFieldOptions();
 
-						var skipValidation = inputFieldOptions?.SkipValidation ?? options.SkipValidation;
+						if (inputFieldOptions is null)
+						{
+							continue;
+						}
+
+						var skipValidation = inputFieldOptions.SkipValidation ?? options.SkipValidation;
 
 						if (skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)))
 						{
@@ -39,8 +44,8 @@ namespace AppAny.HotChocolate.FluentValidation
 							continue;
 						}
 
-						var errorMappers = inputFieldOptions?.ErrorMappers ?? options.ErrorMappers;
-						var inputValidatorFactories = inputFieldOptions?.InputValidatorFactories ?? options.InputValidatorFactories;
+						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
+						var inputValidatorFactories = inputFieldOptions.InputValidatorFactories ?? options.InputValidatorFactories;
 
 						var inputValidatorFactoryContext = new InputValidatorFactoryContext(
 							middlewareContext.Services,

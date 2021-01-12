@@ -27,7 +27,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				var configurator = new DefaultInputValidationConfigurator(services);
 
-				configurator.UseDefaultErrorMapperWithDetails();
+				configurator.UseDefaultErrorMapper();
 				configurator.UseDefaultInputValidatorFactory();
 				configurator.SkipValidation(ValidationDefaults.SkipValidation.Default);
 
