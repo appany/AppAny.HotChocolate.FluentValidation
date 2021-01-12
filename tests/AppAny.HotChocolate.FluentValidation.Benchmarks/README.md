@@ -18,7 +18,7 @@ Intel Core i7-9700K CPU 3.60GHz (Coffee Lake), 1 CPU, 8 logical and 8 physical c
 | RunWithFairyBreadValidation | 56.255 μs | 0.1440 μs | 0.1347 μs | 2.0142 |      - |     - |  12.27 KB |
 |                  Validation |  2.709 μs | 0.0098 μs | 0.0091 μs | 0.6599 | 0.0038 |     - |   4.05 KB |
 
-## InputValidationMiddlewareBenchmarksWithoutInputs
+## InputValidationMiddlewareBenchmarksWithEmptyInputs
 
 |                      Method |      Mean |     Error |    StdDev |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |---------------------------- |----------:|----------:|----------:|-------:|-------:|------:|----------:|
