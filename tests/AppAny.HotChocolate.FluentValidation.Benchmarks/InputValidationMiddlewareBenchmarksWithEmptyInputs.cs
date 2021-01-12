@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 {
 	[MemoryDiagnoser]
-	public class InputValidationMiddlewareBenchmarksWithoutInputs
+	public class InputValidationMiddlewareBenchmarksWithEmptyInputs
 	{
 		private IRequestExecutor withoutValidation = null!;
 		private IRequestExecutor withValidation = null!;
