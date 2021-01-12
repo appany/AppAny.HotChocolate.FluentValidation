@@ -1,7 +1,5 @@
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Validators;
-using HotChocolate;
 using HotChocolate.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -35,31 +33,6 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
 					Assert.Equal(ValidationDefaults.Code, code.Value);
-				},
-				validator =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.ValidatorKey, validator.Key);
-					Assert.Equal(nameof(NotEmptyValidator), validator.Value);
-				},
-				inputField =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.InputFieldKey, inputField.Key);
-					Assert.Equal(new NameString("input"), inputField.Value);
-				},
-				property =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
-					Assert.Equal("Name", property.Value);
-				},
-				severity =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
-					Assert.Equal(Severity.Error, severity.Value);
-				},
-				attemptedValue =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.AttemptedValueKey, attemptedValue.Key);
-					Assert.Equal("", attemptedValue.Value);
 				});
 		}
 
