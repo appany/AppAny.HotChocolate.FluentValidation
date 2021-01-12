@@ -23,7 +23,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Creates new <see cref="InputValidator"/> with custom <see cref="ValidationStrategy{T}"/>
 		/// </summary>
 		public static InputValidator ToInputValidatorWithStrategy<TInput>(
-			this IValidator validator,
+			this IValidator<TInput> validator,
 			Action<ValidationStrategy<TInput>> validationStrategy)
 		{
 			return (argument, cancellationToken) =>

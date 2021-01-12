@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
@@ -30,11 +30,16 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public InputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
 		{
-			options.ValidatorFactories ??= new List<InputValidatorFactory>();
-
-			foreach (var validatorFactory in validatorFactories)
+			if (options.ValidatorFactories is null)
 			{
-				options.ValidatorFactories.Add(validatorFactory);
+				options.ValidatorFactories = validatorFactories.ToList();
+			}
+			else
+			{
+				foreach (var validatorFactory in validatorFactories)
+				{
+					options.ValidatorFactories.Add(validatorFactory);
+				}
 			}
 
 			return this;
@@ -42,11 +47,16 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public InputFieldValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers)
 		{
-			options.ErrorMappers ??= new List<ErrorMapper>();
-
-			foreach (var errorMapper in errorMappers)
+			if (options.ErrorMappers is null)
 			{
-				options.ErrorMappers.Add(errorMapper);
+				options.ErrorMappers = errorMappers.ToList();
+			}
+			else
+			{
+				foreach (var errorMapper in errorMappers)
+				{
+					options.ErrorMappers.Add(errorMapper);
+				}
 			}
 
 			return this;
