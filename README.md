@@ -47,6 +47,7 @@ descriptor.Field(x => x.Example(default!))
 
 - [Abstractions](docs/core-abstractions.md)
 - [Features](docs/features.md)
+- [Defaults](docs/defaults.md)
 - [ErrorMappers](docs/error-mappers.md)
 - Examples
   - [Root validator segregation](docs/examples/root-validator-segregation.md)
