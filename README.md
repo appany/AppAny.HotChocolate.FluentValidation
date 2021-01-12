@@ -49,4 +49,5 @@ descriptor.Field(x => x.Example(default!))
 - [Features](docs/features.md)
 - [ErrorMappers](docs/error-mappers.md)
 - Examples
-  - [Root validator split](docs/examples/root-validator-split.md)
+  - [Root validator segregation](docs/examples/root-validator-segregation.md)
+  - [Argument level overrides](docs/examples/argument-level-overrides.md)

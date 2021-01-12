@@ -1,4 +1,4 @@
-# Root validator split
+# Root validator segregation
 
 Imagine you have a User
 
@@ -92,24 +92,26 @@ public class CustomAddressUserValidator : AbstractValidator<User>
 
 # Usage
 descriptor.Field(x => x.CreateUser(default!))
-  .Argument("input", x => x.UseFluentValidation(options =>
+  .Argument("input", argument => argument.UseFluentValidation(options =>
   {
     options.UseValidator<UserValidator>()
       // Use required validator without UserValidator modification
       .UseValidator<DefaultAddressUserValidator>() or/and .UseValidator<CustomAddressUserValidator>();
   }));
+
 # or
 ... CreateUser([UseFluentValidation(typeof(UserValidator), typeof(DefaultAddressUserValidator))] User user)
 
 descriptor.Field(x => x.CreateExternalUser(default!))
-  .Argument("input", x => x.UseFluentValidation(options =>
+  .Argument("input", argument => argument.UseFluentValidation(options =>
   {
     options.UseValidator<UserValidator>()
       // For external users we will use only Custom address validator
       .UseValidator<CustomAddressUserValidator>();
   }));
+
 # or
-... CreateUser([UseFluentValidation(typeof(UserValidator), typeof(CustomAddressUserValidator))] User user)
+... CreateExternalUser([UseFluentValidation(typeof(UserValidator), typeof(CustomAddressUserValidator))] User user)
 ```
 
 This is not a silver bullet, this library handles only root validators and **only** static validator sequences. If you want dynamically change validation rules (feature flags?) prefer another solution
