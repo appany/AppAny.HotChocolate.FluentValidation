@@ -28,17 +28,17 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public InputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
+		public InputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] inputValidatorFactories)
 		{
-			if (options.ValidatorFactories is null)
+			if (options.InputValidatorFactories is null)
 			{
-				options.ValidatorFactories = validatorFactories.ToList();
+				options.InputValidatorFactories = inputValidatorFactories.ToList();
 			}
 			else
 			{
-				foreach (var validatorFactory in validatorFactories)
+				foreach (var validatorFactory in inputValidatorFactories)
 				{
-					options.ValidatorFactories.Add(validatorFactory);
+					options.InputValidatorFactories.Add(validatorFactory);
 				}
 			}
 

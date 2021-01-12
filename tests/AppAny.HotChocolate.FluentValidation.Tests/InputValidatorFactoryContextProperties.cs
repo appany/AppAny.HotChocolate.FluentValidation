@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class ValidatorFactoryContextProperties
+	public class InputValidatorFactoryContextProperties
 	{
 		[Fact]
 		public async Task Should_Pass_Values_AddFluentValidation()
@@ -20,7 +20,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					{
 						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
 
-						return ValidationDefaults.ValidatorFactories.Default(context);
+						return ValidationDefaults.InputValidatorFactories.Default(context);
 					}))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
@@ -57,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					{
 						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
 
-						return ValidationDefaults.ValidatorFactories.Default(context);
+						return ValidationDefaults.InputValidatorFactories.Default(context);
 					});
 				})))
 				.BuildRequestExecutorAsync();

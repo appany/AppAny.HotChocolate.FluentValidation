@@ -35,9 +35,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public InputValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] validatorFactories)
+		public InputValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] inputValidatorFactories)
 		{
-			services.Configure<InputValidationOptions>(options => options.ValidatorFactories = validatorFactories);
+			services.Configure<InputValidationOptions>(options => options.InputValidatorFactories = inputValidatorFactories);
 
 			return this;
 		}

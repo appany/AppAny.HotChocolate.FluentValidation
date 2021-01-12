@@ -109,7 +109,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Default <see cref="InputValidatorFactory"/> implementations
 		/// </summary>
-		public static class ValidatorFactories
+		public static class InputValidatorFactories
 		{
 			/// <summary>
 			/// Resolves all <see cref="IValidator{T}"/> implementations

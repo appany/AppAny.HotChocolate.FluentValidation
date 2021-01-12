@@ -15,7 +15,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (inputFields is { Count: > 0 })
 				{
-					var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<InputValidationOptions>>().Value;
+					var options = middlewareContext.Schema
+						.Services!
+						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
 
 					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
 					{
@@ -38,20 +40,23 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 
 						var errorMappers = inputFieldOptions?.ErrorMappers ?? options.ErrorMappers;
-						var validatorFactories = inputFieldOptions?.ValidatorFactories ?? options.ValidatorFactories;
+						var inputValidatorFactories = inputFieldOptions?.InputValidatorFactories ?? options.InputValidatorFactories;
 
-						for (var validatorFactoryIndex = 0;
-							validatorFactoryIndex < validatorFactories.Count;
-							validatorFactoryIndex++)
+						var inputValidatorFactoryContext = new InputValidatorFactoryContext(
+							middlewareContext.Services,
+							inputField.RuntimeType);
+
+						for (var inputValidatorFactoryIndex = 0;
+							inputValidatorFactoryIndex < inputValidatorFactories.Count;
+							inputValidatorFactoryIndex++)
 						{
-							var validatorFactory = validatorFactories[validatorFactoryIndex];
+							var inputValidatorFactory = inputValidatorFactories[inputValidatorFactoryIndex];
 
-							var validators = validatorFactory.Invoke(
-								new InputValidatorFactoryContext(middlewareContext.Services, inputField.RuntimeType));
+							var inputValidators = inputValidatorFactory.Invoke(inputValidatorFactoryContext);
 
-							foreach (var validator in validators)
+							foreach (var inputValidator in inputValidators)
 							{
-								var validationResult = await validator.Invoke(argument, middlewareContext.RequestAborted);
+								var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
 
 								if (validationResult.IsValid)
 								{
@@ -64,13 +69,17 @@ namespace AppAny.HotChocolate.FluentValidation
 
 									var errorBuilder = ErrorBuilder.New();
 
+									var errorMappingContext = new ErrorMappingContext(
+										middlewareContext,
+										inputField,
+										validationResult,
+										validationFailure);
+
 									for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
 									{
 										var errorMapper = errorMappers[errorMapperIndex];
 
-										errorMapper.Invoke(
-											errorBuilder,
-											new ErrorMappingContext(middlewareContext, inputField, validationResult, validationFailure));
+										errorMapper.Invoke(errorBuilder, errorMappingContext);
 									}
 
 									middlewareContext.ReportError(errorBuilder.Build());
