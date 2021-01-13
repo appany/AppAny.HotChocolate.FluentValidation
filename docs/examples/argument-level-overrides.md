@@ -20,9 +20,9 @@ descriptor.Field(x => x.SendSystemNotification(default!))
   .Argument("input", argument => argument.UseFluentValidation());
 ```
 
-Well, there is a problem, mutations are using same input, but each mutation has its own validation rules (it is an artificial restriction, imagine you can't change them to more domain specific Notification and SystemNotification, it is a breaking change)
+Well, there is a problem, mutations are using the same input, but each mutation has its own validation rules (it is an artificial restriction, imagine you can't change them to more domain specific Notification and SystemNotification, it is a breaking change)
 
-To resolve this problem and to not to validate each Notification with same IValidator set you can specify which validators should validate input
+To resolve this problem and to not to validate each Notification with the same IValidator set you can specify which validators should validate input
 
 ```cs
 descriptor.Field(x => x.SendNotification(default!))
