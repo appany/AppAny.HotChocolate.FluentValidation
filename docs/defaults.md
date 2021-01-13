@@ -1,6 +1,6 @@
 # Defaults
 
-This library is **not handling** validator registration, so you should add all validators manually or use third party extensions (e.g. `FluentValidation.AspNetCore.AddValidatorsFromAssemblies`)
+This library is **not handling** validator registration, so you should add all validators manually or use third-party extensions (e.g. `FluentValidation.AspNetCore.AddValidatorsFromAssemblies`)
 
 ## ErrorMapper
 

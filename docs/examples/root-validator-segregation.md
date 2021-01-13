@@ -35,7 +35,7 @@ public class DefaultUserAddressValidator : AbstractValidator<string>
 }
 ```
 
-But it is tightly coupling two validators. What if you have another way to validate address? Or to validate address with first name?
+But it is tightly coupling two validators. What if you have another way to validate the address? Or to validate address with the first name?
 
 ```cs
 public class CustomUserAddressValidator : AbstractValidator<string>
@@ -65,7 +65,7 @@ public class UserValidator : AbstractValidator<User>
 }
 ```
 
-But how you can do that with DI? Which `IValidator<string>` you should resolve? There are some solutions (separate user validators, factories, manual DI, etc.), but this library supports multiple root validators and automatically calls them sequentially, converting failures to useful GraphQL errors
+But how can you do that with DI? Which `IValidator<string>` should you resolve? There are some solutions (separate user validators, factories, manual DI, etc.), but this library supports multiple root validators and automatically calls them sequentially, converting failures to useful GraphQL errors
 
 To use this feature just call multiple `UseValidator` with multiple **User** validators
 
