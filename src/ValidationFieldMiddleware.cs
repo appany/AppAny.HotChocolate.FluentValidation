@@ -15,8 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (inputFields is { Count: > 0 })
 				{
-					var options = middlewareContext.Schema
-							.Services!
+					var options = middlewareContext.Schema.Services!
 						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
 
 					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
@@ -59,7 +58,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
 
-							if (validationResult?.IsValid is not false)
+							if (validationResult?.IsValid is null or true)
 							{
 								continue;
 							}
