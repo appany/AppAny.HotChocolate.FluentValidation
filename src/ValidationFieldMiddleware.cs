@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.Resolvers;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
