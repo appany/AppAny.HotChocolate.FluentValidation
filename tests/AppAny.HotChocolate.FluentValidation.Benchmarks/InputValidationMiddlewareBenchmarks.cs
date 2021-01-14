@@ -135,5 +135,35 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		{
 			return fairyBreadValidation.ExecuteAsync("mutation { test() }");
 		}
+
+		[Benchmark]
+		public Task RunWithoutValidation_NullInputs()
+		{
+			return withoutValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithValidation_NullInputs()
+		{
+			return withValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithExplicitValidation_NullInputs()
+		{
+			return withExplicitValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithDarkHillsValidation_NullInputs()
+		{
+			return darkHillsValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithFairyBreadValidation_NullInputs()
+		{
+			return fairyBreadValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
 	}
 }
