@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace AppAny.HotChocolate.FluentValidation
 {
 	/// <summary>
 	/// Checks for validation skip
 	/// </summary>
-	public delegate bool SkipValidation(SkipValidationContext skipValidationContext);
+	public delegate ValueTask<bool> SkipValidation(SkipValidationContext skipValidationContext);
 }

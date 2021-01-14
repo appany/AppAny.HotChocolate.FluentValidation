@@ -48,8 +48,8 @@ You can pass not only a concrete validator class, but an interface to resolve al
 descriptor.Field(x => x.SendNotification(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
-    // TValidator = IValidator<Notification> and resolves all validators for notification
-    options.UseValidator<Notification, IValidator<Notification>>(strategy =>
+    // UseValidators resolves all validators for notification
+    options.UseValidators<Notification, IValidator<Notification>>(strategy =>
     {
       strategy.IncludeProperties(x => x.Message);
       strategy.IncludeRuleSets("notification");
@@ -71,7 +71,7 @@ To achieve this, you can override error mappers
 descriptor.Field(x => x.SendNotification(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
-    options.UseValidator<Notification, IValidator<Notification>>(strategy =>
+    options.UseValidators<Notification, IValidator<Notification>>(strategy =>
     {
       strategy.IncludeProperties(x => x.Message);
       strategy.IncludeRuleSets("notification");
@@ -93,7 +93,7 @@ After all only system notifications can skip validation if some condition happen
 descriptor.Field(x => x.SendNotification(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
-    options.UseValidator<Notification, IValidator<Notification>>(strategy =>
+    options.UseValidators<Notification, IValidator<Notification>>(strategy =>
     {
       strategy.IncludeProperties(x => x.Message);
       strategy.IncludeRuleSets("notification");

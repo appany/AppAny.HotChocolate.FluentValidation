@@ -15,8 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (inputFields is { Count: > 0 })
 				{
-					var options = middlewareContext.Schema
-						.Services!
+					var options = middlewareContext.Schema.Services!
 						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
 
 					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
@@ -32,7 +31,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 						var skipValidation = inputFieldOptions.SkipValidation ?? options.SkipValidation;
 
-						if (skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)))
+						if (await skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)))
 						{
 							continue;
 						}
@@ -47,48 +46,41 @@ namespace AppAny.HotChocolate.FluentValidation
 						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
 						var inputValidatorFactories = inputFieldOptions.InputValidatorFactories ?? options.InputValidatorFactories;
 
-						var inputValidatorFactoryContext = new InputValidatorFactoryContext(
-							middlewareContext.Services,
-							inputField.RuntimeType);
-
 						for (var inputValidatorFactoryIndex = 0;
 							inputValidatorFactoryIndex < inputValidatorFactories.Count;
 							inputValidatorFactoryIndex++)
 						{
 							var inputValidatorFactory = inputValidatorFactories[inputValidatorFactoryIndex];
 
-							var inputValidators = inputValidatorFactory.Invoke(inputValidatorFactoryContext);
+							var inputValidator = inputValidatorFactory.Invoke(new InputValidatorFactoryContext(
+								middlewareContext,
+								inputField.RuntimeType));
 
-							foreach (var inputValidator in inputValidators)
+							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
+
+							if (validationResult?.IsValid is null or true)
 							{
-								var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
+								continue;
+							}
 
-								if (validationResult.IsValid)
+							for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
+							{
+								var validationFailure = validationResult.Errors[errorIndex];
+
+								var errorBuilder = ErrorBuilder.New();
+
+								for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
 								{
-									continue;
-								}
+									var errorMapper = errorMappers[errorMapperIndex];
 
-								for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
-								{
-									var validationFailure = validationResult.Errors[errorIndex];
-
-									var errorBuilder = ErrorBuilder.New();
-
-									var errorMappingContext = new ErrorMappingContext(
+									errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
 										middlewareContext,
 										inputField,
 										validationResult,
-										validationFailure);
-
-									for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
-									{
-										var errorMapper = errorMappers[errorMapperIndex];
-
-										errorMapper.Invoke(errorBuilder, errorMappingContext);
-									}
-
-									middlewareContext.ReportError(errorBuilder.Build());
+										validationFailure));
 								}
+
+								middlewareContext.ReportError(errorBuilder.Build());
 							}
 						}
 					}

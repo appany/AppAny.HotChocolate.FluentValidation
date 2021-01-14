@@ -1,16 +1,17 @@
 using System;
+using HotChocolate.Resolvers;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public readonly struct InputValidatorFactoryContext
+	public readonly ref struct InputValidatorFactoryContext
 	{
-		public InputValidatorFactoryContext(IServiceProvider serviceProvider, Type inputFieldType)
+		public InputValidatorFactoryContext(IMiddlewareContext middlewareContext, Type inputFieldType)
 		{
-			ServiceProvider = serviceProvider;
+			MiddlewareContext = middlewareContext;
 			InputFieldType = inputFieldType;
 		}
 
-		public IServiceProvider ServiceProvider { get; }
+		public IMiddlewareContext MiddlewareContext { get; }
 		public Type InputFieldType { get; }
 	}
 }
