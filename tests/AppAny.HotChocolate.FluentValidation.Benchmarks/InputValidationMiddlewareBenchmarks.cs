@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
+using FairyBread;
 using FluentValidation;
 using HotChocolate.Execution;
 using HotChocolate.FluentValidation;
@@ -12,6 +13,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 	{
 		private IRequestExecutor withoutValidation = null!;
 		private IRequestExecutor withValidation = null!;
+		private IRequestExecutor withExplicitValidation = null!;
 		private IRequestExecutor darkHillsValidation = null!;
 		private IRequestExecutor fairyBreadValidation = null!;
 
@@ -21,7 +23,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			withoutValidation = await new ServiceCollection()
 				.AddGraphQL()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType<TestMutationWithoutValidationType>()
+				.AddMutationType(new TestMutationType(_ =>
+				{
+				}))
 				.BuildRequestExecutorAsync();
 
 			withValidation = await new ServiceCollection()
@@ -29,7 +33,16 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.AddFluentValidation()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType<TestMutationWithValidationType>()
+				.AddMutationType(new TestMutationType(x => x.UseFluentValidation()))
+				.BuildRequestExecutorAsync();
+
+			withExplicitValidation = await new ServiceCollection()
+				.AddSingleton<IValidator<TestInput>, TestInputValidator>()
+				.AddGraphQL()
+				.AddFluentValidation()
+				.AddQueryType<TestQueryType>()
+				.AddMutationType(new TestMutationType(x =>
+					x.UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>())))
 				.BuildRequestExecutorAsync();
 
 			darkHillsValidation = await new ServiceCollection()
@@ -37,7 +50,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.UseFluentValidation()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType<TestMutationWithDarkHillsValidationType>()
+				.AddMutationType(new TestMutationType(_ =>
+				{
+				}))
 				.BuildRequestExecutorAsync();
 
 			fairyBreadValidation = await new ServiceCollection()
@@ -45,7 +60,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.AddFairyBread()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType<TestMutationWithFairyBreadValidationType>()
+				.AddMutationType(new TestMutationType(x => x.UseValidation()))
 				.BuildRequestExecutorAsync();
 		}
 
@@ -56,9 +71,27 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		}
 
 		[Benchmark]
+		public Task ManualValidation()
+		{
+			var validationContext = ValidationContext<TestInput>.CreateWithOptions(new TestInput(), _ =>
+			{
+			});
+
+			var validator = new TestInputValidator();
+
+			return validator.ValidateAsync(validationContext);
+		}
+
+		[Benchmark]
 		public Task RunWithValidation()
 		{
 			return withValidation.ExecuteAsync("mutation { test(input: { name: \"\" }) }");
+		}
+
+		[Benchmark]
+		public Task RunWithExplicitValidation()
+		{
+			return withExplicitValidation.ExecuteAsync("mutation { test(input: { name: \"\" }) }");
 		}
 
 		[Benchmark]
@@ -74,15 +107,33 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		}
 
 		[Benchmark]
-		public Task Validation()
+		public Task RunWithoutValidation_EmptyInputs()
 		{
-			var validationContext = ValidationContext<TestInput>.CreateWithOptions(new TestInput(), _ =>
-			{
-			});
+			return withoutValidation.ExecuteAsync("mutation { test() }");
+		}
 
-			var validator = new TestInputValidator();
+		[Benchmark]
+		public Task RunWithValidation_EmptyInputs()
+		{
+			return withValidation.ExecuteAsync("mutation { test() }");
+		}
 
-			return validator.ValidateAsync(validationContext);
+		[Benchmark]
+		public Task RunWithExplicitValidation_EmptyInputs()
+		{
+			return withExplicitValidation.ExecuteAsync("mutation { test() }");
+		}
+
+		[Benchmark]
+		public Task RunWithDarkHillsValidation_EmptyInputs()
+		{
+			return darkHillsValidation.ExecuteAsync("mutation { test() }");
+		}
+
+		[Benchmark]
+		public Task RunWithFairyBreadValidation_EmptyInputs()
+		{
+			return fairyBreadValidation.ExecuteAsync("mutation { test() }");
 		}
 	}
 }
