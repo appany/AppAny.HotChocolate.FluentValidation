@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Validators;
@@ -142,9 +141,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					fv.UseInputValidatorFactories(context => context.ServiceProvider
-						.GetServices<NotEmptyNameValidator>()
-						.Select(validator => validator.ToInputValidator()));
+					fv.UseInputValidatorFactories(context =>
+						ValidationDefaults.InputValidators.FromValidator(
+							context.MiddlewareContext.Services.GetRequiredService<NotEmptyNameValidator>()));
 				})))
 				.BuildRequestExecutorAsync();
 
@@ -427,10 +426,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation()
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.SkipValidation().UseInputValidatorFactories(_ => new[]
-					{
-						new NotEmptyNameValidator().ToInputValidator()
-					});
+					configurator.SkipValidation().UseInputValidatorFactories(_ =>
+						ValidationDefaults.InputValidators.FromValidator(new NotEmptyNameValidator()));
 				})))
 				.BuildRequestExecutorAsync();
 

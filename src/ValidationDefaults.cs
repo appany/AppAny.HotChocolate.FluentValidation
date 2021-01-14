@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using HotChocolate;
 using FluentValidation;
 using FluentValidation.Internal;
+using FluentValidation.Results;
 using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -107,6 +109,98 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
+		/// Default <see cref="InputValidator"/> implementations
+		/// </summary>
+		public static class InputValidators
+		{
+			public static InputValidator FromValidator(IValidator validator)
+			{
+				return async (argument, cancellationToken) =>
+				{
+					var validationContext = new ValidationContext<object>(argument);
+
+					return await validator.ValidateAsync(validationContext, cancellationToken);
+				};
+			}
+
+			public static InputValidator FromValidators(IEnumerable<IValidator> validators)
+			{
+				return async (argument, cancellationToken) =>
+				{
+					var validationContext = new ValidationContext<object>(argument);
+
+					ValidationResult? validationResult = null;
+
+					foreach (var validator in validators)
+					{
+						var validatorResult = await validator.ValidateAsync(validationContext, cancellationToken);
+
+						if (validationResult is null)
+						{
+							validationResult = validatorResult;
+						}
+						else
+						{
+							for (var i = 0; i < validatorResult.Errors.Count; i++)
+							{
+								validationResult.Errors.Add(validatorResult.Errors[i]);
+							}
+						}
+					}
+
+					return validationResult;
+				};
+			}
+
+			public static InputValidator FromValidatorWithStrategy<TInput>(
+				IValidator<TInput> validator,
+				Action<ValidationStrategy<TInput>> validationStrategy)
+			{
+				return async (argument, cancellationToken) =>
+				{
+					var validationContext = ValidationContext<TInput>.CreateWithOptions(
+						(TInput)argument,
+						validationStrategy);
+
+					return await validator.ValidateAsync(validationContext, cancellationToken);
+				};
+			}
+
+			public static InputValidator FromValidatorsWithStrategy<TInput>(
+				IEnumerable<IValidator<TInput>> validators,
+				Action<ValidationStrategy<TInput>> validationStrategy)
+			{
+				return async (argument, cancellationToken) =>
+				{
+					var validationContext = ValidationContext<TInput>.CreateWithOptions(
+						(TInput)argument,
+						validationStrategy);
+
+					ValidationResult? validationResult = null;
+
+					foreach (var validator in validators)
+					{
+						var validatorResult = await validator.ValidateAsync(validationContext, cancellationToken);
+
+						if (validationResult is null)
+						{
+							validationResult = validatorResult;
+						}
+						else
+						{
+							for (var i = 0; i < validatorResult.Errors.Count; i++)
+							{
+								validationResult.Errors.Add(validatorResult.Errors[i]);
+							}
+						}
+					}
+
+					return validationResult;
+				};
+			}
+		}
+
+		/// <summary>
 		/// Default <see cref="InputValidatorFactory"/> implementations
 		/// </summary>
 		public static class InputValidatorFactories
@@ -114,14 +208,12 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Resolves all <see cref="IValidator{T}"/> implementations
 			/// </summary>
-			public static IEnumerable<InputValidator> Default(InputValidatorFactoryContext inputValidatorFactoryContext)
+			public static InputValidator Default(InputValidatorFactoryContext inputValidatorFactoryContext)
 			{
 				var validatorType = inputValidatorFactoryContext.GetGenericValidatorType();
 
-				foreach (IValidator validator in inputValidatorFactoryContext.ServiceProvider.GetServices(validatorType))
-				{
-					yield return validator.ToInputValidator();
-				}
+				return InputValidators.FromValidators(
+					(IEnumerable<IValidator>)inputValidatorFactoryContext.MiddlewareContext.Services.GetServices(validatorType));
 			}
 		}
 

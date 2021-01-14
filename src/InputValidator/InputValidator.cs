@@ -8,5 +8,5 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// <summary>
 	/// Abstracts <see cref="IValidator"/> execution
 	/// </summary>
-	public delegate ValueTask<ValidationResult> InputValidator(object argument, CancellationToken cancellationToken);
+	public delegate ValueTask<ValidationResult?> InputValidator(object argument, CancellationToken cancellationToken);
 }

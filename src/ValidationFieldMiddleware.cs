@@ -16,7 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				if (inputFields is { Count: > 0 })
 				{
 					var options = middlewareContext.Schema
-						.Services!
+							.Services!
 						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
 
 					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
@@ -48,7 +48,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						var inputValidatorFactories = inputFieldOptions.InputValidatorFactories ?? options.InputValidatorFactories;
 
 						var inputValidatorFactoryContext = new InputValidatorFactoryContext(
-							middlewareContext.Services,
+							middlewareContext,
 							inputField.RuntimeType);
 
 						for (var inputValidatorFactoryIndex = 0;
@@ -57,38 +57,35 @@ namespace AppAny.HotChocolate.FluentValidation
 						{
 							var inputValidatorFactory = inputValidatorFactories[inputValidatorFactoryIndex];
 
-							var inputValidators = inputValidatorFactory.Invoke(inputValidatorFactoryContext);
+							var inputValidator = inputValidatorFactory.Invoke(inputValidatorFactoryContext);
 
-							foreach (var inputValidator in inputValidators)
+							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
+
+							if (validationResult?.IsValid is not false)
 							{
-								var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
+								continue;
+							}
 
-								if (validationResult.IsValid)
+							for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
+							{
+								var validationFailure = validationResult.Errors[errorIndex];
+
+								var errorBuilder = ErrorBuilder.New();
+
+								var errorMappingContext = new ErrorMappingContext(
+									middlewareContext,
+									inputField,
+									validationResult,
+									validationFailure);
+
+								for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
 								{
-									continue;
+									var errorMapper = errorMappers[errorMapperIndex];
+
+									errorMapper.Invoke(errorBuilder, errorMappingContext);
 								}
 
-								for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
-								{
-									var validationFailure = validationResult.Errors[errorIndex];
-
-									var errorBuilder = ErrorBuilder.New();
-
-									var errorMappingContext = new ErrorMappingContext(
-										middlewareContext,
-										inputField,
-										validationResult,
-										validationFailure);
-
-									for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
-									{
-										var errorMapper = errorMappers[errorMapperIndex];
-
-										errorMapper.Invoke(errorBuilder, errorMappingContext);
-									}
-
-									middlewareContext.ReportError(errorBuilder.Build());
-								}
+								middlewareContext.ReportError(errorBuilder.Build());
 							}
 						}
 					}
