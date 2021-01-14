@@ -142,9 +142,9 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 						else
 						{
-							for (var i = 0; i < validatorResult.Errors.Count; i++)
+							for (var index = 0; index < validatorResult.Errors.Count; index++)
 							{
-								validationResult.Errors.Add(validatorResult.Errors[i]);
+								validationResult.Errors.Add(validatorResult.Errors[index]);
 							}
 						}
 					}
@@ -189,9 +189,9 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 						else
 						{
-							for (var i = 0; i < validatorResult.Errors.Count; i++)
+							for (var index = 0; index < validatorResult.Errors.Count; index++)
 							{
-								validationResult.Errors.Add(validatorResult.Errors[i]);
+								validationResult.Errors.Add(validatorResult.Errors[index]);
 							}
 						}
 					}
