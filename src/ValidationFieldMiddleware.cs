@@ -1,4 +1,5 @@
-﻿using HotChocolate;
+﻿using System.Linq;
+using HotChocolate;
 using HotChocolate.Resolvers;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,14 +12,16 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			return async middlewareContext =>
 			{
-				var inputFields = middlewareContext.Field.Arguments;
-				var selectionArguments = middlewareContext.Selection.SyntaxNode.Arguments;
+				var passedArguments = middlewareContext.Selection.SyntaxNode.Arguments;
 
-				if (inputFields is { Count: > 0 } && selectionArguments is { Count: > 0 })
+				if (passedArguments is { Count: > 0 })
 				{
-					var options = middlewareContext.Schema.Services!
-						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
+					var inputFields = middlewareContext.Field.Arguments;
 
+					var options = middlewareContext.Schema.Services!
+						.GetRequiredService<IOptions<InputValidationOptions>>().Value;
+
+					// TODO: Validate only passed arguments
 					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
 					{
 						var inputField = inputFields[inputFieldIndex];
