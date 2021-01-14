@@ -4,7 +4,7 @@ using FluentValidation.Results;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public readonly struct ErrorMappingContext
+	public readonly ref struct ErrorMappingContext
 	{
 		public ErrorMappingContext(
 			IMiddlewareContext middlewareContext,

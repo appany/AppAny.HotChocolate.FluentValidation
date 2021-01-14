@@ -47,17 +47,15 @@ namespace AppAny.HotChocolate.FluentValidation
 						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
 						var inputValidatorFactories = inputFieldOptions.InputValidatorFactories ?? options.InputValidatorFactories;
 
-						var inputValidatorFactoryContext = new InputValidatorFactoryContext(
-							middlewareContext,
-							inputField.RuntimeType);
-
 						for (var inputValidatorFactoryIndex = 0;
 							inputValidatorFactoryIndex < inputValidatorFactories.Count;
 							inputValidatorFactoryIndex++)
 						{
 							var inputValidatorFactory = inputValidatorFactories[inputValidatorFactoryIndex];
 
-							var inputValidator = inputValidatorFactory.Invoke(inputValidatorFactoryContext);
+							var inputValidator = inputValidatorFactory.Invoke(new InputValidatorFactoryContext(
+								middlewareContext,
+								inputField.RuntimeType));
 
 							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
 
@@ -72,17 +70,15 @@ namespace AppAny.HotChocolate.FluentValidation
 
 								var errorBuilder = ErrorBuilder.New();
 
-								var errorMappingContext = new ErrorMappingContext(
-									middlewareContext,
-									inputField,
-									validationResult,
-									validationFailure);
-
 								for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
 								{
 									var errorMapper = errorMappers[errorMapperIndex];
 
-									errorMapper.Invoke(errorBuilder, errorMappingContext);
+									errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
+										middlewareContext,
+										inputField,
+										validationResult,
+										validationFailure));
 								}
 
 								middlewareContext.ReportError(errorBuilder.Build());

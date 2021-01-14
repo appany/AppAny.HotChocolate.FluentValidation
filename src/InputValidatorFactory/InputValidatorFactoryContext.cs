@@ -3,7 +3,7 @@ using HotChocolate.Resolvers;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public readonly struct InputValidatorFactoryContext
+	public readonly ref struct InputValidatorFactoryContext
 	{
 		public InputValidatorFactoryContext(IMiddlewareContext middlewareContext, Type inputFieldType)
 		{
