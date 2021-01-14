@@ -12,8 +12,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			return async middlewareContext =>
 			{
 				var inputFields = middlewareContext.Field.Arguments;
+				var selectionArguments = middlewareContext.Selection.SyntaxNode.Arguments;
 
-				if (inputFields is { Count: > 0 })
+				if (inputFields is { Count: > 0 } && selectionArguments is { Count: > 0 })
 				{
 					var options = middlewareContext.Schema.Services!
 						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
