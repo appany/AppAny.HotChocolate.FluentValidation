@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using HotChocolate;
 using FluentValidation;
 using FluentValidation.Internal;
@@ -51,18 +52,18 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// Default <see cref="SkipValidation"/> implementation. Never skips validation
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static bool Default(SkipValidationContext skipValidationContext)
+			public static ValueTask<bool> Default(SkipValidationContext skipValidationContext)
 			{
-				return false;
+				return new(false);
 			}
 
 			/// <summary>
 			/// Always skip <see cref="SkipValidation"/> implementation
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static bool Skip(SkipValidationContext skipValidationContext)
+			public static ValueTask<bool> Skip(SkipValidationContext skipValidationContext)
 			{
-				return true;
+				return new(true);
 			}
 		}
 

@@ -67,7 +67,7 @@ public class UserValidator : AbstractValidator<User>
 
 But how can you do that with DI? Which `IValidator<string>` should you resolve? There are some solutions (separate user validators, factories, manual DI, etc.), but this library supports multiple root validators and automatically calls them sequentially, converting failures to useful GraphQL errors
 
-To use this feature just call multiple `UseValidator` with multiple **User** validators
+To use this feature just call multiple `UseValidator`/`UseValidators` with multiple **User** validators
 
 ```cs
 public class DefaultAddressUserValidator : AbstractValidator<User>

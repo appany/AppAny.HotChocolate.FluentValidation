@@ -32,7 +32,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 						var skipValidation = inputFieldOptions.SkipValidation ?? options.SkipValidation;
 
-						if (skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)))
+						if (await skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)))
 						{
 							continue;
 						}
