@@ -4,6 +4,10 @@
 
 Input field `HotChocolate` + `FluentValidation` integration
 
+## Disclaimer
+
+This library is a rework of internal package inside @appany
+
 ## Usage
 
 ```cs
