@@ -156,7 +156,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		}
 
 		[Benchmark]
-		public Task RunWithDarkHillsValidation_NullInputs()
+		public Task RunWithFluentChocoValidation_NullInputs()
 		{
 			return fluentChocoValidation.ExecuteAsync("mutation { test(input: null) }");
 		}
