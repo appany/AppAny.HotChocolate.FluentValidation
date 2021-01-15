@@ -7,6 +7,7 @@ using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Results;
 using HotChocolate.Resolvers;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -114,6 +115,9 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// </summary>
 		public static class InputValidators
 		{
+			/// <summary>
+			/// Creates <see cref="InputValidator"/> from single <see cref="IValidator"/>
+			/// </summary>
 			public static InputValidator FromValidator(IValidator validator)
 			{
 				return async (argument, cancellationToken) =>
@@ -124,6 +128,9 @@ namespace AppAny.HotChocolate.FluentValidation
 				};
 			}
 
+			/// <summary>
+			/// Creates <see cref="InputValidator"/> from multiple <see cref="IValidator"/>
+			/// </summary>
 			public static InputValidator FromValidators(IEnumerable<IValidator> validators)
 			{
 				return async (argument, cancellationToken) =>
@@ -153,6 +160,9 @@ namespace AppAny.HotChocolate.FluentValidation
 				};
 			}
 
+			/// <summary>
+			/// Creates <see cref="InputValidator"/> from single <see cref="IValidator{TInput}"/> with <see cref="ValidationStrategy{TInput}"/>
+			/// </summary>
 			public static InputValidator FromValidatorWithStrategy<TInput>(
 				IValidator<TInput> validator,
 				Action<ValidationStrategy<TInput>> validationStrategy)
@@ -167,6 +177,9 @@ namespace AppAny.HotChocolate.FluentValidation
 				};
 			}
 
+			/// <summary>
+			/// Creates <see cref="InputValidator"/> from multiple <see cref="IValidator{TInput}"/> with <see cref="ValidationStrategy{TInput}"/>
+			/// </summary>
 			public static InputValidator FromValidatorsWithStrategy<TInput>(
 				IEnumerable<IValidator<TInput>> validators,
 				Action<ValidationStrategy<TInput>> validationStrategy)
@@ -207,7 +220,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static class InputValidatorFactories
 		{
 			/// <summary>
-			/// Resolves all <see cref="IValidator{T}"/> implementations
+			/// Resolves all <see cref="IValidator{T}"/> implementations from <see cref="IHasRuntimeType.RuntimeType"/>
 			/// </summary>
 			public static InputValidator Default(InputValidatorFactoryContext inputValidatorFactoryContext)
 			{

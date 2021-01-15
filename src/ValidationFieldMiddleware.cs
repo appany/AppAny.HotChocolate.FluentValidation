@@ -57,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 							var inputValidator = inputValidatorFactory.Invoke(new InputValidatorFactoryContext(
 								middlewareContext,
-								inputField.RuntimeType));
+								inputField));
 
 							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
 

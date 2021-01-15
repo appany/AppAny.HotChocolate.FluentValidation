@@ -17,7 +17,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
 					.UseInputValidatorFactories(context =>
 					{
-						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
+						Assert.Equal(typeof(TestPersonInput), context.InputField.RuntimeType);
 
 						return ValidationDefaults.InputValidatorFactories.Default(context);
 					}))
@@ -53,7 +53,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				{
 					configurator.UseInputValidatorFactories(context =>
 					{
-						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
+						Assert.Equal(typeof(TestPersonInput), context.InputField.RuntimeType);
 
 						return ValidationDefaults.InputValidatorFactories.Default(context);
 					});

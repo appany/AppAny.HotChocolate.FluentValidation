@@ -11,7 +11,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static Type GetGenericValidatorType(this InputValidatorFactoryContext inputValidatorFactoryContext)
 		{
 			return inputFieldTypeToValidatorType.GetOrAdd(
-				inputValidatorFactoryContext.InputFieldType,
+				inputValidatorFactoryContext.InputField.RuntimeType,
 				inputFieldType => typeof(IValidator<>).MakeGenericType(inputFieldType));
 		}
 	}

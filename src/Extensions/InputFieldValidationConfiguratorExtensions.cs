@@ -23,7 +23,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorFactory"/>.
-		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
+		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
 		public static InputFieldValidationConfigurator UseValidators<TValidator>(
 			this InputFieldValidationConfigurator configurator)
@@ -73,7 +73,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorFactory"/>.
-		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
+		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
 		public static InputFieldValidationConfigurator UseValidators<TInput, TValidator>(
 			this InputFieldValidationConfigurator configurator)
@@ -98,7 +98,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorFactory"/>.
-		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
+		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
 		/// </summary>
 		public static InputFieldValidationConfigurator UseValidators<TInput, TValidator>(
 			this InputFieldValidationConfigurator configurator,
