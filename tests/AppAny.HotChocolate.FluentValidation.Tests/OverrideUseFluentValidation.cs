@@ -16,8 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default);
@@ -48,8 +47,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default, ValidationDefaults.ErrorMappers.Details);
@@ -105,8 +103,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseValidator<NotEmptyNameValidator>();
@@ -132,16 +129,15 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidatorFactory()
+		public async Task Should_UseCustomValidatorProvider()
 		{
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					fv.UseInputValidatorFactories(context =>
+					fv.UseInputValidatorProviders(context =>
 						ValidationDefaults.InputValidators.FromValidator(
 							context.MiddlewareContext.Services.GetRequiredService<NotEmptyNameValidator>()));
 				})))
@@ -172,8 +168,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTransient<NotEmptyAddressValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseValidator<NotEmptyNameValidator>()
@@ -220,8 +215,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTransient<NotEmptyAddressValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseValidator<TestPersonInput, NotEmptyNameValidator>()
@@ -268,14 +262,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTransient<NotEmptyAddressValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseValidator<NotEmptyNameValidator>()
 						.UseValidator<TestPersonInput, NotEmptyAddressValidator>(strategy =>
 							// Validates address, but includes only name
-							strategy.IncludeProperties(x => x.Name));
+							strategy.IncludeProperties(input => input.Name));
 				})))
 				.BuildRequestExecutorAsync();
 
@@ -353,8 +346,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<DoubleNotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
 					fv.UseValidator<DoubleNotEmptyNameValidator>();
@@ -418,7 +410,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidatorFactory()
+		public async Task Should_Execute_SkipValidation_WithCustomValidatorProvider()
 		{
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
@@ -426,7 +418,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation()
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.SkipValidation().UseInputValidatorFactories(_ =>
+					configurator.SkipValidation().UseInputValidatorProviders(_ =>
 						ValidationDefaults.InputValidators.FromValidator(new NotEmptyNameValidator()));
 				})))
 				.BuildRequestExecutorAsync();

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class InputValidatorFactoryContextProperties
+	public class InputValidatorProviderContextProperties
 	{
 		[Fact]
 		public async Task Should_Pass_Values_AddFluentValidation()
@@ -14,13 +14,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
-					.UseInputValidatorFactories(context =>
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
+					.UseInputValidatorProviders(context =>
 					{
-						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
+						Assert.Equal(typeof(TestPersonInput), context.InputField.RuntimeType);
 
-						return ValidationDefaults.InputValidatorFactories.Default(context);
+						return ValidationDefaults.InputValidatorProviders.Default(context);
 					}))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
@@ -49,15 +48,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.UseInputValidatorFactories(context =>
+					configurator.UseInputValidatorProviders(context =>
 					{
-						Assert.Equal(typeof(TestPersonInput), context.InputFieldType);
+						Assert.Equal(typeof(TestPersonInput), context.InputField.RuntimeType);
 
-						return ValidationDefaults.InputValidatorFactories.Default(context);
+						return ValidationDefaults.InputValidatorProviders.Default(context);
 					});
 				})))
 				.BuildRequestExecutorAsync();

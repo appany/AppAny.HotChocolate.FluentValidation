@@ -86,7 +86,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					arg.UseFluentValidation(opt =>
 						opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>(strategy =>
 						{
-							strategy.IncludeProperties(x => x.Name, x => x.Address);
+							strategy.IncludeProperties(input => input.Name, input => input.Address);
 						}))))
 				.BuildRequestExecutorAsync();
 
@@ -112,7 +112,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					arg.UseFluentValidation(opt =>
 						opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>(strategy =>
 						{
-							strategy.IncludeProperties(x => x.Name);
+							strategy.IncludeProperties(input => input.Name);
 						}))))
 				.BuildRequestExecutorAsync();
 

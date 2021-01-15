@@ -7,7 +7,7 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// </summary>
 	public interface InputFieldValidationConfigurator
 		: CanSkipValidation<InputFieldValidationConfigurator>,
-			CanUseInputValidatorFactories<InputFieldValidationConfigurator>,
+			CanUseInputValidatorProviders<InputFieldValidationConfigurator>,
 			CanUseErrorMappers<InputFieldValidationConfigurator>
 	{
 	}
@@ -28,17 +28,17 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public InputFieldValidationConfigurator UseInputValidatorFactories(params InputValidatorFactory[] inputValidatorFactories)
+		public InputFieldValidationConfigurator UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
 		{
-			if (options.InputValidatorFactories is null)
+			if (options.InputValidatorProviders is null)
 			{
-				options.InputValidatorFactories = inputValidatorFactories.ToList();
+				options.InputValidatorProviders = inputValidatorProviders.ToList();
 			}
 			else
 			{
-				foreach (var validatorFactory in inputValidatorFactories)
+				foreach (var inputValidatorProvider in inputValidatorProviders)
 				{
-					options.InputValidatorFactories.Add(validatorFactory);
+					options.InputValidatorProviders.Add(inputValidatorProvider);
 				}
 			}
 

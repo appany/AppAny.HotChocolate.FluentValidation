@@ -11,16 +11,19 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			return async middlewareContext =>
 			{
-				var inputFields = middlewareContext.Field.Arguments;
+				var passedArguments = middlewareContext.Selection.SyntaxNode.Arguments;
 
-				if (inputFields is { Count: > 0 })
+				if (passedArguments is { Count: > 0 })
 				{
-					var options = middlewareContext.Schema.Services!
-						.GetRequiredService<IOptionsSnapshot<InputValidationOptions>>().Value;
+					var inputFields = middlewareContext.Field.Arguments;
 
-					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
+					var options = middlewareContext.Schema.Services!
+						.GetRequiredService<IOptions<InputValidationOptions>>().Value;
+
+					// TODO: Validate only passed arguments
+					for (var fieldIndex = 0; fieldIndex < inputFields.Count; fieldIndex++)
 					{
-						var inputField = inputFields[inputFieldIndex];
+						var inputField = inputFields[fieldIndex];
 
 						var inputFieldOptions = inputField.ContextData.TryGetInputFieldOptions();
 
@@ -44,17 +47,15 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 
 						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
-						var inputValidatorFactories = inputFieldOptions.InputValidatorFactories ?? options.InputValidatorFactories;
+						var inputValidatorProviders = inputFieldOptions.InputValidatorProviders ?? options.InputValidatorProviders;
 
-						for (var inputValidatorFactoryIndex = 0;
-							inputValidatorFactoryIndex < inputValidatorFactories.Count;
-							inputValidatorFactoryIndex++)
+						for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
 						{
-							var inputValidatorFactory = inputValidatorFactories[inputValidatorFactoryIndex];
+							var inputValidatorProvider = inputValidatorProviders[providerIndex];
 
-							var inputValidator = inputValidatorFactory.Invoke(new InputValidatorFactoryContext(
+							var inputValidator = inputValidatorProvider.Invoke(new InputValidatorProviderContext(
 								middlewareContext,
-								inputField.RuntimeType));
+								inputField));
 
 							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
 

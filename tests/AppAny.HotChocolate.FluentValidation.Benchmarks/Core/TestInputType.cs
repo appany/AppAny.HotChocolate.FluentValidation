@@ -6,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 	{
 		protected override void Configure(IInputObjectTypeDescriptor<TestInput> descriptor)
 		{
-			descriptor.Field(x => x.Name);
+			descriptor.Field(field => field.Name);
 		}
 	}
 }

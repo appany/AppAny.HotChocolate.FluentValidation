@@ -6,8 +6,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	{
 		protected override void Configure(IInputObjectTypeDescriptor<TestPersonInput> descriptor)
 		{
-			descriptor.Field(x => x.Name);
-			descriptor.Field(x => x.Address);
+			descriptor.Field(field => field.Name);
+			descriptor.Field(field => field.Address);
 		}
 	}
 }

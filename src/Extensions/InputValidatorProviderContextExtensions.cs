@@ -4,14 +4,14 @@ using FluentValidation;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal static class InputValidatorFactoryContextExtensions
+	internal static class InputValidatorProviderContextExtensions
 	{
 		private static readonly ConcurrentDictionary<Type, Type> inputFieldTypeToValidatorType = new();
 
-		public static Type GetGenericValidatorType(this InputValidatorFactoryContext inputValidatorFactoryContext)
+		public static Type GetGenericValidatorType(this InputValidatorProviderContext inputValidatorProviderContext)
 		{
 			return inputFieldTypeToValidatorType.GetOrAdd(
-				inputValidatorFactoryContext.InputFieldType,
+				inputValidatorProviderContext.InputField.RuntimeType,
 				inputFieldType => typeof(IValidator<>).MakeGenericType(inputFieldType));
 		}
 	}

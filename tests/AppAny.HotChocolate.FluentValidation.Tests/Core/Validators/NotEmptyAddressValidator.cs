@@ -8,7 +8,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 		public NotEmptyAddressValidator()
 		{
-			RuleFor(x => x.Address)
+			RuleFor(input => input.Address)
 				.NotEmpty()
 				.WithMessage(Message);
 		}

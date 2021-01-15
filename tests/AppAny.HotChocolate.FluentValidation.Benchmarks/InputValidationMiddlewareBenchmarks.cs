@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using FairyBread;
+using FluentChoco;
 using FluentValidation;
 using HotChocolate.Execution;
-using HotChocolate.FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation.Benchmarks
@@ -14,7 +14,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		private IRequestExecutor withoutValidation = null!;
 		private IRequestExecutor withValidation = null!;
 		private IRequestExecutor withExplicitValidation = null!;
-		private IRequestExecutor darkHillsValidation = null!;
+		private IRequestExecutor fluentChocoValidation = null!;
 		private IRequestExecutor fairyBreadValidation = null!;
 
 		[GlobalSetup]
@@ -33,7 +33,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.AddFluentValidation()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType(new TestMutationType(x => x.UseFluentValidation()))
+				.AddMutationType(new TestMutationType(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
 			withExplicitValidation = await new ServiceCollection()
@@ -41,11 +41,11 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.AddFluentValidation()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType(new TestMutationType(x =>
-					x.UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>())))
+				.AddMutationType(new TestMutationType(arg =>
+					arg.UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>())))
 				.BuildRequestExecutorAsync();
 
-			darkHillsValidation = await new ServiceCollection()
+			fluentChocoValidation = await new ServiceCollection()
 				.AddSingleton<IValidator<TestInput>, TestInputValidator>()
 				.AddGraphQL()
 				.UseFluentValidation()
@@ -58,9 +58,10 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			fairyBreadValidation = await new ServiceCollection()
 				.AddSingleton<IValidator<TestInput>, TestInputValidator>()
 				.AddGraphQL()
-				.AddFairyBread()
+				.AddFairyBread(opt => opt.AssembliesToScanForValidators = new []{ typeof(Program).Assembly })
+				.AddErrorFilter<ValidationErrorFilter>()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType(new TestMutationType(x => x.UseValidation()))
+				.AddMutationType(new TestMutationType(arg => arg.UseValidation()))
 				.BuildRequestExecutorAsync();
 		}
 
@@ -95,9 +96,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		}
 
 		[Benchmark]
-		public Task RunWithDarkHillsValidation()
+		public Task RunWithFluentChocoValidation()
 		{
-			return darkHillsValidation.ExecuteAsync("mutation { test(input: { name: \"\" }) }");
+			return fluentChocoValidation.ExecuteAsync("mutation { test(input: { name: \"\" }) }");
 		}
 
 		[Benchmark]
@@ -125,15 +126,45 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		}
 
 		[Benchmark]
-		public Task RunWithDarkHillsValidation_EmptyInputs()
+		public Task RunWithFluentChocoValidation_EmptyInputs()
 		{
-			return darkHillsValidation.ExecuteAsync("mutation { test() }");
+			return fluentChocoValidation.ExecuteAsync("mutation { test() }");
 		}
 
 		[Benchmark]
 		public Task RunWithFairyBreadValidation_EmptyInputs()
 		{
 			return fairyBreadValidation.ExecuteAsync("mutation { test() }");
+		}
+
+		[Benchmark]
+		public Task RunWithoutValidation_NullInputs()
+		{
+			return withoutValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithValidation_NullInputs()
+		{
+			return withValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithExplicitValidation_NullInputs()
+		{
+			return withExplicitValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithFluentChocoValidation_NullInputs()
+		{
+			return fluentChocoValidation.ExecuteAsync("mutation { test(input: null) }");
+		}
+
+		[Benchmark]
+		public Task RunWithFairyBreadValidation_NullInputs()
+		{
+			return fairyBreadValidation.ExecuteAsync("mutation { test(input: null) }");
 		}
 	}
 }
