@@ -62,7 +62,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(options => options.SkipValidation())
+				.AddFluentValidation(opt => opt.SkipValidation())
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
@@ -104,7 +104,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(options => options.SkipValidation(ValidationDefaults.SkipValidation.Default))
+				.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(options =>
 				{
 					options.SkipValidation(ValidationDefaults.SkipValidation.Skip);
@@ -128,7 +128,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(options => options.SkipValidation().UseDefaultErrorMapper())
+				.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(options =>
 				{
 					options.SkipValidation(ValidationDefaults.SkipValidation.Default);

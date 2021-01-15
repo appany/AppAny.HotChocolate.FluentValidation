@@ -15,7 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
 			descriptor.Field("test")
-				.Argument("input", argument => configure.Invoke(argument.Type<TestInputType>()))
+				.Argument("input", arg => configure.Invoke(arg.Type<TestInputType>()))
 				.Resolve("test");
 		}
 	}

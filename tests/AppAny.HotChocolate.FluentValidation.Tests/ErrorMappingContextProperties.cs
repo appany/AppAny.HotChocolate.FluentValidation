@@ -14,8 +14,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(
+				.AddFluentValidation(opt =>
+					opt.UseErrorMappers(
 						ValidationDefaults.ErrorMappers.Default,
 						(_, context) =>
 						{

@@ -6,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 	{
 		public TestInputValidator()
 		{
-			RuleFor(x => x.Name)
+			RuleFor(input => input.Name)
 				.NotEmpty()
 				.WithMessage("Name is empty");
 		}

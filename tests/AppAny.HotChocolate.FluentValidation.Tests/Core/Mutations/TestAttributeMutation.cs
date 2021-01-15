@@ -6,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Field<TestAttributeMutation>(x => x.Test(default!)).Type<StringType>();
+			descriptor.Field<TestAttributeMutation>(field => field.Test(default!)).Type<StringType>();
 		}
 
 		public string Test([UseFluentValidation] TestPersonInput input) => "test";

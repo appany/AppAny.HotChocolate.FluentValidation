@@ -9,11 +9,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 		public DoubleNotEmptyNameValidator()
 		{
-			RuleFor(x => x.Name)
+			RuleFor(input => input.Name)
 				.NotEmpty()
 				.WithMessage(Message1);
 
-			RuleFor(x => x.Name)
+			RuleFor(input => input.Name)
 				.NotEmpty()
 				.WithMessage(Message2);
 		}

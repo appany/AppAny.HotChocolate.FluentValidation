@@ -14,8 +14,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(
+				.AddFluentValidation(opt =>
+					opt.UseErrorMappers(
 						ValidationDefaults.ErrorMappers.Default,
 						(builder, _) => builder.SetExtension("test", "test")))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
@@ -50,7 +50,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
+				.AddFluentValidation(opt => opt
 					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(
 					configurator =>

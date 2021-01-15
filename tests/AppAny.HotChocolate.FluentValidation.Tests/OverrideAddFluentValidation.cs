@@ -15,8 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
@@ -44,8 +43,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
 					configurator.UseValidator<NotEmptyNameValidator>();
@@ -76,8 +74,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator
-					.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
+				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
 					configurator.UseValidator<NotEmptyNameValidator>();
@@ -99,7 +96,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await new ServiceCollection()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator.UseInputValidatorFactories(_ => default!))
+				.AddFluentValidation(opt => opt.UseInputValidatorFactories(_ => default!))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
@@ -118,7 +115,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await new ServiceCollection()
 				.AddTestGraphQL()
-				.AddFluentValidation(configurator => configurator.UseInputValidatorFactories(_ =>
+				.AddFluentValidation(opt => opt.UseInputValidatorFactories(_ =>
 					ValidationDefaults.InputValidators.FromValidators(Array.Empty<IValidator>())))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();

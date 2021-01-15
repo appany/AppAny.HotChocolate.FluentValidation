@@ -33,7 +33,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.AddFluentValidation()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType(new TestMutationType(x => x.UseFluentValidation()))
+				.AddMutationType(new TestMutationType(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 
 			withExplicitValidation = await new ServiceCollection()
@@ -41,8 +41,8 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				.AddGraphQL()
 				.AddFluentValidation()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType(new TestMutationType(x =>
-					x.UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>())))
+				.AddMutationType(new TestMutationType(arg =>
+					arg.UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>())))
 				.BuildRequestExecutorAsync();
 
 			darkHillsValidation = await new ServiceCollection()
@@ -58,10 +58,10 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			fairyBreadValidation = await new ServiceCollection()
 				.AddSingleton<IValidator<TestInput>, TestInputValidator>()
 				.AddGraphQL()
-				.AddFairyBread(options => options.AssembliesToScanForValidators = new []{ typeof(Program).Assembly })
+				.AddFairyBread(opt => opt.AssembliesToScanForValidators = new []{ typeof(Program).Assembly })
 				.AddErrorFilter<ValidationErrorFilter>()
 				.AddQueryType<TestQueryType>()
-				.AddMutationType(new TestMutationType(x => x.UseValidation()))
+				.AddMutationType(new TestMutationType(arg => arg.UseValidation()))
 				.BuildRequestExecutorAsync();
 		}
 

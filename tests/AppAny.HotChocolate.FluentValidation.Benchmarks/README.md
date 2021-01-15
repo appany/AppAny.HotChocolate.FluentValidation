@@ -1,5 +1,12 @@
 # Benchmarks
 
+Feel free to optimize or add more benchmark test suites
+
+**External libraries used:**
+
+- [FairyBread (3.0.0)](https://github.com/benmccallum/fairybread)
+- [DarkHills.HotChocolate.FluentValidation (1.1.0)](https://github.com/DarkHills/HotChocolate.FluentValidation)
+
 ```ini
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19041.746 (2004/?/20H1)
 Intel Core i7-9700K CPU 3.60GHz (Coffee Lake), 1 CPU, 8 logical and 8 physical cores
