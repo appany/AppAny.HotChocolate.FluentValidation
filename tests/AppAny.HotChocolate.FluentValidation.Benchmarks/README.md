@@ -4,8 +4,8 @@ Feel free to optimize or add more benchmark test suites
 
 **External libraries used:**
 
-- [FairyBread (3.0.0)](https://github.com/benmccallum/fairybread)
-- [DarkHills.HotChocolate.FluentValidation (1.1.0)](https://github.com/DarkHills/HotChocolate.FluentValidation)
+- [![Nuget](https://img.shields.io/nuget/v/FairyBread.svg)](https://www.nuget.org/packages/FairyBread) [FairyBread (3.0.0)](https://github.com/benmccallum/fairybread)
+- [![Nuget](https://img.shields.io/nuget/v/DarkHills.HotChocolate.FluentValidation.svg)](https://www.nuget.org/packages/DarkHills.HotChocolate.FluentValidation) [DarkHills.HotChocolate.FluentValidation (1.1.0)](https://github.com/DarkHills/HotChocolate.FluentValidation)
 
 ``` ini
 BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19041.746 (2004/?/20H1)
