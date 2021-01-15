@@ -21,9 +21,9 @@ namespace AppAny.HotChocolate.FluentValidation
 						.GetRequiredService<IOptions<InputValidationOptions>>().Value;
 
 					// TODO: Validate only passed arguments
-					for (var inputFieldIndex = 0; inputFieldIndex < inputFields.Count; inputFieldIndex++)
+					for (var fieldIndex = 0; fieldIndex < inputFields.Count; fieldIndex++)
 					{
-						var inputField = inputFields[inputFieldIndex];
+						var inputField = inputFields[fieldIndex];
 
 						var inputFieldOptions = inputField.ContextData.TryGetInputFieldOptions();
 
@@ -49,11 +49,9 @@ namespace AppAny.HotChocolate.FluentValidation
 						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
 						var inputValidatorProviders = inputFieldOptions.InputValidatorProviders ?? options.InputValidatorProviders;
 
-						for (var inputValidatorProviderIndex = 0;
-							inputValidatorProviderIndex < inputValidatorProviders.Count;
-							inputValidatorProviderIndex++)
+						for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
 						{
-							var inputValidatorProvider = inputValidatorProviders[inputValidatorProviderIndex];
+							var inputValidatorProvider = inputValidatorProviders[providerIndex];
 
 							var inputValidator = inputValidatorProvider.Invoke(new InputValidatorProviderContext(
 								middlewareContext,
