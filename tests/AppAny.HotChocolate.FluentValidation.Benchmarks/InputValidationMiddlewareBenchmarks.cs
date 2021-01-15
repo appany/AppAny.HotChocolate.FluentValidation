@@ -58,7 +58,8 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			fairyBreadValidation = await new ServiceCollection()
 				.AddSingleton<IValidator<TestInput>, TestInputValidator>()
 				.AddGraphQL()
-				.AddFairyBread()
+				.AddFairyBread(options => options.AssembliesToScanForValidators = new []{ typeof(Program).Assembly })
+				.AddErrorFilter<ValidationErrorFilter>()
 				.AddQueryType<TestQueryType>()
 				.AddMutationType(new TestMutationType(x => x.UseValidation()))
 				.BuildRequestExecutorAsync();
