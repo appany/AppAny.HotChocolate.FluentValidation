@@ -8,17 +8,21 @@ By default this library using `ValidationDefaults.ErrorMappers.Default`
 
 To see error mapper examples [click here](examples/error-mappers.md)
 
-## InputValidatorFactory
+## InputValidatorProvider
 
-By default this library using `ValidationDefaults.InputValidatorFactories.Default`
+By default this library using `ValidationDefaults.InputValidatorProviders.Default`
 
-It resolves all `IValidator<TInput>` for passed `TInput`
+It resolves `InputValidator` for passed `InputValidatorProviderContext`
+
+To see input validator provider examples [click here](examples/input-validator-providers.md)
 
 ## ValidationStrategy configuration
 
 By default this library using `ValidationDefaults.ValidationStrategies.Default`
 
 It is doing nothing with validation rules
+
+To see validation strategy examples [click here](examples/validation-strategies.md)
 
 ## SkipValidation
 

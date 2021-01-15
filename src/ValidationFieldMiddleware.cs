@@ -47,15 +47,15 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 
 						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
-						var inputValidatorFactories = inputFieldOptions.InputValidatorFactories ?? options.InputValidatorFactories;
+						var inputValidatorProviders = inputFieldOptions.InputValidatorProviders ?? options.InputValidatorProviders;
 
-						for (var inputValidatorFactoryIndex = 0;
-							inputValidatorFactoryIndex < inputValidatorFactories.Count;
-							inputValidatorFactoryIndex++)
+						for (var inputValidatorProviderIndex = 0;
+							inputValidatorProviderIndex < inputValidatorProviders.Count;
+							inputValidatorProviderIndex++)
 						{
-							var inputValidatorFactory = inputValidatorFactories[inputValidatorFactoryIndex];
+							var inputValidatorProvider = inputValidatorProviders[inputValidatorProviderIndex];
 
-							var inputValidator = inputValidatorFactory.Invoke(new InputValidatorFactoryContext(
+							var inputValidator = inputValidatorProvider.Invoke(new InputValidatorProviderContext(
 								middlewareContext,
 								inputField));
 

@@ -129,7 +129,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidatorFactory()
+		public async Task Should_UseCustomValidatorProvider()
 		{
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
@@ -137,7 +137,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 				{
-					fv.UseInputValidatorFactories(context =>
+					fv.UseInputValidatorProviders(context =>
 						ValidationDefaults.InputValidators.FromValidator(
 							context.MiddlewareContext.Services.GetRequiredService<NotEmptyNameValidator>()));
 				})))
@@ -410,7 +410,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidatorFactory()
+		public async Task Should_Execute_SkipValidation_WithCustomValidatorProvider()
 		{
 			var executor = await new ServiceCollection()
 				.AddTransient<NotEmptyNameValidator>()
@@ -418,7 +418,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation()
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.SkipValidation().UseInputValidatorFactories(_ =>
+					configurator.SkipValidation().UseInputValidatorProviders(_ =>
 						ValidationDefaults.InputValidators.FromValidator(new NotEmptyNameValidator()));
 				})))
 				.BuildRequestExecutorAsync();

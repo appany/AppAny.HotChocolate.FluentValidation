@@ -215,19 +215,19 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
-		/// Default <see cref="InputValidatorFactory"/> implementations
+		/// Default <see cref="InputValidatorProvider"/> implementations
 		/// </summary>
-		public static class InputValidatorFactories
+		public static class InputValidatorProviders
 		{
 			/// <summary>
 			/// Resolves all <see cref="IValidator{T}"/> implementations from <see cref="IHasRuntimeType.RuntimeType"/>
 			/// </summary>
-			public static InputValidator Default(InputValidatorFactoryContext inputValidatorFactoryContext)
+			public static InputValidator Default(InputValidatorProviderContext inputValidatorProviderContext)
 			{
-				var validatorType = inputValidatorFactoryContext.GetGenericValidatorType();
+				var validatorType = inputValidatorProviderContext.GetGenericValidatorType();
 
 				return InputValidators.FromValidators(
-					(IEnumerable<IValidator>)inputValidatorFactoryContext.MiddlewareContext.Services.GetServices(validatorType));
+					(IEnumerable<IValidator>)inputValidatorProviderContext.MiddlewareContext.Services.GetServices(validatorType));
 			}
 		}
 

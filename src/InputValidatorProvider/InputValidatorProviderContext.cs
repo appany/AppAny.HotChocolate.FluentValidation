@@ -3,9 +3,9 @@ using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public readonly ref struct InputValidatorFactoryContext
+	public readonly ref struct InputValidatorProviderContext
 	{
-		public InputValidatorFactoryContext(IMiddlewareContext middlewareContext, IInputField inputField)
+		public InputValidatorProviderContext(IMiddlewareContext middlewareContext, IInputField inputField)
 		{
 			MiddlewareContext = middlewareContext;
 			InputField = inputField;

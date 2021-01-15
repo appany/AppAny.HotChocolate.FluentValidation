@@ -16,7 +16,7 @@ It is a set of factories with predefined validation scenarios
 
 ## Writing custom input validator
 
-Like other parts of this library, you can write your own factory method to create `InputValidator`
+Like other parts of this library, you can write your own factory to create `InputValidator`
 
 ```cs
 public static InputValidator CreateCustomInputValidator()
@@ -29,20 +29,20 @@ public static InputValidator CreateCustomInputValidator()
 }
 ```
 
-To use custom input validator you need to create custom `InputValidatorFactory` [click here](input-validator.factories.md)
+To use custom input validator you need to create custom `InputValidatorProvider` [click here](input-validator-providers.md)
 
 ```cs
 # global
 services.AddGraphQL()
   .AddFluentValidation(options =>
   {
-    options.UseInputValidatorFactories(context => CreateCustomInputValidator());
+    options.UseInputValidatorProviders(context => CreateCustomInputValidator());
   });
 
 # field
 descriptor.Field(x => x.Example(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
-    options.UseInputValidatorFactories(context => CreateCustomInputValidator())
+    options.UseInputValidatorproviders(context => CreateCustomInputValidator())
   }));
 ```
