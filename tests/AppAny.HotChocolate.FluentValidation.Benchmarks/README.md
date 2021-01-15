@@ -33,4 +33,3 @@ Intel Core i7-9700K CPU 3.60GHz (Coffee Lake), 1 CPU, 8 logical and 8 physical c
 |     RunWithExplicitValidation_NullInputs |  9.180 μs | 0.1120 μs | 0.1048 μs | 1.2665 | 0.0153 |     - |   7.81 KB |
 |    RunWithDarkHillsValidation_NullInputs |  8.971 μs | 0.0265 μs | 0.0248 μs | 1.2665 | 0.0153 |     - |   7.77 KB |
 |   RunWithFairyBreadValidation_NullInputs | 71.161 μs | 0.7118 μs | 0.6658 μs | 2.3193 |      - |     - |  13.97 KB |
-
