@@ -11,15 +11,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_HaveNullResult_ValidationError_ExtensionCodes()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation()
-				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
-				.BuildRequestExecutorAsync();
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation()
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
 
@@ -39,16 +37,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_UseMultipleValidators_ByConvention()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
-				.BuildRequestExecutorAsync();
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
+					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyNameAndAddress));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndAddress));
 
 			result.AssertNullResult();
 
@@ -82,15 +78,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_UseValidatorByConvention_DoubleProperty()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
-				.BuildRequestExecutorAsync();
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.Services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
 

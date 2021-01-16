@@ -4,14 +4,14 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ExtensionDataExtensions
 	{
-		public static InputFieldValidationOptions GetOrCreateInputFieldOptions(this ExtensionData extensionData)
+		public static ArgumentValidationOptions GetOrCreateArgumentOptions(this ExtensionData extensionData)
 		{
-			var options = extensionData.TryGetInputFieldOptions();
+			var options = extensionData.TryGetArgumentOptions();
 
 			if (options is null)
 			{
-				options = new InputFieldValidationOptions();
-				extensionData.Add(ValidationDefaults.InputFieldOptionsKey, options);
+				options = new ArgumentValidationOptions();
+				extensionData.Add(ValidationDefaults.ArgumentOptionsKey, options);
 			}
 
 			return options;

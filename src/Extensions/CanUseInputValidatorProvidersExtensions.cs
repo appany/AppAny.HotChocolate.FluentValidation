@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public static class CanUseInputValidatorProviders
+	public static class CanUseInputValidatorProvidersExtensions
 	{
 		/// <summary>
 		/// Adds default <see cref="InputValidatorProvider"/>. See <see cref="ValidationDefaults.InputValidatorProviders.Default"/>

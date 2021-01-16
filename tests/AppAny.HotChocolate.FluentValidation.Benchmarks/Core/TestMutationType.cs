@@ -7,6 +7,13 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 	{
 		private readonly Action<IArgumentDescriptor> configure;
 
+		public TestMutationType()
+		{
+			configure = _ =>
+			{
+			};
+		}
+
 		public TestMutationType(Action<IArgumentDescriptor> configure)
 		{
 			this.configure = configure;

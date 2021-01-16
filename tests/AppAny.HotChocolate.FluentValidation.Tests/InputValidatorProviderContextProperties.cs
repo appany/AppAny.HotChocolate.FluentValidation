@@ -11,21 +11,19 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_Pass_Values_AddFluentValidation()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
 					.UseInputValidatorProviders(context =>
 					{
-						Assert.Equal(typeof(TestPersonInput), context.InputField.RuntimeType);
+						Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
 
 						return ValidationDefaults.InputValidatorProviders.Default(context);
 					}))
-				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
-				.BuildRequestExecutorAsync();
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
 
@@ -45,23 +43,21 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_Pass_Values_UseFluentValidation()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
-				{
-					configurator.UseInputValidatorProviders(context =>
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 					{
-						Assert.Equal(typeof(TestPersonInput), context.InputField.RuntimeType);
+						configurator.UseInputValidatorProviders(context =>
+						{
+							Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
 
-						return ValidationDefaults.InputValidatorProviders.Default(context);
-					});
-				})))
-				.BuildRequestExecutorAsync();
+							return ValidationDefaults.InputValidatorProviders.Default(context);
+						});
+					})))
+					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
 

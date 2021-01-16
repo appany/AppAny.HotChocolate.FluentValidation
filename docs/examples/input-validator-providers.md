@@ -24,7 +24,7 @@ public static InputValidatorProvider CreateCustomInputValidatorProvider(IValidat
   // InputValidatorProviderContext
   return context =>
   {
-    var cachedValidators = validatorCache.GetValidators(context.InputField.RuntimeType);
+    var cachedValidators = validatorCache.GetValidators(context.Argument.RuntimeType);
 
     return ValidationDefaults.InputValidators.FromValidators(cachedValidators);
   }

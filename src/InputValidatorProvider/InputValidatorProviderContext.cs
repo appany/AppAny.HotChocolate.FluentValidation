@@ -5,13 +5,13 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	public readonly ref struct InputValidatorProviderContext
 	{
-		public InputValidatorProviderContext(IMiddlewareContext middlewareContext, IInputField inputField)
+		public InputValidatorProviderContext(IMiddlewareContext middlewareContext, IInputField argument)
 		{
 			MiddlewareContext = middlewareContext;
-			InputField = inputField;
+			Argument = argument;
 		}
 
 		public IMiddlewareContext MiddlewareContext { get; }
-		public IInputField InputField { get; }
+		public IInputField Argument { get; }
 	}
 }

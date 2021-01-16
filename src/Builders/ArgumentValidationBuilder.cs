@@ -5,30 +5,30 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// <summary>
 	/// Configures input field validation options
 	/// </summary>
-	public interface InputFieldValidationConfigurator
-		: CanSkipValidation<InputFieldValidationConfigurator>,
-			CanUseInputValidatorProviders<InputFieldValidationConfigurator>,
-			CanUseErrorMappers<InputFieldValidationConfigurator>
+	public interface ArgumentValidationBuilder
+		: CanSkipValidation<ArgumentValidationBuilder>,
+			CanUseInputValidatorProviders<ArgumentValidationBuilder>,
+			CanUseErrorMappers<ArgumentValidationBuilder>
 	{
 	}
 
-	internal sealed class DefaultInputFieldValidationConfigurator : InputFieldValidationConfigurator
+	internal sealed class DefaultArgumentValidationBuilder : ArgumentValidationBuilder
 	{
-		private readonly InputFieldValidationOptions options;
+		private readonly ArgumentValidationOptions options;
 
-		public DefaultInputFieldValidationConfigurator(InputFieldValidationOptions options)
+		public DefaultArgumentValidationBuilder(ArgumentValidationOptions options)
 		{
 			this.options = options;
 		}
 
-		public InputFieldValidationConfigurator SkipValidation(SkipValidation skipValidation)
+		public ArgumentValidationBuilder SkipValidation(SkipValidation skipValidation)
 		{
 			options.SkipValidation = skipValidation;
 
 			return this;
 		}
 
-		public InputFieldValidationConfigurator UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
+		public ArgumentValidationBuilder UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
 		{
 			if (options.InputValidatorProviders is null)
 			{
@@ -45,7 +45,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public InputFieldValidationConfigurator UseErrorMappers(params ErrorMapper[] errorMappers)
+		public ArgumentValidationBuilder UseErrorMappers(params ErrorMapper[] errorMappers)
 		{
 			if (options.ErrorMappers is null)
 			{
