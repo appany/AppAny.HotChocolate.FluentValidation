@@ -11,15 +11,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_Use_AttributeConfiguration()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-				.AddMutationType(new TestAttributeMutation())
-				.BuildRequestExecutorAsync();
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+					.AddMutationType(new TestAttributeMutation())
+					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
 
@@ -41,15 +39,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task Should_Use_AttributeConfiguration_CustomValidator()
 		{
-			var executor = await new ServiceCollection()
-				.AddTransient<NotEmptyNameValidator>()
-				.AddTestGraphQL()
-				.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-				.AddMutationType(new TestCustomAttributeMutation())
-				.BuildRequestExecutorAsync();
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+					.AddMutationType(new TestCustomAttributeMutation())
+					.Services.AddTransient<NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestMutations.EmptyName));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
 
