@@ -7,7 +7,7 @@
 - `InputValidator` wraps `IValidator` execution [click here](examples/input-validators.md)
 - `InputValidatorProvider` configures conventions to resolve `InputValidator` [click here](examples/input-validator-providers.md)
 
-## Configurators
+## Builders
 
-- `InputValidationConfigurator` configures global validation rules `.AddFluentValidation(...)`
-- `InputFieldValidationConfigurator` configures field validation rules `.UseFluentValidation(...)`
+- `ValidationBuilder` configures global validation rules `.AddFluentValidation(...)`
+- `ArgumentValidationBuilder` configures field validation rules `.UseFluentValidation(...)`

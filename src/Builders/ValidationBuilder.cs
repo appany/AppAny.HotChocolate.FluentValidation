@@ -5,37 +5,37 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// <summary>
 	/// Configures global validation options
 	/// </summary>
-	public interface InputValidationBuilder
-		: CanSkipValidation<InputValidationBuilder>,
-			CanUseInputValidatorProviders<InputValidationBuilder>,
-			CanUseErrorMappers<InputValidationBuilder>
+	public interface ValidationBuilder
+		: CanSkipValidation<ValidationBuilder>,
+			CanUseInputValidatorProviders<ValidationBuilder>,
+			CanUseErrorMappers<ValidationBuilder>
 	{
 	}
 
-	internal sealed class DefaultInputValidationBuilder : InputValidationBuilder
+	internal sealed class DefaultValidationBuilder : ValidationBuilder
 	{
 		private readonly IServiceCollection services;
 
-		public DefaultInputValidationBuilder(IServiceCollection services)
+		public DefaultValidationBuilder(IServiceCollection services)
 		{
 			this.services = services;
 		}
 
-		public InputValidationBuilder SkipValidation(SkipValidation skipValidation)
+		public ValidationBuilder SkipValidation(SkipValidation skipValidation)
 		{
 			services.Configure<InputValidationOptions>(options => options.SkipValidation = skipValidation);
 
 			return this;
 		}
 
-		public InputValidationBuilder UseErrorMappers(params ErrorMapper[] errorMappers)
+		public ValidationBuilder UseErrorMappers(params ErrorMapper[] errorMappers)
 		{
 			services.Configure<InputValidationOptions>(options => options.ErrorMappers = errorMappers);
 
 			return this;
 		}
 
-		public InputValidationBuilder UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
+		public ValidationBuilder UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
 		{
 			services.Configure<InputValidationOptions>(options => options.InputValidatorProviders = inputValidatorProviders);
 
