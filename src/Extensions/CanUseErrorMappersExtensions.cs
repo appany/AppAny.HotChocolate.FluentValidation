@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public static class CanUseErrorMappers
+	public static class CanUseErrorMappersExtensions
 	{
 		/// <summary>
 		/// Uses default <see cref="ErrorMapper"/>. See <see cref="ValidationDefaults.ErrorMappers.Default"/>

@@ -41,7 +41,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.AddFluentValidation()
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
 				{
-					configurator.SkipValidation(context => new ValueTask<bool>(context.InputField.Name == "input"));
+					configurator.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
 				})))
 				.BuildRequestExecutorAsync();
 
@@ -83,7 +83,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await new ServiceCollection()
 				.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 				.AddTestGraphQL()
-				.AddFluentValidation(options => options.SkipValidation(context => new ValueTask<bool>(context.InputField.Name == "input")))
+				.AddFluentValidation(options => options.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input")))
 				.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 				.BuildRequestExecutorAsync();
 

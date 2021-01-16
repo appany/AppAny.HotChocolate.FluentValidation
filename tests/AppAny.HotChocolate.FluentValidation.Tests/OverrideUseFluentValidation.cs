@@ -75,10 +75,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					Assert.Equal(ValidationDefaults.ExtensionKeys.ValidatorKey, validator.Key);
 					Assert.Equal(nameof(NotEmptyValidator), validator.Value);
 				},
-				inputField =>
+				argument =>
 				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.InputFieldKey, inputField.Key);
-					Assert.Equal(new NameString("input"), inputField.Value);
+					Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
+					Assert.Equal(new NameString("input"), argument.Value);
 				},
 				property =>
 				{

@@ -6,17 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public static class InputFieldValidationConfiguratorExtensions
+	public static class ArgumentValidationConfiguratorExtensions
 	{
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidator<TValidator>(
-			this InputFieldValidationConfigurator configurator)
+		public static ArgumentValidationBuilder UseValidator<TValidator>(
+			this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
-			return configurator.UseInputValidatorProviders(context =>
+			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidator(
 					context.MiddlewareContext.Services.GetRequiredService<TValidator>()));
 		}
@@ -25,11 +25,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidators<TValidator>(
-			this InputFieldValidationConfigurator configurator)
+		public static ArgumentValidationBuilder UseValidators<TValidator>(
+			this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
-			return configurator.UseInputValidatorProviders(context =>
+			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidators(
 					context.MiddlewareContext.Services.GetServices<TValidator>()));
 		}
@@ -38,11 +38,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses type to resolve <see cref="InputValidator"/>
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidator(
-			this InputFieldValidationConfigurator configurator,
+		public static ArgumentValidationBuilder UseValidator(
+			this ArgumentValidationBuilder builder,
 			Type validatorType)
 		{
-			return configurator.UseInputValidatorProviders(context =>
+			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidator(
 					(IValidator)context.MiddlewareContext.Services.GetService(validatorType)));
 		}
@@ -51,11 +51,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses type to resolve <see cref="InputValidator"/>
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidators(
-			this InputFieldValidationConfigurator configurator,
+		public static ArgumentValidationBuilder UseValidators(
+			this ArgumentValidationBuilder builder,
 			Type validatorType)
 		{
-			return configurator.UseInputValidatorProviders(context =>
+			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidators(
 					(IEnumerable<IValidator>)context.MiddlewareContext.Services.GetServices(validatorType)));
 		}
@@ -64,34 +64,34 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidator<TInput, TValidator>(
-			this InputFieldValidationConfigurator configurator)
+		public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(
+			this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator<TInput>
 		{
-			return configurator.UseValidator<TInput, TValidator>(ValidationDefaults.ValidationStrategies.Default);
+			return builder.UseValidator<TInput, TValidator>(ValidationDefaults.ValidationStrategies.Default);
 		}
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidators<TInput, TValidator>(
-			this InputFieldValidationConfigurator configurator)
+		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
+			this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator<TInput>
 		{
-			return configurator.UseValidators<TInput, TValidator>(ValidationDefaults.ValidationStrategies.Default);
+			return builder.UseValidators<TInput, TValidator>(ValidationDefaults.ValidationStrategies.Default);
 		}
 
 		/// <summary>
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidator<TInput, TValidator>(
-			this InputFieldValidationConfigurator configurator,
+		public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(
+			this ArgumentValidationBuilder builder,
 			Action<ValidationStrategy<TInput>> strategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return configurator.UseInputValidatorProviders(context =>
+			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidatorWithStrategy(
 					context.MiddlewareContext.Services.GetRequiredService<TValidator>(), strategy));
 		}
@@ -100,12 +100,12 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
 		/// </summary>
-		public static InputFieldValidationConfigurator UseValidators<TInput, TValidator>(
-			this InputFieldValidationConfigurator configurator,
+		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
+			this ArgumentValidationBuilder builder,
 			Action<ValidationStrategy<TInput>> strategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return configurator.UseInputValidatorProviders(context =>
+			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidatorsWithStrategy(
 					context.MiddlewareContext.Services.GetServices<TValidator>(), strategy));
 		}

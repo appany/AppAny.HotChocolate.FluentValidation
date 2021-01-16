@@ -19,7 +19,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						ValidationDefaults.ErrorMappers.Default,
 						(_, context) =>
 						{
-							Assert.Equal("input", context.InputField.Name);
+							Assert.Equal("input", context.Argument.Name);
 							Assert.Single(context.ValidationResult.Errors);
 							Assert.Equal(nameof(TestPersonInput.Name), context.ValidationFailure.PropertyName);
 						}))
@@ -57,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						ValidationDefaults.ErrorMappers.Default,
 						(_, context) =>
 						{
-							Assert.Equal("input", context.InputField.Name);
+							Assert.Equal("input", context.Argument.Name);
 							Assert.Single(context.ValidationResult.Errors);
 							Assert.Equal(nameof(TestPersonInput.Name), context.ValidationFailure.PropertyName);
 						});

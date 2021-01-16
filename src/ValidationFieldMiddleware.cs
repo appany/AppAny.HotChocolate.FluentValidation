@@ -15,39 +15,39 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (passedArguments is { Count: > 0 })
 				{
-					var inputFields = middlewareContext.Field.Arguments;
+					var arguments = middlewareContext.Field.Arguments;
 
 					var options = middlewareContext.Schema.Services!
 						.GetRequiredService<IOptions<InputValidationOptions>>().Value;
 
 					// TODO: Validate only passed arguments
-					for (var fieldIndex = 0; fieldIndex < inputFields.Count; fieldIndex++)
+					for (var argumentIndex = 0; argumentIndex < arguments.Count; argumentIndex++)
 					{
-						var inputField = inputFields[fieldIndex];
+						var argument = arguments[argumentIndex];
 
-						var inputFieldOptions = inputField.ContextData.TryGetInputFieldOptions();
+						var argumentOptions = argument.ContextData.TryGetArgumentOptions();
 
-						if (inputFieldOptions is null)
+						if (argumentOptions is null)
 						{
 							continue;
 						}
 
-						var skipValidation = inputFieldOptions.SkipValidation ?? options.SkipValidation;
+						var skipValidation = argumentOptions.SkipValidation ?? options.SkipValidation;
 
-						if (await skipValidation.Invoke(new SkipValidationContext(middlewareContext, inputField)))
+						if (await skipValidation.Invoke(new SkipValidationContext(middlewareContext, argument)))
 						{
 							continue;
 						}
 
-						var argument = middlewareContext.ArgumentValue<object?>(inputField.Name);
+						var input = middlewareContext.ArgumentValue<object?>(argument.Name);
 
-						if (argument is null)
+						if (input is null)
 						{
 							continue;
 						}
 
-						var errorMappers = inputFieldOptions.ErrorMappers ?? options.ErrorMappers;
-						var inputValidatorProviders = inputFieldOptions.InputValidatorProviders ?? options.InputValidatorProviders;
+						var errorMappers = argumentOptions.ErrorMappers ?? options.ErrorMappers;
+						var inputValidatorProviders = argumentOptions.InputValidatorProviders ?? options.InputValidatorProviders;
 
 						for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
 						{
@@ -55,9 +55,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 							var inputValidator = inputValidatorProvider.Invoke(new InputValidatorProviderContext(
 								middlewareContext,
-								inputField));
+								argument));
 
-							var validationResult = await inputValidator.Invoke(argument, middlewareContext.RequestAborted);
+							var validationResult = await inputValidator.Invoke(input, middlewareContext.RequestAborted);
 
 							if (validationResult?.IsValid is null or true)
 							{
@@ -76,7 +76,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 									errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
 										middlewareContext,
-										inputField,
+										argument,
 										validationResult,
 										validationFailure));
 								}

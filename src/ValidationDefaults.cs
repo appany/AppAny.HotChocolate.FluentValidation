@@ -20,9 +20,9 @@ namespace AppAny.HotChocolate.FluentValidation
 		public const string Code = "ValidationFailed";
 
 		/// <summary>
-		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="InputFieldValidationOptions"/>
+		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ArgumentValidationOptions"/>
 		/// </summary>
-		public const string InputFieldOptionsKey = "ValidationInputFieldOptions";
+		public const string ArgumentOptionsKey = "ArgumentValidationOptions";
 
 		/// <summary>
 		/// Default validation field middleware
@@ -36,7 +36,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			public const string CodeKey = "code";
 			public const string ValidatorKey = "validator";
-			public const string InputFieldKey = "inputField";
+			public const string ArgumentKey = "argument";
 			public const string PropertyKey = "property";
 			public const string SeverityKey = "severity";
 			public const string AttemptedValueKey = "attemptedValue";
@@ -91,7 +91,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
-					.SetExtension(ExtensionKeys.InputFieldKey, mappingContext.InputField.Name)
+					.SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
 					.SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
 					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity)
 					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue);
@@ -238,7 +238,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="InputFieldValidationConfiguratorExtensions.UseValidator"/>
+			/// To override validation strategy use <see cref="ArgumentValidationConfiguratorExtensions.UseValidator"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
