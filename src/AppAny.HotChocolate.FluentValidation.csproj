@@ -15,7 +15,7 @@
 		<PackageLicenseFile>content/LICENSE</PackageLicenseFile>
 		<Copyright>Copyright ©2021 AppAny</Copyright>
 		<Authors>sergeyshaykhullin</Authors>
-		<Description>HotChocolate FluentValidation integration</Description>
+		<Description>HotChocolate GraphQL FluentValidation integration</Description>
 		<PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
 	</PropertyGroup>
 
