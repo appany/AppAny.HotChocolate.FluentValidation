@@ -75,3 +75,11 @@ Intel Core i7-9700K CPU 3.60GHz (Coffee Lake), 1 CPU, 8 logical and 8 physical c
 |                                 RunWithValidation |  8.770 μs | 0.0554 μs | 0.0518 μs |  1.00 |    0.00 | 1.2665 | 0.0153 |     - |   7.81 KB |
 |                      RunWithFluentChocoValidation |  9.358 μs | 0.0820 μs | 0.0767 μs |  1.07 |    0.01 | 1.2665 | 0.0153 |     - |   7.77 KB |
 |   No checks for null input. Validator is throwing | 68.021 μs | 0.4024 μs | 0.3764 μs |  7.76 |    0.03 | 2.4414 |      - |     - |  15.09 KB |
+
+## ErrorMappersBenchmarks
+
+|                                       Method |     Mean |    Error |   StdDev | Ratio | RatioSD |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
+|--------------------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|-------:|------:|----------:|
+|                    RunWithDefaultErrorMapper | 28.10 μs | 0.395 μs | 0.350 μs |  1.00 |    0.00 | 1.7700 | 0.0305 |     - |  10.89 KB |
+|         RunWithDefaultErrorMapperWithDetails | 29.56 μs | 0.211 μs | 0.197 μs |  1.05 |    0.01 | 1.8616 | 0.0305 |     - |  11.33 KB |
+| RunWithDefaultErrorMapperWithExtendedDetails | 30.91 μs | 0.235 μs | 0.219 μs |  1.10 |    0.02 | 1.8921 |      - |     - |  11.85 KB |
