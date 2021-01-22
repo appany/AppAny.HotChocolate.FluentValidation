@@ -3,16 +3,20 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<Version>0.1.4</Version>
+		<Version>0.1.5</Version>
 		<LangVersion>9</LangVersion>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</PackageProjectUrl>
-		<PackageIcon>content/logo.png</PackageIcon>
-		<PackageLicenseFile>content/LICENSE</PackageLicenseFile>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Copyright>Copyright ©2021 AppAny</Copyright>
 		<Authors>sergeyshaykhullin</Authors>
 		<Description>HotChocolate GraphQL FluentValidation integration</Description>
@@ -20,13 +24,13 @@
 	</PropertyGroup>
 
 	<ItemGroup Label="Packages">
-		<PackageReference Include="FluentValidation" Version="9.3.0" />
-		<PackageReference Include="HotChocolate.Execution" Version="11.0.7" />
+		<PackageReference Include="FluentValidation" Version="9.4.0" />
+		<PackageReference Include="HotChocolate.Execution" Version="11.0.8" />
 	</ItemGroup>
 
 	<ItemGroup Label="Assets">
-		<None Include="../assets/logo.png" Pack="true" Visible="false" />
-		<None Include="../LICENSE" Pack="true" Visible="false" />
+		<None Include="../assets/logo.png" Pack="true" Visible="false" PackagePath="" />
+		<None Include="../LICENSE" Pack="true" Visible="false" PackagePath="" />
 	</ItemGroup>
 
 </Project>
