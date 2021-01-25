@@ -58,7 +58,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			return fluentChocoValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyInput);
 		}
 
-		[Benchmark(Description = "No checks for empty input. Validator is throwing")]
+		[Benchmark]
 		public Task RunWithFairyBreadValidation()
 		{
 			return fairyBreadValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyInput);
