@@ -13,9 +13,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						configurator.SkipValidation();
+						opt.SkipValidation();
 					})))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -35,9 +35,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						configurator.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
+						opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
 					})))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -75,8 +75,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_Execute_GlobalSkipValidation_Predecate()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(options =>
-						options.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input")))
+				builder.AddFluentValidation(opt =>
+						opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input")))
 					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -96,9 +96,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(options =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						options.SkipValidation(ValidationDefaults.SkipValidation.Skip);
+						opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
 					})))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -118,9 +118,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(options =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						options.SkipValidation(ValidationDefaults.SkipValidation.Default);
+						opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
 					})))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 

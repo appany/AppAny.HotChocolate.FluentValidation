@@ -124,7 +124,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				{
 					var validationContext = new ValidationContext<object>(argument);
 
-					return await validator.ValidateAsync(validationContext, cancellationToken);
+					return await validator.ValidateAsync(validationContext, cancellationToken).ConfigureAwait(false);
 				};
 			}
 
@@ -141,7 +141,8 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					foreach (var validator in validators)
 					{
-						var validatorResult = await validator.ValidateAsync(validationContext, cancellationToken);
+						var validatorResult = await validator.ValidateAsync(
+							validationContext, cancellationToken).ConfigureAwait(false);
 
 						if (validationResult is null)
 						{
@@ -173,7 +174,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						(TInput)argument,
 						validationStrategy);
 
-					return await validator.ValidateAsync(validationContext, cancellationToken);
+					return await validator.ValidateAsync(validationContext, cancellationToken).ConfigureAwait(false);
 				};
 			}
 
@@ -194,7 +195,8 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					foreach (var validator in validators)
 					{
-						var validatorResult = await validator.ValidateAsync(validationContext, cancellationToken);
+						var validatorResult = await validator.ValidateAsync(
+							validationContext, cancellationToken).ConfigureAwait(false);
 
 						if (validationResult is null)
 						{
@@ -242,7 +244,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="ArgumentValidationConfiguratorExtensions.UseValidator"/>
+			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
@@ -260,13 +262,10 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// </summary>
 			public static ValidationBuilder Default(IServiceCollection services)
 			{
-				var configurator = new DefaultValidationBuilder(services);
-
-				configurator.UseDefaultErrorMapper();
-				configurator.UseDefaultInputValidatorProvider();
-				configurator.SkipValidation(SkipValidation.Default);
-
-				return configurator;
+				return new DefaultValidationBuilder(services)
+					.UseDefaultErrorMapper()
+					.UseDefaultInputValidatorProvider()
+					.SkipValidation(SkipValidation.Default);
 			}
 		}
 	}

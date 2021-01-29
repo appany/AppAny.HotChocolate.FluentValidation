@@ -49,9 +49,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				builder.AddFluentValidation(opt => opt
 						.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(
-						configurator =>
+						opt =>
 						{
-							configurator.UseErrorMappers(
+							opt.UseErrorMappers(
 								ValidationDefaults.ErrorMappers.Default,
 								(errorBuilder, _) => errorBuilder.SetExtension("test", "test"));
 						})))

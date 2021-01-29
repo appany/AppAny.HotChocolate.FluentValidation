@@ -33,7 +33,8 @@ namespace AppAny.HotChocolate.FluentValidation
 
 						var skipValidation = argumentOptions.SkipValidation ?? options.SkipValidation;
 
-						if (await skipValidation.Invoke(new SkipValidationContext(middlewareContext, argument)))
+						if (await skipValidation.Invoke(
+							new SkipValidationContext(middlewareContext, argument)).ConfigureAwait(false))
 						{
 							continue;
 						}
@@ -56,7 +57,8 @@ namespace AppAny.HotChocolate.FluentValidation
 								middlewareContext,
 								argument));
 
-							var validationResult = await inputValidator.Invoke(argumentValue, middlewareContext.RequestAborted);
+							var validationResult = await inputValidator.Invoke(
+								argumentValue, middlewareContext.RequestAborted).ConfigureAwait(false);
 
 							if (validationResult?.IsValid is null or true)
 							{

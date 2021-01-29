@@ -7,11 +7,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Uses default <see cref="ErrorMapper"/>. See <see cref="ValidationDefaults.ErrorMappers.Default"/>
 		/// </summary>
-		public static TConfigurator UseDefaultErrorMapper<TConfigurator>(
-			this CanUseErrorMappers<TConfigurator> configurator,
+		public static TBuilder UseDefaultErrorMapper<TBuilder>(
+			this CanUseErrorMappers<TBuilder> builder,
 			params ErrorMapper[] errorMappers)
 		{
-			return configurator.UseErrorMappers(
+			return builder.UseErrorMappers(
 				new ErrorMapper[] { ValidationDefaults.ErrorMappers.Default }
 					.Concat(errorMappers)
 					.ToArray());
@@ -20,11 +20,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Adds default <see cref="ErrorMapper"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
 		/// </summary>
-		public static TConfigurator UseDefaultErrorMapperWithDetails<TConfigurator>(
-			this CanUseErrorMappers<TConfigurator> configurator,
+		public static TBuilder UseDefaultErrorMapperWithDetails<TBuilder>(
+			this CanUseErrorMappers<TBuilder> builder,
 			params ErrorMapper[] errorMappers)
 		{
-			return configurator.UseErrorMappers(
+			return builder.UseErrorMappers(
 				new ErrorMapper[]
 					{
 						ValidationDefaults.ErrorMappers.Default,
@@ -37,11 +37,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Adds default <see cref="ErrorMapper"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
 		/// </summary>
-		public static TConfigurator UseDefaultErrorMapperWithExtendedDetails<TConfigurator>(
-			this CanUseErrorMappers<TConfigurator> configurator,
+		public static TBuilder UseDefaultErrorMapperWithExtendedDetails<TBuilder>(
+			this CanUseErrorMappers<TBuilder> builder,
 			params ErrorMapper[] errorMappers)
 		{
-			return configurator.UseErrorMappers(
+			return builder.UseErrorMappers(
 				new ErrorMapper[]
 					{
 						ValidationDefaults.ErrorMappers.Default,
