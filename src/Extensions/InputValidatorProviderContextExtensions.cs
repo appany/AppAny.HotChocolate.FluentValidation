@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using FluentValidation;
+using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
@@ -8,10 +9,10 @@ namespace AppAny.HotChocolate.FluentValidation
 	{
 		private static readonly ConcurrentDictionary<Type, Type> ArgumentTypeToValidatorType = new();
 
-		public static Type GetGenericValidatorType(this InputValidatorProviderContext inputValidatorProviderContext)
+		public static Type GetGenericValidatorType(this IInputField inputField)
 		{
 			return ArgumentTypeToValidatorType.GetOrAdd(
-				inputValidatorProviderContext.Argument.RuntimeType,
+				inputField.RuntimeType,
 				argumentType => typeof(IValidator<>).MakeGenericType(argumentType));
 		}
 	}

@@ -279,7 +279,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseMultipleCustomValidators_SameProperty()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(configurator => configurator
+				builder.AddFluentValidation(opt => opt
 						.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
 					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(fv =>
 					{
@@ -368,9 +368,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						configurator.SkipValidation().UseValidator<NotEmptyNameValidator>();
+						opt.SkipValidation().UseValidator<NotEmptyNameValidator>();
 					})))
 					.Services.AddTransient<NotEmptyNameValidator>());
 
@@ -390,9 +390,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						configurator.SkipValidation().UseInputValidatorProviders(_ =>
+						opt.SkipValidation().UseInputValidatorProviders(_ =>
 							ValidationDefaults.InputValidators.FromValidator(new NotEmptyNameValidator()));
 					})))
 					.Services.AddTransient<NotEmptyNameValidator>());

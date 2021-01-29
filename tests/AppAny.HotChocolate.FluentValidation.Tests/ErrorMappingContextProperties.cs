@@ -47,9 +47,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(configurator =>
+					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
 					{
-						configurator.UseErrorMappers(
+						opt.UseErrorMappers(
 							ValidationDefaults.ErrorMappers.Default,
 							(_, context) =>
 							{

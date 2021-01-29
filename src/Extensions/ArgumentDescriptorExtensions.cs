@@ -22,13 +22,11 @@ namespace AppAny.HotChocolate.FluentValidation
 			this IArgumentDescriptor argumentDescriptor,
 			Action<ArgumentValidationBuilder> configure)
 		{
-			argumentDescriptor.Extend().OnBeforeCreate(definition =>
+			argumentDescriptor.Extend().OnBeforeCreate(argumentDefinition =>
 			{
-				var options = definition.ContextData.GetOrCreateArgumentOptions();
+				var options = argumentDefinition.ContextData.GetOrCreateArgumentOptions();
 
-				var configurator = new DefaultArgumentValidationBuilder(options);
-
-				configure.Invoke(configurator);
+				configure.Invoke(new DefaultArgumentValidationBuilder(options));
 			});
 
 			return argumentDescriptor;

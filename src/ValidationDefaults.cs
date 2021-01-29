@@ -76,7 +76,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps graphql error code, path and message
 			/// </summary>
-			public static void Default(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
+			public static void Default(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
 					.SetCode(Code)
@@ -87,7 +87,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps useful extensions about input field, property, used validator, invalid value and severity
 			/// </summary>
-			public static void Details(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
+			public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
@@ -100,7 +100,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps custom state and formatted message placeholder values
 			/// </summary>
-			public static void Extended(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
+			public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.CustomStateKey, mappingContext.ValidationFailure.CustomState)
@@ -124,7 +124,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				{
 					var validationContext = new ValidationContext<object>(argument);
 
-					return await validator.ValidateAsync(validationContext, cancellationToken);
+					return await validator.ValidateAsync(validationContext, cancellationToken).ConfigureAwait(false);
 				};
 			}
 
@@ -141,7 +141,8 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					foreach (var validator in validators)
 					{
-						var validatorResult = await validator.ValidateAsync(validationContext, cancellationToken);
+						var validatorResult = await validator.ValidateAsync(
+							validationContext, cancellationToken).ConfigureAwait(false);
 
 						if (validationResult is null)
 						{
@@ -173,7 +174,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						(TInput)argument,
 						validationStrategy);
 
-					return await validator.ValidateAsync(validationContext, cancellationToken);
+					return await validator.ValidateAsync(validationContext, cancellationToken).ConfigureAwait(false);
 				};
 			}
 
@@ -194,7 +195,8 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					foreach (var validator in validators)
 					{
-						var validatorResult = await validator.ValidateAsync(validationContext, cancellationToken);
+						var validatorResult = await validator.ValidateAsync(
+							validationContext, cancellationToken).ConfigureAwait(false);
 
 						if (validationResult is null)
 						{
@@ -224,10 +226,14 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// </summary>
 			public static InputValidator Default(InputValidatorProviderContext inputValidatorProviderContext)
 			{
-				var validatorType = inputValidatorProviderContext.GetGenericValidatorType();
+				var validatorType = inputValidatorProviderContext.Argument.GetGenericValidatorType();
 
-				return InputValidators.FromValidators(
-					(IEnumerable<IValidator>)inputValidatorProviderContext.MiddlewareContext.Services.GetServices(validatorType));
+				var validators = (IEnumerable<IValidator>)inputValidatorProviderContext
+					.MiddlewareContext
+					.Services
+					.GetServices(validatorType);
+
+				return InputValidators.FromValidators(validators);
 			}
 		}
 
@@ -238,11 +244,28 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="ArgumentValidationConfiguratorExtensions.UseValidator"/>
+			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
 			{
+			}
+		}
+
+		/// <summary>
+		/// Default <see cref="ValidationBuilder"/> implementation factories
+		/// </summary>
+		public static class ValidationBuilders
+		{
+			/// <summary>
+			/// Creates and configures default <see cref="ValidationBuilder"/>
+			/// </summary>
+			public static ValidationBuilder Default(IServiceCollection services)
+			{
+				return new DefaultValidationBuilder(services)
+					.UseDefaultErrorMapper()
+					.UseDefaultInputValidatorProvider()
+					.SkipValidation(SkipValidation.Default);
 			}
 		}
 	}
