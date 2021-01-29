@@ -76,7 +76,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps graphql error code, path and message
 			/// </summary>
-			public static void Default(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
+			public static void Default(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
 					.SetCode(Code)
@@ -87,7 +87,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps useful extensions about input field, property, used validator, invalid value and severity
 			/// </summary>
-			public static void Details(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
+			public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
@@ -100,7 +100,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps custom state and formatted message placeholder values
 			/// </summary>
-			public static void Extended(ErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
+			public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.CustomStateKey, mappingContext.ValidationFailure.CustomState)
@@ -224,10 +224,14 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// </summary>
 			public static InputValidator Default(InputValidatorProviderContext inputValidatorProviderContext)
 			{
-				var validatorType = inputValidatorProviderContext.GetGenericValidatorType();
+				var validatorType = inputValidatorProviderContext.Argument.GetGenericValidatorType();
 
-				return InputValidators.FromValidators(
-					(IEnumerable<IValidator>)inputValidatorProviderContext.MiddlewareContext.Services.GetServices(validatorType));
+				var validators = (IEnumerable<IValidator>)inputValidatorProviderContext
+					.MiddlewareContext
+					.Services
+					.GetServices(validatorType);
+
+				return InputValidators.FromValidators(validators);
 			}
 		}
 
@@ -243,6 +247,26 @@ namespace AppAny.HotChocolate.FluentValidation
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
 			{
+			}
+		}
+
+		/// <summary>
+		/// Default <see cref="ValidationBuilder"/> implementation factories
+		/// </summary>
+		public static class ValidationBuilders
+		{
+			/// <summary>
+			/// Creates and configures default <see cref="ValidationBuilder"/>
+			/// </summary>
+			public static ValidationBuilder Default(IServiceCollection services)
+			{
+				var configurator = new DefaultValidationBuilder(services);
+
+				configurator.UseDefaultErrorMapper();
+				configurator.UseDefaultInputValidatorProvider();
+				configurator.SkipValidation(SkipValidation.Default);
+
+				return configurator;
 			}
 		}
 	}

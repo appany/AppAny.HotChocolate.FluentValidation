@@ -25,13 +25,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			builder.ConfigureSchemaServices(services =>
 			{
-				var configurator = new DefaultValidationBuilder(services);
-
-				configurator.UseDefaultErrorMapper();
-				configurator.UseDefaultInputValidatorProvider();
-				configurator.SkipValidation(ValidationDefaults.SkipValidation.Default);
-
-				configure.Invoke(configurator);
+				configure.Invoke(ValidationDefaults.ValidationBuilders.Default(services));
 			});
 
 			builder.ConfigureSchema(schemaBuilder =>
