@@ -13,77 +13,91 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				var passedArguments = middlewareContext.Selection.SyntaxNode.Arguments;
 
-				if (passedArguments is { Count: > 0 })
+				if (passedArguments is { Count: 0 })
 				{
-					var arguments = middlewareContext.Field.Arguments;
+					await next(middlewareContext).ConfigureAwait(false);
+					return;
+				}
 
-					var options = middlewareContext.Schema.Services!.GetRequiredService<IOptions<InputValidationOptions>>().Value;
+				var objectOptions = middlewareContext.Field.ContextData.TryGetObjectOptions();
 
-					// TODO: Validate only passed arguments
-					for (var argumentIndex = 0; argumentIndex < arguments.Count; argumentIndex++)
+				if (objectOptions is null)
+				{
+					await next(middlewareContext).ConfigureAwait(false);
+					return;
+				}
+
+				var validationOptions = middlewareContext.Schema.Services!
+					.GetRequiredService<IOptions<ValidationOptions>>()
+					.Value;
+
+				for (var passedArgumentIndex = 0; passedArgumentIndex < passedArguments.Count; passedArgumentIndex++)
+				{
+					var passedArgument = passedArguments[passedArgumentIndex];
+
+					var argument = objectOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
+
+					if (argument is null)
 					{
-						var argument = arguments[argumentIndex];
+						continue;
+					}
 
-						var argumentOptions = argument.ContextData.TryGetArgumentOptions();
+					var argumentOptions = argument.ContextData.GetArgumentOptions();
 
-						if (argumentOptions is null)
+					var skipValidation = argumentOptions.SkipValidation ?? validationOptions.SkipValidation;
+
+					if (await skipValidation.Invoke(
+						new SkipValidationContext(middlewareContext, argument)).ConfigureAwait(false))
+					{
+						continue;
+					}
+
+					var argumentValue = middlewareContext.ArgumentValue<object?>(argument.Name);
+
+					if (argumentValue is null)
+					{
+						continue;
+					}
+
+					var errorMappers = argumentOptions.ErrorMappers
+						?? validationOptions.ErrorMappers;
+
+					var inputValidatorProviders = argumentOptions.InputValidatorProviders
+						?? validationOptions.InputValidatorProviders;
+
+					for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
+					{
+						var inputValidatorProvider = inputValidatorProviders[providerIndex];
+
+						var inputValidator = inputValidatorProvider.Invoke(
+							new InputValidatorProviderContext(middlewareContext, argument));
+
+						var validationResult = await inputValidator.Invoke(
+							argumentValue, middlewareContext.RequestAborted).ConfigureAwait(false);
+
+						if (validationResult?.IsValid is null or true)
 						{
 							continue;
 						}
 
-						var skipValidation = argumentOptions.SkipValidation ?? options.SkipValidation;
-
-						if (await skipValidation.Invoke(
-							new SkipValidationContext(middlewareContext, argument)).ConfigureAwait(false))
+						for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
 						{
-							continue;
-						}
+							var validationFailure = validationResult.Errors[errorIndex];
 
-						var argumentValue = middlewareContext.ArgumentValue<object?>(argument.Name);
+							var errorBuilder = ErrorBuilder.New();
 
-						if (argumentValue is null)
-						{
-							continue;
-						}
-
-						var errorMappers = argumentOptions.ErrorMappers ?? options.ErrorMappers;
-						var inputValidatorProviders = argumentOptions.InputValidatorProviders ?? options.InputValidatorProviders;
-
-						for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
-						{
-							var inputValidatorProvider = inputValidatorProviders[providerIndex];
-
-							var inputValidator = inputValidatorProvider.Invoke(new InputValidatorProviderContext(
-								middlewareContext,
-								argument));
-
-							var validationResult = await inputValidator.Invoke(
-								argumentValue, middlewareContext.RequestAborted).ConfigureAwait(false);
-
-							if (validationResult?.IsValid is null or true)
+							for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
 							{
-								continue;
+								var errorMapper = errorMappers[errorMapperIndex];
+
+								errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
+									middlewareContext,
+									argument,
+									validationResult,
+									validationFailure));
 							}
 
-							for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
-							{
-								var validationFailure = validationResult.Errors[errorIndex];
-
-								var errorBuilder = ErrorBuilder.New();
-
-								for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
-								{
-									var errorMapper = errorMappers[errorMapperIndex];
-
-									errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
-										middlewareContext,
-										argument,
-										validationResult,
-										validationFailure));
-								}
-
-								middlewareContext.ReportError(errorBuilder.Build());
-							}
+							middlewareContext.ReportError(errorBuilder.Build());
 						}
 					}
 				}

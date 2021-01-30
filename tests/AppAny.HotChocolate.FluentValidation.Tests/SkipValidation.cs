@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -13,10 +14,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.SkipValidation();
-					})))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+						{
+							opt.SkipValidation();
+						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -35,10 +37,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
-					})))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+						{
+							opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
+						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -57,7 +60,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation())
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -77,7 +80,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt =>
 						opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input")))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -96,10 +99,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
-					})))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+						{
+							opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
+						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -118,10 +122,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
-					})))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+						{
+							opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
+						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(

@@ -12,6 +12,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			public const string WithEmptyName = "mutation { test(input: { name: \"\" }) }";
 			public const string WithEmptyNameAndAddress = "mutation { test(input: { name: \"\", address: \"\" }) }";
+			public const string WithEmptyNameAndSecondInput = "mutation { test(input: { name: \"\" }, input2: { name: \"\" }) }";
 		}
 
 		public static ValueTask<IRequestExecutor> CreateRequestExecutor(Action<IRequestExecutorBuilder> configure)

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -39,7 +40,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -80,7 +81,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input",  arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(

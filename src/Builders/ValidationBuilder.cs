@@ -23,21 +23,21 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public ValidationBuilder SkipValidation(SkipValidation skipValidation)
 		{
-			services.Configure<InputValidationOptions>(options => options.SkipValidation = skipValidation);
+			services.Configure<ValidationOptions>(options => options.SkipValidation = skipValidation);
 
 			return this;
 		}
 
 		public ValidationBuilder UseErrorMappers(params ErrorMapper[] errorMappers)
 		{
-			services.Configure<InputValidationOptions>(options => options.ErrorMappers = errorMappers);
+			services.Configure<ValidationOptions>(options => options.ErrorMappers = errorMappers);
 
 			return this;
 		}
 
 		public ValidationBuilder UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
 		{
-			services.Configure<InputValidationOptions>(options => options.InputValidatorProviders = inputValidatorProviders);
+			services.Configure<ValidationOptions>(options => options.InputValidatorProviders = inputValidatorProviders);
 
 			return this;
 		}

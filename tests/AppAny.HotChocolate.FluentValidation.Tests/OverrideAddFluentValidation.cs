@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -14,7 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -40,10 +41,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.UseValidator<NotEmptyNameValidator>();
-					})))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+						{
+							opt.UseValidator<NotEmptyNameValidator>();
+						}))))
 					.Services.AddTransient<NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -69,10 +71,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.UseValidator<NotEmptyNameValidator>();
-					})))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+						{
+							opt.UseValidator<NotEmptyNameValidator>();
+						}))))
 					.Services.AddTransient<NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -90,7 +93,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseInputValidatorProviders(_ => default!))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation())));
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation()))));
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
@@ -108,7 +111,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseInputValidatorProviders(_ =>
 						ValidationDefaults.InputValidators.FromValidators(Array.Empty<IValidator>())))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation())));
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation()))));
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
