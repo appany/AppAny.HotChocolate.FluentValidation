@@ -5,23 +5,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 {
 	public class TestMutation : ObjectType
 	{
-		private readonly Action<IArgumentDescriptor> configure;
+		private readonly Action<IObjectFieldDescriptor> configure;
 
-		public TestMutation(Action<IArgumentDescriptor> configure)
+		public TestMutation(Action<IObjectFieldDescriptor> configure)
 		{
 			this.configure = configure;
 		}
 
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Field("test")
+			var testField = descriptor.Field("test")
 				.Type<StringType>()
-				.Argument("input", arg =>
-				{
-					arg.Type<NonNullType<TestPersonInputType>>();
-					configure(arg);
-				})
 				.Resolve("test");
+
+				configure.Invoke(testField);
 		}
 	}
 }

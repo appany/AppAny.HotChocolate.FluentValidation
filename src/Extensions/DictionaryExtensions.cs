@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using HotChocolate;
+using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal static class ContextDataExtensions
+	internal static class DictionaryExtensions
 	{
 		public static ArgumentValidationOptions GetOrCreateArgumentOptions(this ExtensionData extensionData)
 		{
@@ -48,6 +49,13 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			return contextData.TryGetValue(ValidationDefaults.ObjectOptionsKey, out var data)
 				? (ObjectValidationOptions)data!
+				: null;
+		}
+
+		public static IInputField? TryGetArgument(this IDictionary<string, IInputField> arguments, string name)
+		{
+			return arguments.TryGetValue(name, out var data)
+				? data
 				: null;
 		}
 	}

@@ -35,7 +35,12 @@ namespace AppAny.HotChocolate.FluentValidation
 				{
 					var passedArgument = passedArguments[passedArgumentIndex];
 
-					var argument = objectOptions.Arguments[passedArgument.Name.Value];
+					var argument = objectOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
+
+					if (argument is null)
+					{
+						continue;
+					}
 
 					var argumentOptions = argument.ContextData.GetArgumentOptions();
 

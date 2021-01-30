@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 						return ValidationDefaults.InputValidatorProviders.Default(context);
 					}))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -45,15 +46,16 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
-					.AddMutationType(new TestMutation(arg => arg.UseFluentValidation(opt =>
-					{
-						opt.UseInputValidatorProviders(context =>
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{
-							Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
+							opt.UseInputValidatorProviders(context =>
+							{
+								Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
 
-							return ValidationDefaults.InputValidatorProviders.Default(context);
-						});
-					})))
+								return ValidationDefaults.InputValidatorProviders.Default(context);
+							});
+						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(

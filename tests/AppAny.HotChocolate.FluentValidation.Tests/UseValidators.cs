@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -13,8 +14,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg =>
-						arg.UseFluentValidation(opt => opt.UseValidators<IValidator<TestPersonInput>>())))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt => opt.UseValidators<IValidator<TestPersonInput>>()))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -33,8 +34,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg =>
-						arg.UseFluentValidation(opt => opt.UseValidators(typeof(IValidator<TestPersonInput>)))))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt => opt.UseValidators(typeof(IValidator<TestPersonInput>))))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -53,8 +54,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg =>
-						arg.UseFluentValidation(opt => opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>())))
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt => opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>()))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -73,12 +74,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg =>
-						arg.UseFluentValidation(opt =>
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 							opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>(strategy =>
 							{
 								strategy.IncludeProperties(input => input.Name, input => input.Address);
-							}))))
+							})))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -97,12 +98,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(arg =>
-						arg.UseFluentValidation(opt =>
+					.AddMutationType(new TestMutation(field => field.Argument("input",
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 							opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>(strategy =>
 							{
 								strategy.IncludeProperties(input => input.Name);
-							}))))
+							})))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
