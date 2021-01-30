@@ -25,6 +25,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		public const string ArgumentOptionsKey = "ArgumentValidationOptions";
 
 		/// <summary>
+		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ObjectValidationOptions"/>
+		/// </summary>
+		public const string ObjectOptionsKey = "ObjectValidationOptions";
+
+		/// <summary>
 		/// Default validation field middleware
 		/// </summary>
 		public static FieldMiddleware Middleware { get; } = ValidationFieldMiddleware.Use;
@@ -249,23 +254,6 @@ namespace AppAny.HotChocolate.FluentValidation
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)
 			{
-			}
-		}
-
-		/// <summary>
-		/// Default <see cref="ValidationBuilder"/> implementation factories
-		/// </summary>
-		public static class ValidationBuilders
-		{
-			/// <summary>
-			/// Creates and configures default <see cref="ValidationBuilder"/>
-			/// </summary>
-			public static ValidationBuilder Default(IServiceCollection services)
-			{
-				return new DefaultValidationBuilder(services)
-					.UseDefaultErrorMapper()
-					.UseDefaultInputValidatorProvider()
-					.SkipValidation(SkipValidation.Default);
 			}
 		}
 	}
