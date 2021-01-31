@@ -130,11 +130,11 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// </summary>
 			public static InputValidator FromValidator(IValidator validator)
 			{
-				return async (argument, cancellationToken) =>
+				return async context =>
 				{
-					var validationContext = new ValidationContext<object>(argument);
+					var validationContext = new ValidationContext<object>(context.Argument);
 
-					return await validator.ValidateAsync(validationContext, cancellationToken).ConfigureAwait(false);
+					return await validator.ValidateAsync(validationContext, context.CancellationToken).ConfigureAwait(false);
 				};
 			}
 
@@ -143,16 +143,16 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// </summary>
 			public static InputValidator FromValidators(IEnumerable<IValidator> validators)
 			{
-				return async (argument, cancellationToken) =>
+				return async context =>
 				{
-					var validationContext = new ValidationContext<object>(argument);
+					var validationContext = new ValidationContext<object>(context.Argument);
 
 					ValidationResult? validationResult = null;
 
 					foreach (var validator in validators)
 					{
 						var validatorResult = await validator.ValidateAsync(
-							validationContext, cancellationToken).ConfigureAwait(false);
+							validationContext, context.CancellationToken).ConfigureAwait(false);
 
 						if (validationResult is null)
 						{
@@ -178,13 +178,13 @@ namespace AppAny.HotChocolate.FluentValidation
 				IValidator<TInput> validator,
 				Action<ValidationStrategy<TInput>> validationStrategy)
 			{
-				return async (argument, cancellationToken) =>
+				return async context =>
 				{
 					var validationContext = ValidationContext<TInput>.CreateWithOptions(
-						(TInput)argument,
+						(TInput)context.Argument,
 						validationStrategy);
 
-					return await validator.ValidateAsync(validationContext, cancellationToken).ConfigureAwait(false);
+					return await validator.ValidateAsync(validationContext, context.CancellationToken).ConfigureAwait(false);
 				};
 			}
 
@@ -195,10 +195,10 @@ namespace AppAny.HotChocolate.FluentValidation
 				IEnumerable<IValidator<TInput>> validators,
 				Action<ValidationStrategy<TInput>> validationStrategy)
 			{
-				return async (argument, cancellationToken) =>
+				return async context =>
 				{
 					var validationContext = ValidationContext<TInput>.CreateWithOptions(
-						(TInput)argument,
+						(TInput)context.Argument,
 						validationStrategy);
 
 					ValidationResult? validationResult = null;
@@ -206,7 +206,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					foreach (var validator in validators)
 					{
 						var validatorResult = await validator.ValidateAsync(
-							validationContext, cancellationToken).ConfigureAwait(false);
+							validationContext, context.CancellationToken).ConfigureAwait(false);
 
 						if (validationResult is null)
 						{

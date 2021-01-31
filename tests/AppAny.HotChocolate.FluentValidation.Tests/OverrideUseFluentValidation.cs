@@ -428,11 +428,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>()
 							.UseFluentValidation(opt =>
 							{
-								opt.UseDefaultInputValidatorProvider(_ => async (argument, cancellationToken) =>
+								opt.UseDefaultInputValidatorProvider(_ => async context =>
 								{
 									var validator = new NotEmptyAddressValidator();
 
-									return await validator.ValidateAsync((TestPersonInput)argument, cancellationToken);
+									return await validator.ValidateAsync((TestPersonInput)context.Argument, context.CancellationToken);
 								});
 							}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());

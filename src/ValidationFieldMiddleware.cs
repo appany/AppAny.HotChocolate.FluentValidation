@@ -17,9 +17,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					for (var nodeIndex = 0; nodeIndex < argumentNodes.Count; nodeIndex++)
 					{
-						var passedArgument = argumentNodes[nodeIndex];
+						var argumentNode = argumentNodes[nodeIndex];
 
-						var argument = objectFieldOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
+						var argument = objectFieldOptions.Arguments.TryGetArgument(argumentNode.Name.Value);
 
 						if (argument is null)
 						{
@@ -52,7 +52,7 @@ namespace AppAny.HotChocolate.FluentValidation
 								.Invoke(new InputValidatorProviderContext(middlewareContext, argument));
 
 							var validationResult = await inputValidator
-								.Invoke(argumentValue, middlewareContext.RequestAborted)
+								.Invoke(new InputValidatorContext(argumentValue, middlewareContext.RequestAborted))
 								.ConfigureAwait(false);
 
 							if (validationResult?.IsValid is null or true)
