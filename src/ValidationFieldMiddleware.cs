@@ -66,10 +66,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 								var errorBuilder = ErrorBuilder.New();
 
-								argumentOptions.ErrorMapper!
-									.Invoke(
-										errorBuilder,
-										new ErrorMappingContext(middlewareContext, argument, validationResult, validationFailure));
+								argumentOptions.ErrorMapper!.Invoke(
+									errorBuilder,
+									new ErrorMappingContext(middlewareContext, argument, validationResult, validationFailure));
 
 								middlewareContext.ReportError(errorBuilder.Build());
 							}
