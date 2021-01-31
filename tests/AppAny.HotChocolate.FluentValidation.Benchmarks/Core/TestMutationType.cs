@@ -5,7 +5,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 {
 	public class TestMutationType : ObjectType
 	{
-		private readonly Action<IArgumentDescriptor> configure;
+		private readonly Action<IObjectFieldDescriptor> configure;
 
 		public TestMutationType()
 		{
@@ -14,16 +14,17 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			};
 		}
 
-		public TestMutationType(Action<IArgumentDescriptor> configure)
+		public TestMutationType(Action<IObjectFieldDescriptor> configure)
 		{
 			this.configure = configure;
 		}
 
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Field("test")
-				.Argument("input", arg => configure.Invoke(arg.Type<TestInputType>()))
+			var testField = descriptor.Field("test")
 				.Resolve("test");
+
+			configure.Invoke(testField);
 		}
 	}
 }

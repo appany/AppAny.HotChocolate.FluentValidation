@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
 	public static class CanUseErrorMappersExtensions
@@ -8,48 +6,42 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Uses default <see cref="ErrorMapper"/>. See <see cref="ValidationDefaults.ErrorMappers.Default"/>
 		/// </summary>
 		public static TBuilder UseDefaultErrorMapper<TBuilder>(
-			this CanUseErrorMappers<TBuilder> builder,
-			params ErrorMapper[] errorMappers)
+			this CanUseErrorMapper<TBuilder> builder,
+			ErrorMapper? errorMapper = null)
 		{
-			return builder.UseErrorMappers(
-				new ErrorMapper[] { ValidationDefaults.ErrorMappers.Default }
-					.Concat(errorMappers)
-					.ToArray());
+			return builder.UseErrorMapper((errorBuilder, context) =>
+			{
+				ValidationDefaults.ErrorMappers.Default(errorBuilder, context);
+				errorMapper?.Invoke(errorBuilder, context);
+			});
 		}
 
 		/// <summary>
 		/// Adds default <see cref="ErrorMapper"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
 		/// </summary>
 		public static TBuilder UseDefaultErrorMapperWithDetails<TBuilder>(
-			this CanUseErrorMappers<TBuilder> builder,
-			params ErrorMapper[] errorMappers)
+			this CanUseErrorMapper<TBuilder> builder,
+			ErrorMapper? errorMapper = null)
 		{
-			return builder.UseErrorMappers(
-				new ErrorMapper[]
-					{
-						ValidationDefaults.ErrorMappers.Default,
-						ValidationDefaults.ErrorMappers.Details
-					}
-					.Concat(errorMappers)
-					.ToArray());
+			return builder.UseDefaultErrorMapper((errorBuilder, context) =>
+			{
+				ValidationDefaults.ErrorMappers.Details(errorBuilder, context);
+				errorMapper?.Invoke(errorBuilder, context);
+			});
 		}
 
 		/// <summary>
 		/// Adds default <see cref="ErrorMapper"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
 		/// </summary>
 		public static TBuilder UseDefaultErrorMapperWithExtendedDetails<TBuilder>(
-			this CanUseErrorMappers<TBuilder> builder,
-			params ErrorMapper[] errorMappers)
+			this CanUseErrorMapper<TBuilder> builder,
+			ErrorMapper? errorMapper = null)
 		{
-			return builder.UseErrorMappers(
-				new ErrorMapper[]
-					{
-						ValidationDefaults.ErrorMappers.Default,
-						ValidationDefaults.ErrorMappers.Details,
-						ValidationDefaults.ErrorMappers.Extended
-					}
-					.Concat(errorMappers)
-					.ToArray());
+			return builder.UseDefaultErrorMapperWithDetails((errorBuilder, context) =>
+			{
+				ValidationDefaults.ErrorMappers.Extended(errorBuilder, context);
+				errorMapper?.Invoke(errorBuilder, context);
+			});
 		}
 	}
 }
