@@ -23,10 +23,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			this IRequestExecutorBuilder builder,
 			Action<ValidationBuilder> configure)
 		{
-			builder.ConfigureSchemaServices(services =>
-			{
-				configure.Invoke(new DefaultValidationBuilder(services));
-			});
+			var validationOptions = new ValidationOptions();
+			configure.Invoke(new DefaultValidationBuilder(validationOptions));
+			builder.SetContextData(ValidationDefaults.ValidationOptionsKey, validationOptions);
 
 			builder.TryAddTypeInterceptor<ValidationTypeInterceptor>();
 			builder.TryAddSchemaInterceptor<ValidationSchemaInterceptor>();

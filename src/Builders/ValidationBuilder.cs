@@ -1,5 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
 	/// <summary>
@@ -14,30 +12,30 @@ namespace AppAny.HotChocolate.FluentValidation
 
 	internal sealed class DefaultValidationBuilder : ValidationBuilder
 	{
-		private readonly IServiceCollection services;
+		private readonly ValidationOptions options;
 
-		public DefaultValidationBuilder(IServiceCollection services)
+		public DefaultValidationBuilder(ValidationOptions options)
 		{
-			this.services = services;
+			this.options = options;
 		}
 
 		public ValidationBuilder SkipValidation(SkipValidation skipValidation)
 		{
-			services.Configure<ValidationOptions>(options => options.SkipValidation = skipValidation);
+			options.SkipValidation = skipValidation;
 
 			return this;
 		}
 
 		public ValidationBuilder UseErrorMappers(params ErrorMapper[] errorMappers)
 		{
-			services.Configure<ValidationOptions>(options => options.ErrorMappers = errorMappers);
+			options.ErrorMappers = errorMappers;
 
 			return this;
 		}
 
 		public ValidationBuilder UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
 		{
-			services.Configure<ValidationOptions>(options => options.InputValidatorProviders = inputValidatorProviders);
+			options.InputValidatorProviders = inputValidatorProviders;
 
 			return this;
 		}

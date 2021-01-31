@@ -14,11 +14,13 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			if (definition is ObjectTypeDefinition objectTypeDefinition)
 			{
+				var validationOptions = completionContext.ContextData.GetValidationOptions();
+
 				foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
 				{
 					if (objectFieldDefinition.Arguments.Any(argument => argument.ContextData.ShouldValidate()))
 					{
-						objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
+						objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationFieldMiddleware.Create(validationOptions));
 					}
 				}
 			}

@@ -1,24 +1,18 @@
 ﻿using HotChocolate;
 using HotChocolate.Resolvers;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ValidationFieldMiddleware
 	{
-		public static FieldDelegate Use(FieldDelegate next)
+		public static FieldMiddleware Create(ValidationOptions validationOptions)
 		{
-			return async middlewareContext =>
+			return next => async middlewareContext =>
 			{
 				var passedArguments = middlewareContext.Selection.SyntaxNode.Arguments;
 
 				if (passedArguments is { Count: > 0 })
 				{
-					var validationOptions = middlewareContext.Schema.Services!
-						.GetRequiredService<IOptions<ValidationOptions>>()
-						.Value;
-
 					var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
 
 					for (var passedArgumentIndex = 0; passedArgumentIndex < passedArguments.Count; passedArgumentIndex++)

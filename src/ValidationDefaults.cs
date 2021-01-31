@@ -6,7 +6,6 @@ using HotChocolate;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Results;
-using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +19,11 @@ namespace AppAny.HotChocolate.FluentValidation
 		public const string Code = "ValidationFailed";
 
 		/// <summary>
+		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ValidationOptions"/>
+		/// </summary>
+		public const string ValidationOptionsKey = "ValidationOptions";
+
+		/// <summary>
 		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ArgumentValidationOptions"/>
 		/// </summary>
 		public const string ArgumentOptionsKey = "ArgumentValidationOptions";
@@ -28,11 +32,6 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ObjectFieldValidationOptions"/>
 		/// </summary>
 		public const string ObjectFieldOptionsKey = "ObjectFieldValidationOptions";
-
-		/// <summary>
-		/// Default validation field middleware
-		/// </summary>
-		public static FieldMiddleware Middleware { get; } = ValidationFieldMiddleware.Use;
 
 		/// <summary>
 		/// Default graphql error extensions keys

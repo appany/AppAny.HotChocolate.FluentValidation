@@ -68,5 +68,10 @@ namespace AppAny.HotChocolate.FluentValidation
 				? data
 				: null;
 		}
+
+		public static ValidationOptions GetValidationOptions(this IDictionary<string, object?> contextData)
+		{
+			return (ValidationOptions)contextData[ValidationDefaults.ValidationOptionsKey]!;
+		}
 	}
 }
