@@ -418,5 +418,55 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			Assert.Null(result.Errors);
 		}
+
+		[Fact]
+		public async Task Should_Use_Multiple_InputValidatorProviders()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation()
+					.AddMutationType(new TestMutation(field => field
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>()
+							.UseFluentValidation(opt =>
+							{
+								opt.UseDefaultInputValidatorProvider(_ => async (argument, cancellationToken) =>
+								{
+									var validator = new NotEmptyAddressValidator();
+
+									return await validator.ValidateAsync((TestPersonInput)argument, cancellationToken);
+								});
+							}))))
+					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				name =>
+				{
+					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+
+					Assert.Collection(name.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				},
+				address =>
+				{
+					Assert.Equal(ValidationDefaults.Code, address.Code);
+					Assert.Equal(NotEmptyAddressValidator.Message, address.Message);
+
+					Assert.Collection(address.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				});
+		}
 	}
 }

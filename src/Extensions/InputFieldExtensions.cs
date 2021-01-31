@@ -5,7 +5,7 @@ using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal static class InputValidatorProviderContextExtensions
+	internal static class InputFieldExtensions
 	{
 		private static readonly ConcurrentDictionary<Type, Type> ArgumentTypeToValidatorType = new();
 
