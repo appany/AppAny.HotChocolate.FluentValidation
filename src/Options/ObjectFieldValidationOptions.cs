@@ -4,7 +4,7 @@ using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal sealed class ObjectValidationOptions
+	internal sealed class ObjectFieldValidationOptions
 	{
 		public IDictionary<string, IInputField> Arguments { get; } = new ConcurrentDictionary<string, IInputField>();
 	}

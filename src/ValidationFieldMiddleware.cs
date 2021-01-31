@@ -19,13 +19,13 @@ namespace AppAny.HotChocolate.FluentValidation
 						.GetRequiredService<IOptions<ValidationOptions>>()
 						.Value;
 
-					var objectOptions = middlewareContext.Field.ContextData.GetObjectOptions();
+					var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
 
 					for (var passedArgumentIndex = 0; passedArgumentIndex < passedArguments.Count; passedArgumentIndex++)
 					{
 						var passedArgument = passedArguments[passedArgumentIndex];
 
-						var argument = objectOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
+						var argument = objectFieldOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
 
 						if (argument is null)
 						{

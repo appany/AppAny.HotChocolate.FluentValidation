@@ -37,29 +37,29 @@ namespace AppAny.HotChocolate.FluentValidation
 			return contextData.TryGetArgumentOptions() is not null;
 		}
 
-		public static ObjectValidationOptions GetOrCreateObjectOptions(this ExtensionData extensionData)
+		public static ObjectFieldValidationOptions GetOrCreateObjectFieldOptions(this ExtensionData extensionData)
 		{
-			var options = extensionData.TryGetObjectOptions();
+			var options = extensionData.TryGetObjectFieldOptions();
 
 			if (options is null)
 			{
-				options = new ObjectValidationOptions();
-				extensionData.Add(ValidationDefaults.ObjectOptionsKey, options);
+				options = new ObjectFieldValidationOptions();
+				extensionData.Add(ValidationDefaults.ObjectFieldOptionsKey, options);
 			}
 
 			return options;
 		}
 
-		public static ObjectValidationOptions? TryGetObjectOptions(this IReadOnlyDictionary<string, object?> contextData)
+		public static ObjectFieldValidationOptions? TryGetObjectFieldOptions(this IReadOnlyDictionary<string, object?> contextData)
 		{
-			return contextData.TryGetValue(ValidationDefaults.ObjectOptionsKey, out var data)
-				? (ObjectValidationOptions)data!
+			return contextData.TryGetValue(ValidationDefaults.ObjectFieldOptionsKey, out var data)
+				? (ObjectFieldValidationOptions)data!
 				: null;
 		}
 
-		public static ObjectValidationOptions GetObjectOptions(this IReadOnlyDictionary<string, object?> contextData)
+		public static ObjectFieldValidationOptions GetObjectFieldOptions(this IReadOnlyDictionary<string, object?> contextData)
 		{
-			return (ObjectValidationOptions)contextData[ValidationDefaults.ObjectOptionsKey]!;
+			return (ObjectFieldValidationOptions)contextData[ValidationDefaults.ObjectFieldOptionsKey]!;
 		}
 
 		public static IInputField? TryGetArgument(this IDictionary<string, IInputField> arguments, string name)

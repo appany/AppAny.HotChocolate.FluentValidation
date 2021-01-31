@@ -18,9 +18,9 @@ namespace AppAny.HotChocolate.FluentValidation
 					{
 						var extensionData = (ExtensionData)objectField.ContextData;
 
-						var objectOptions = extensionData.GetOrCreateObjectOptions();
+						var objectFieldOptions = extensionData.GetOrCreateObjectFieldOptions();
 
-						objectOptions.Arguments.Add(argument.Name, argument);
+						objectFieldOptions.Arguments.Add(argument.Name, argument);
 					}
 				}
 			}
