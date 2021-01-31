@@ -61,8 +61,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				: null;
 		}
 
-		public static ArgumentValidationOptions GetArgumentOptions(
-			this IReadOnlyDictionary<string, object?> contextData)
+		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
 		{
 			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
 		}

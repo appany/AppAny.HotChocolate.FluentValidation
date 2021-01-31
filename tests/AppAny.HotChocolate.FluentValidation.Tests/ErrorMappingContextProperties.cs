@@ -21,7 +21,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 								Assert.Single(context.ValidationResult.Errors);
 								Assert.Equal(nameof(TestPersonInput.Name), context.ValidationFailure.PropertyName);
 							}))
-					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
+					.AddMutationType(new TestMutation(field => field
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(
@@ -47,8 +48,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field => field.Argument("input",
-						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+					.AddMutationType(new TestMutation(field => field
+						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{
 							opt.UseDefaultErrorMapper(
 								(_, context) =>

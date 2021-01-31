@@ -7,8 +7,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Always skips validation <see cref="ValidationDefaults.SkipValidation.Skip"/>
 		/// </summary>
-		public static TBuilder SkipValidation<TBuilder>(
-			this CanSkipValidation<TBuilder> builder)
+		public static TBuilder SkipValidation<TBuilder>(this CanSkipValidation<TBuilder> builder)
 		{
 			return builder.SkipValidation(ValidationDefaults.SkipValidation.Skip);
 		}

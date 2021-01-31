@@ -14,13 +14,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper()
-					.UseInputValidatorProviders(context =>
-					{
-						Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
+						.UseInputValidatorProviders(context =>
+						{
+							Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
 
-						return ValidationDefaults.InputValidatorProviders.Default(context);
-					}))
-					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
+							return ValidationDefaults.InputValidatorProviders.Default(context);
+						}))
+					.AddMutationType(new TestMutation(field =>
+						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(

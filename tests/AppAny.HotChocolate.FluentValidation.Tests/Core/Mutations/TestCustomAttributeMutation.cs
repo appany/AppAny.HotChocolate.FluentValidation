@@ -9,6 +9,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			descriptor.Field<TestCustomAttributeMutation>(field => field.Test(default!)).Type<StringType>();
 		}
 
-		public string Test([UseFluentValidation(typeof(NotEmptyNameValidator))] TestPersonInput input) => "test";
+		public string Test([UseFluentValidation(typeof(NotEmptyNameValidator))] TestPersonInput input)
+		{
+			return "test";
+		}
 	}
 }
