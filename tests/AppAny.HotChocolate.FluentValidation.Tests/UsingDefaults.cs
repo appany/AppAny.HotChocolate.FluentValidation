@@ -39,7 +39,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseMultipleValidators_ByConvention()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
@@ -80,7 +80,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseValidatorByConvention_DoubleProperty()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",  arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>());
 

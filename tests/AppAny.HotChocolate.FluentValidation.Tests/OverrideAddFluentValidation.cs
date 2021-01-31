@@ -14,7 +14,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_HaveNullResult_ValidationError_WithoutExtensionCodes()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -40,7 +40,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_HaveNullResult_WithValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{
@@ -67,10 +67,10 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Throw_NoMessageSet()
+		public async Task Should_Throw_NoMessageSet_ErrorMapper_WithoutDefault()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
+				builder.AddFluentValidation(opt => opt.UseErrorMapper(ValidationDefaults.ErrorMappers.Details))
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{

@@ -26,7 +26,7 @@ services.AddGraphQLServer()
   .AddFluentValidation(options =>
   {
     options.SkipValidation(...)
-      .UseErrorMappers(...)
+      .UseErrorMapper(...)
       .UseInputValidatorProviders(...);
   });
 
@@ -34,7 +34,7 @@ descriptor.Field(x => x.Example(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
     options.SkipValidation(...)
-      .UseErrorMappers(...)
+      .UseErrorMapper(...)
       .UseInputValidatorProviders(...)
       .UseValidator<ExampleInputValidator>()
       .UseValidator<ExampleInput, ExampleInputValidator>()

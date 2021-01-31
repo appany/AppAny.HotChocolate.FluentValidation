@@ -14,9 +14,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt =>
-						opt.UseErrorMappers(
-							ValidationDefaults.ErrorMappers.Default,
-							(errorBuilder, _) => errorBuilder.SetExtension("test", "test")))
+						opt.UseDefaultErrorMapper(
+							(errorBuilder, _) =>
+							{
+								errorBuilder.SetExtension("test", "test");
+							}))
 					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -47,15 +49,16 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_SetExtension_UseFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt
-						.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(
 							opt =>
 							{
-								opt.UseErrorMappers(
-									ValidationDefaults.ErrorMappers.Default,
-									(errorBuilder, _) => errorBuilder.SetExtension("test", "test"));
+								opt.UseDefaultErrorMapper(
+									(errorBuilder, _) =>
+									{
+										errorBuilder.SetExtension("test", "test");
+									});
 							}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 

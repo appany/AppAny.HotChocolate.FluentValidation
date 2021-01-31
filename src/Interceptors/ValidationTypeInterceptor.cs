@@ -29,7 +29,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				{
 					foreach (var options in arguments.Select(argument => argument.ContextData.GetArgumentOptions()))
 					{
-						options.ErrorMappers ??= validationOptions.ErrorMappers;
+						options.ErrorMapper ??= validationOptions.ErrorMapper;
 						options.SkipValidation ??= validationOptions.SkipValidation;
 						options.InputValidatorProviders ??= validationOptions.InputValidatorProviders;
 					}

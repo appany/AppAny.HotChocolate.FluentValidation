@@ -13,7 +13,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_Pass_Values_AddFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default)
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper()
 					.UseInputValidatorProviders(context =>
 					{
 						Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
@@ -45,7 +45,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_Pass_Values_UseFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{

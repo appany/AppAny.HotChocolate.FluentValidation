@@ -15,11 +15,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseOnlyDefaultErrorMapper()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Details))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
-							fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default);
+							fv.UseDefaultErrorMapper();
 						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -45,11 +45,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseDefaultAndExtensionsErrorMapper()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
-							fv.UseErrorMappers(ValidationDefaults.ErrorMappers.Default, ValidationDefaults.ErrorMappers.Details);
+							fv.UseDefaultErrorMapperWithDetails();
 						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
@@ -100,7 +100,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
@@ -130,7 +130,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseCustomValidatorProvider()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
@@ -162,7 +162,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseMultipleCustomValidators()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
@@ -207,7 +207,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseMultipleCustomValidators_ExplicitInputType()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
@@ -252,7 +252,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseMultipleCustomValidators_WithValidationStrategy_IgnoreAddress()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
@@ -287,8 +287,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseMultipleCustomValidators_SameProperty()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt
-						.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
@@ -333,7 +332,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_UseSingleCustomValidator_DoubleProperty()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseErrorMappers(ValidationDefaults.ErrorMappers.Default))
+				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{

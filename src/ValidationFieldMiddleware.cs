@@ -9,15 +9,15 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			return async middlewareContext =>
 			{
-				var passedArguments = middlewareContext.Selection.SyntaxNode.Arguments;
+				var argumentNodes = middlewareContext.Selection.SyntaxNode.Arguments;
 
-				if (passedArguments is { Count: > 0 })
+				if (argumentNodes is { Count: > 0 })
 				{
 					var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
 
-					for (var passedArgumentIndex = 0; passedArgumentIndex < passedArguments.Count; passedArgumentIndex++)
+					for (var nodeIndex = 0; nodeIndex < argumentNodes.Count; nodeIndex++)
 					{
-						var passedArgument = passedArguments[passedArgumentIndex];
+						var passedArgument = argumentNodes[nodeIndex];
 
 						var argument = objectFieldOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
 
@@ -62,16 +62,11 @@ namespace AppAny.HotChocolate.FluentValidation
 
 								var errorBuilder = ErrorBuilder.New();
 
-								for (var errorMapperIndex = 0; errorMapperIndex < argumentOptions.ErrorMappers!.Count; errorMapperIndex++)
-								{
-									var errorMapper = argumentOptions.ErrorMappers[errorMapperIndex];
-
-									errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
-										middlewareContext,
-										argument,
-										validationResult,
-										validationFailure));
-								}
+								argumentOptions.ErrorMapper!.Invoke(errorBuilder, new ErrorMappingContext(
+									middlewareContext,
+									argument,
+									validationResult,
+									validationFailure));
 
 								middlewareContext.ReportError(errorBuilder.Build());
 							}
