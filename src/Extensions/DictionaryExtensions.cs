@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using HotChocolate;
-using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
@@ -37,35 +36,12 @@ namespace AppAny.HotChocolate.FluentValidation
 			return contextData.TryGetArgumentOptions() is not null;
 		}
 
-		public static ObjectFieldValidationOptions GetOrCreateObjectFieldOptions(this ExtensionData extensionData)
+		public static ArgumentValidationOptions? TryGetArgumentOptions(
+			this IDictionary<string, ArgumentValidationOptions> arguments,
+			string name)
 		{
-			var options = extensionData.TryGetObjectFieldOptions();
-
-			if (options is null)
-			{
-				options = new ObjectFieldValidationOptions();
-				extensionData.Add(ValidationDefaults.ObjectFieldOptionsKey, options);
-			}
-
-			return options;
-		}
-
-		public static ObjectFieldValidationOptions? TryGetObjectFieldOptions(this IReadOnlyDictionary<string, object?> contextData)
-		{
-			return contextData.TryGetValue(ValidationDefaults.ObjectFieldOptionsKey, out var data)
-				? (ObjectFieldValidationOptions)data!
-				: null;
-		}
-
-		public static ObjectFieldValidationOptions GetObjectFieldOptions(this IReadOnlyDictionary<string, object?> contextData)
-		{
-			return (ObjectFieldValidationOptions)contextData[ValidationDefaults.ObjectFieldOptionsKey]!;
-		}
-
-		public static IInputField? TryGetArgument(this IDictionary<string, IInputField> arguments, string name)
-		{
-			return arguments.TryGetValue(name, out var data)
-				? data
+			return arguments.TryGetValue(name, out var options)
+				? options
 				: null;
 		}
 

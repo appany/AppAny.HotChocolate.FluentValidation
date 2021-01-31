@@ -29,11 +29,6 @@ namespace AppAny.HotChocolate.FluentValidation
 		public const string ArgumentOptionsKey = "ArgumentValidationOptions";
 
 		/// <summary>
-		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ObjectFieldValidationOptions"/>
-		/// </summary>
-		public const string ObjectFieldOptionsKey = "ObjectFieldValidationOptions";
-
-		/// <summary>
 		/// Default graphql error extensions keys
 		/// </summary>
 		public static class ExtensionKeys

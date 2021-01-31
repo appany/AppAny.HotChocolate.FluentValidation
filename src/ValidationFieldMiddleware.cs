@@ -5,7 +5,7 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ValidationFieldMiddleware
 	{
-		public static FieldMiddleware Create(ValidationOptions validationOptions)
+		public static FieldMiddleware Create(ValidationFieldMiddlewareContext validationContext)
 		{
 			return next => async middlewareContext =>
 			{
@@ -13,22 +13,20 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (passedArguments is { Count: > 0 })
 				{
-					var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
+					var arguments = middlewareContext.Field.Arguments;
 
-					for (var passedArgumentIndex = 0; passedArgumentIndex < passedArguments.Count; passedArgumentIndex++)
+					for (var argumentIndex = 0; argumentIndex < arguments.Count; argumentIndex++)
 					{
-						var passedArgument = passedArguments[passedArgumentIndex];
+						var argument = arguments[argumentIndex];
 
-						var argument = objectFieldOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
+						var argumentOptions = validationContext.ArgumentOptions.TryGetArgumentOptions(argument.Name);
 
-						if (argument is null)
+						if (argumentOptions is null)
 						{
 							continue;
 						}
 
-						var argumentOptions = argument.ContextData.GetArgumentOptions();
-
-						var skipValidation = argumentOptions.SkipValidation ?? validationOptions.SkipValidation;
+						var skipValidation = argumentOptions.SkipValidation ?? validationContext.ValidationOptions.SkipValidation;
 
 						if (await skipValidation.Invoke(
 							new SkipValidationContext(middlewareContext, argument)).ConfigureAwait(false))
@@ -44,10 +42,10 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 
 						var errorMappers = argumentOptions.ErrorMappers
-							?? validationOptions.ErrorMappers;
+							?? validationContext.ValidationOptions.ErrorMappers;
 
 						var inputValidatorProviders = argumentOptions.InputValidatorProviders
-							?? validationOptions.InputValidatorProviders;
+							?? validationContext.ValidationOptions.InputValidatorProviders;
 
 						for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
 						{

@@ -19,17 +19,17 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			withDefaultErrorMapper = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation()
 					.AddMutationType(new TestMutationType(arg => arg.UseFluentValidation()))
-					.Services.AddScoped<IValidator<TestInput>, TestInputValidator>());
+					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			withDefaultErrorMapperWithDetails = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithDetails())
 					.AddMutationType(new TestMutationType(arg => arg.UseFluentValidation()))
-					.Services.AddScoped<IValidator<TestInput>, TestInputValidator>());
+					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			withDefaultErrorMapperWithExtendedDetails = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())
 					.AddMutationType(new TestMutationType(arg => arg.UseFluentValidation()))
-					.Services.AddScoped<IValidator<TestInput>, TestInputValidator>());
+					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 		}
 
 		[Benchmark(Baseline = true)]

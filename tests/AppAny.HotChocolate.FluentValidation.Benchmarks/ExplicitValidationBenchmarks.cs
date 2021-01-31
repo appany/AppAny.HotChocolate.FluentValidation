@@ -26,17 +26,17 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 				builder => builder.AddFluentValidation()
 					.AddMutationType(new TestMutationType(arg =>
 						arg.UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>())))
-					.Services.AddScoped<IValidator<TestInput>, TestInputValidator>());
+					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			fluentChocoValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.UseFluentValidation()
 					.AddMutationType(new TestMutationType())
-					.Services.AddScoped<IValidator<TestInput>, TestInputValidator>());
+					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			fairyBreadValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFairyBread(opt => opt.AssembliesToScanForValidators = new[] { typeof(Program).Assembly })
 					.AddMutationType(new TestMutationType(arg => arg.UseValidation()))
-					.Services.AddScoped<TestInputValidator>());
+					.Services.AddSingleton<TestInputValidator>());
 		}
 
 		[Benchmark]
@@ -51,7 +51,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			return withExplicitValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);
 		}
 
-		[Benchmark(Description = "Broken since 11.0.8")]
+		// [Benchmark(Description = "Broken since 11.0.8")]
 		public Task RunWithFluentChocoValidation()
 		{
 			return fluentChocoValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);
