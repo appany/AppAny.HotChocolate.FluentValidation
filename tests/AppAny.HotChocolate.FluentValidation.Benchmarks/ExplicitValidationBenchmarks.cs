@@ -20,22 +20,25 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		public async Task GlobalSetup()
 		{
 			withoutValidation = await BenchmarkSetup.CreateRequestExecutor(
-				builder => builder.AddMutationType(new TestMutationType()));
+				builder => builder.AddMutationType(new TestMutationType(field =>
+					field.Argument("input", arg => arg.Type<TestInputType>()))));
 
 			withExplicitValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation()
 					.AddMutationType(new TestMutationType(field => field
-						.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>()))))
+						.Argument("input",
+							arg => arg.Type<TestInputType>().UseFluentValidation(opt => opt.UseValidator<IValidator<TestInput>>()))))
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			fluentChocoValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.UseFluentValidation()
-					.AddMutationType(new TestMutationType())
+					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>())))
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			fairyBreadValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFairyBread(opt => opt.AssembliesToScanForValidators = new[] { typeof(Program).Assembly })
-					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>().UseValidation())))
+					.AddMutationType(new TestMutationType(field =>
+						field.Argument("input", arg => arg.Type<TestInputType>().UseValidation())))
 					.Services.AddSingleton<TestInputValidator>());
 		}
 

@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using HotChocolate.Configuration;
@@ -6,20 +5,6 @@ using HotChocolate.Types.Descriptors.Definitions;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal readonly struct ValidationFieldMiddlewareContext
-	{
-		public ValidationFieldMiddlewareContext(
-			ValidationOptions validationOptions,
-			IDictionary<string, ArgumentValidationOptions> argumentOptions)
-		{
-			ValidationOptions = validationOptions;
-			ArgumentOptions = argumentOptions;
-		}
-
-		public ValidationOptions ValidationOptions { get; }
-		public IDictionary<string, ArgumentValidationOptions> ArgumentOptions { get; }
-	}
-
 	internal sealed class ValidationTypeInterceptor : TypeInterceptor
 	{
 		public override void OnBeforeCompleteType(
@@ -27,24 +12,29 @@ namespace AppAny.HotChocolate.FluentValidation
 			DefinitionBase? definition,
 			IDictionary<string, object?> contextData)
 		{
-			if (definition is ObjectTypeDefinition objectTypeDefinition)
+			if (definition is not ObjectTypeDefinition objectTypeDefinition)
 			{
-				var validationOptions = completionContext.ContextData.GetValidationOptions();
+				return;
+			}
 
-				foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
+			var validationOptions = completionContext.ContextData.GetValidationOptions();
+
+			foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
+			{
+				var arguments = objectFieldDefinition.Arguments
+					.Where(x => x.ContextData.ShouldValidate())
+					.ToList();
+
+				if (arguments is { Count: > 0 })
 				{
-					var argumentOptions = objectFieldDefinition.Arguments
-						.Where(x => x.ContextData.ShouldValidate())
-						.Select(x => new KeyValuePair<string, ArgumentValidationOptions>(x.Name, x.ContextData.GetArgumentOptions()))
-						.ToArray();
-
-					if (argumentOptions.Any())
+					foreach (var options in arguments.Select(argument => argument.ContextData.GetArgumentOptions()))
 					{
-						objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationFieldMiddleware.Create(
-							new ValidationFieldMiddlewareContext(
-								validationOptions,
-								new ConcurrentDictionary<string, ArgumentValidationOptions>(argumentOptions))));
+						options.ErrorMappers ??= validationOptions.ErrorMappers;
+						options.SkipValidation ??= validationOptions.SkipValidation;
+						options.InputValidatorProviders ??= validationOptions.InputValidatorProviders;
 					}
+
+					objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
 				}
 			}
 		}

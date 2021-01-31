@@ -5,30 +5,30 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ValidationFieldMiddleware
 	{
-		public static FieldMiddleware Create(ValidationFieldMiddlewareContext validationContext)
+		public static FieldDelegate Use(FieldDelegate next)
 		{
-			return next => async middlewareContext =>
+			return async middlewareContext =>
 			{
 				var passedArguments = middlewareContext.Selection.SyntaxNode.Arguments;
 
 				if (passedArguments is { Count: > 0 })
 				{
-					var arguments = middlewareContext.Field.Arguments;
+					var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
 
-					for (var argumentIndex = 0; argumentIndex < arguments.Count; argumentIndex++)
+					for (var passedArgumentIndex = 0; passedArgumentIndex < passedArguments.Count; passedArgumentIndex++)
 					{
-						var argument = arguments[argumentIndex];
+						var passedArgument = passedArguments[passedArgumentIndex];
 
-						var argumentOptions = validationContext.ArgumentOptions.TryGetArgumentOptions(argument.Name);
+						var argument = objectFieldOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
 
-						if (argumentOptions is null)
+						if (argument is null)
 						{
 							continue;
 						}
 
-						var skipValidation = argumentOptions.SkipValidation ?? validationContext.ValidationOptions.SkipValidation;
+						var argumentOptions = argument.ContextData.GetArgumentOptions();
 
-						if (await skipValidation.Invoke(
+						if (await argumentOptions.SkipValidation!.Invoke(
 							new SkipValidationContext(middlewareContext, argument)).ConfigureAwait(false))
 						{
 							continue;
@@ -41,15 +41,9 @@ namespace AppAny.HotChocolate.FluentValidation
 							continue;
 						}
 
-						var errorMappers = argumentOptions.ErrorMappers
-							?? validationContext.ValidationOptions.ErrorMappers;
-
-						var inputValidatorProviders = argumentOptions.InputValidatorProviders
-							?? validationContext.ValidationOptions.InputValidatorProviders;
-
-						for (var providerIndex = 0; providerIndex < inputValidatorProviders.Count; providerIndex++)
+						for (var providerIndex = 0; providerIndex < argumentOptions.InputValidatorProviders!.Count; providerIndex++)
 						{
-							var inputValidatorProvider = inputValidatorProviders[providerIndex];
+							var inputValidatorProvider = argumentOptions.InputValidatorProviders[providerIndex];
 
 							var inputValidator = inputValidatorProvider.Invoke(
 								new InputValidatorProviderContext(middlewareContext, argument));
@@ -68,9 +62,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 								var errorBuilder = ErrorBuilder.New();
 
-								for (var errorMapperIndex = 0; errorMapperIndex < errorMappers.Count; errorMapperIndex++)
+								for (var errorMapperIndex = 0; errorMapperIndex < argumentOptions.ErrorMappers!.Count; errorMapperIndex++)
 								{
-									var errorMapper = errorMappers[errorMapperIndex];
+									var errorMapper = argumentOptions.ErrorMappers[errorMapperIndex];
 
 									errorMapper.Invoke(errorBuilder, new ErrorMappingContext(
 										middlewareContext,

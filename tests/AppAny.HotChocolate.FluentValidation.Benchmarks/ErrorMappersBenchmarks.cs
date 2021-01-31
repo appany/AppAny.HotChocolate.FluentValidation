@@ -18,17 +18,20 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		{
 			withDefaultErrorMapper = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation()
-					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
+					.AddMutationType(new TestMutationType(field =>
+						field.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			withDefaultErrorMapperWithDetails = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithDetails())
-					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
+					.AddMutationType(new TestMutationType(field =>
+						field.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			withDefaultErrorMapperWithExtendedDetails = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())
-					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
+					.AddMutationType(new TestMutationType(field =>
+						field.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 		}
 
