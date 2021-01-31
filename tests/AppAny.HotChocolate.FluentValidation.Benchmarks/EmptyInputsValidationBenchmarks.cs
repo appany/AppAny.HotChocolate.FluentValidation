@@ -23,7 +23,8 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 
 			withValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation()
-					.AddMutationType(new TestMutationType(arg => arg.UseFluentValidation()))
+					.AddMutationType(new TestMutationType(field => field
+						.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			fluentChocoValidation = await BenchmarkSetup.CreateRequestExecutor(
