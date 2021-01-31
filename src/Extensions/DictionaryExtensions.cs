@@ -32,6 +32,11 @@ namespace AppAny.HotChocolate.FluentValidation
 			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
 		}
 
+		public static bool ShouldValidate(this IReadOnlyDictionary<string, object?> contextData)
+		{
+			return contextData.TryGetArgumentOptions() is not null;
+		}
+
 		public static ObjectValidationOptions GetOrCreateObjectOptions(this ExtensionData extensionData)
 		{
 			var options = extensionData.TryGetObjectOptions();
@@ -50,6 +55,11 @@ namespace AppAny.HotChocolate.FluentValidation
 			return contextData.TryGetValue(ValidationDefaults.ObjectOptionsKey, out var data)
 				? (ObjectValidationOptions)data!
 				: null;
+		}
+
+		public static ObjectValidationOptions GetObjectOptions(this IReadOnlyDictionary<string, object?> contextData)
+		{
+			return (ObjectValidationOptions)contextData[ValidationDefaults.ObjectOptionsKey]!;
 		}
 
 		public static IInputField? TryGetArgument(this IDictionary<string, IInputField> arguments, string name)

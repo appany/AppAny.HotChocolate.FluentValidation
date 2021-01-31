@@ -1,5 +1,4 @@
 using System;
-using HotChocolate;
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,12 +28,8 @@ namespace AppAny.HotChocolate.FluentValidation
 				configure.Invoke(new DefaultValidationBuilder(services));
 			});
 
-			builder.ConfigureSchema(schemaBuilder =>
-			{
-				schemaBuilder.Use(ValidationDefaults.Middleware);
-
-				schemaBuilder.TryAddSchemaInterceptor<ValidationSchemaInterceptor>();
-			});
+			builder.TryAddTypeInterceptor<ValidationTypeInterceptor>();
+			builder.TryAddSchemaInterceptor<ValidationSchemaInterceptor>();
 
 			return builder;
 		}
