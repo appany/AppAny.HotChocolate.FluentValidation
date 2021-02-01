@@ -18,7 +18,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				.Type<StringType>()
 				.Resolve("test");
 
-				configure.Invoke(testField);
+			configure.Invoke(testField);
 		}
 	}
 }

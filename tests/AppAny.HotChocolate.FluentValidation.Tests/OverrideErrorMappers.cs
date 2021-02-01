@@ -19,7 +19,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								errorBuilder.SetExtension("test", "test");
 							}))
-					.AddMutationType(new TestMutation(field => field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
+					.AddMutationType(new TestMutation(field =>
+						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
 
 			var result = Assert.IsType<QueryResult>(

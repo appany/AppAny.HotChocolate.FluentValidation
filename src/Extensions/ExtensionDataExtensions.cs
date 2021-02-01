@@ -4,7 +4,7 @@ using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	internal static class DictionaryExtensions
+	internal static class ExtensionDataExtensions
 	{
 		public static IInputField? TryGetArgument(this IDictionary<string, IInputField> arguments, string name)
 		{
@@ -61,8 +61,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				: null;
 		}
 
-		public static ArgumentValidationOptions GetArgumentOptions(
-			this IReadOnlyDictionary<string, object?> contextData)
+		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
 		{
 			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
 		}

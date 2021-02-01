@@ -12,8 +12,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
-		public static ArgumentValidationBuilder UseValidator<TValidator>(
-			this ArgumentValidationBuilder builder)
+		public static ArgumentValidationBuilder UseValidator<TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
 			return builder.UseInputValidatorProviders(context =>
@@ -25,8 +24,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
-		public static ArgumentValidationBuilder UseValidators<TValidator>(
-			this ArgumentValidationBuilder builder)
+		public static ArgumentValidationBuilder UseValidators<TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
 			return builder.UseInputValidatorProviders(context =>
@@ -64,8 +62,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
-		public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(
-			this ArgumentValidationBuilder builder)
+		public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator<TInput>
 		{
 			return builder.UseValidator<TInput, TValidator>(ValidationDefaults.ValidationStrategies.Default);
@@ -75,8 +72,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Overrides global <see cref="InputValidatorProvider"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
-		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
-			this ArgumentValidationBuilder builder)
+		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator<TInput>
 		{
 			return builder.UseValidators<TInput, TValidator>(ValidationDefaults.ValidationStrategies.Default);

@@ -15,7 +15,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
 					.AddMutationType(new TestMutation(field => field.Argument("input",
-						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt => opt.UseValidators<IValidator<TestPersonInput>>()))))
+						arg => arg.Type<NonNullType<TestPersonInputType>>()
+							.UseFluentValidation(opt => opt.UseValidators<IValidator<TestPersonInput>>()))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -35,7 +36,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
 					.AddMutationType(new TestMutation(field => field.Argument("input",
-						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt => opt.UseValidators(typeof(IValidator<TestPersonInput>))))))
+						arg => arg.Type<NonNullType<TestPersonInputType>>()
+							.UseFluentValidation(opt => opt.UseValidators(typeof(IValidator<TestPersonInput>))))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 
@@ -55,7 +57,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
 					.AddMutationType(new TestMutation(field => field.Argument("input",
-						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt => opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>()))))
+						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+							opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>()))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
 					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
 

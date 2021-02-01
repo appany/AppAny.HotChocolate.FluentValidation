@@ -2,15 +2,11 @@
 
 namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main()
 		{
-			BenchmarkSwitcher
-				.FromAssembly(typeof(Program).Assembly)
-				.Run(args
-					//, DefaultConfig.Instance.AddDiagnoser(new EtwProfiler())
-				);
+			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).RunAllJoined();
 		}
 	}
 }

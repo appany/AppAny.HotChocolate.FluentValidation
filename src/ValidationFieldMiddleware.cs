@@ -17,9 +17,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					for (var nodeIndex = 0; nodeIndex < argumentNodes.Count; nodeIndex++)
 					{
-						var passedArgument = argumentNodes[nodeIndex];
+						var argumentNode = argumentNodes[nodeIndex];
 
-						var argument = objectFieldOptions.Arguments.TryGetArgument(passedArgument.Name.Value);
+						var argument = objectFieldOptions.Arguments.TryGetArgument(argumentNode.Name.Value);
 
 						if (argument is null)
 						{
@@ -28,8 +28,11 @@ namespace AppAny.HotChocolate.FluentValidation
 
 						var argumentOptions = argument.ContextData.GetArgumentOptions();
 
-						if (await argumentOptions.SkipValidation!.Invoke(
-							new SkipValidationContext(middlewareContext, argument)).ConfigureAwait(false))
+						var shouldSkipValidation = await argumentOptions.SkipValidation!
+							.Invoke(new SkipValidationContext(middlewareContext, argument))
+							.ConfigureAwait(false);
+
+						if (shouldSkipValidation)
 						{
 							continue;
 						}
@@ -45,11 +48,12 @@ namespace AppAny.HotChocolate.FluentValidation
 						{
 							var inputValidatorProvider = argumentOptions.InputValidatorProviders[providerIndex];
 
-							var inputValidator = inputValidatorProvider.Invoke(
-								new InputValidatorProviderContext(middlewareContext, argument));
+							var inputValidator = inputValidatorProvider
+								.Invoke(new InputValidatorProviderContext(middlewareContext, argument));
 
-							var validationResult = await inputValidator.Invoke(
-								argumentValue, middlewareContext.RequestAborted).ConfigureAwait(false);
+							var validationResult = await inputValidator
+								.Invoke(new InputValidatorContext(argumentValue, middlewareContext.RequestAborted))
+								.ConfigureAwait(false);
 
 							if (validationResult?.IsValid is null or true)
 							{
@@ -62,11 +66,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 								var errorBuilder = ErrorBuilder.New();
 
-								argumentOptions.ErrorMapper!.Invoke(errorBuilder, new ErrorMappingContext(
-									middlewareContext,
-									argument,
-									validationResult,
-									validationFailure));
+								argumentOptions.ErrorMapper!.Invoke(
+									errorBuilder,
+									new ErrorMappingContext(middlewareContext, argument, validationResult, validationFailure));
 
 								middlewareContext.ReportError(errorBuilder.Build());
 							}

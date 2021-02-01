@@ -29,7 +29,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		[Benchmark]
 		public async Task InputValidatorValidation()
 		{
-			await inputValidator.Invoke(new TestInput(), CancellationToken.None);
+			await inputValidator.Invoke(new InputValidatorContext(new TestInput(), CancellationToken.None));
 		}
 	}
 }

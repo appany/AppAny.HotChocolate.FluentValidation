@@ -1,8 +1,9 @@
+using FairyBread;
 using FluentValidation;
 
 namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 {
-	public class TestInputValidator : AbstractValidator<TestInput>
+	public class TestInputValidator : AbstractValidator<TestInput>, IRequiresOwnScopeValidator
 	{
 		public TestInputValidator()
 		{

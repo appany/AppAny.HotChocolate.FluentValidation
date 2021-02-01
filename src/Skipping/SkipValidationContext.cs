@@ -5,7 +5,9 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	public readonly struct SkipValidationContext
 	{
-		public SkipValidationContext(IMiddlewareContext middlewareContext, IInputField argument)
+		public SkipValidationContext(
+			IMiddlewareContext middlewareContext,
+			IInputField argument)
 		{
 			MiddlewareContext = middlewareContext;
 			Argument = argument;
