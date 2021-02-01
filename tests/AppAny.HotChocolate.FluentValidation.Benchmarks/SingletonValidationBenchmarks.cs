@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 {
 	[MemoryDiagnoser]
-	public class ValidationBenchmarks
+	public class SingletonValidationBenchmarks
 	{
 		private IRequestExecutor withoutValidation = default!;
 		private IRequestExecutor withValidation = default!;
@@ -24,9 +24,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 
 			withValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.AddFluentValidation()
-					.AddMutationType(new TestMutationType(field => field
-						.Argument("input", arg => arg.Type<TestInputType>().UseFluentValidation())))
-					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
+					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg
+						.Type<TestInputType>().UseFluentValidation(opt => opt.UseValidator<TestInputValidator>()))))
+					.Services.AddSingleton<TestInputValidator>());
 
 			fluentChocoValidation = await BenchmarkSetup.CreateRequestExecutor(
 				builder => builder.UseFluentValidation()

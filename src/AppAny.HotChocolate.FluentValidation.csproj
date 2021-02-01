@@ -24,7 +24,7 @@
 	</PropertyGroup>
 
 	<ItemGroup Label="Packages">
-		<PackageReference Include="FluentValidation" Version="9.4.0" />
+		<PackageReference Include="FluentValidation" Version="9.5.0" />
 		<PackageReference Include="HotChocolate.Execution" Version="11.0.9" />
 	</ItemGroup>
 
