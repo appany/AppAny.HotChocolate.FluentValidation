@@ -1,13 +1,13 @@
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using HotChocolate;
 using FluentValidation;
-using FluentValidation.Internal;
 using FluentValidation.Results;
-using HotChocolate.Resolvers;
+using FluentValidation.Internal;
 using HotChocolate.Types;
+using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -151,8 +151,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					foreach (var validator in validators)
 					{
-						var validatorResult = await validator.ValidateAsync(
-							validationContext, context.CancellationToken).ConfigureAwait(false);
+						var validatorResult = await validator
+							.ValidateAsync(validationContext, context.CancellationToken)
+							.ConfigureAwait(false);
 
 						if (validationResult is null)
 						{
@@ -205,8 +206,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 					foreach (var validator in validators)
 					{
-						var validatorResult = await validator.ValidateAsync(
-							validationContext, context.CancellationToken).ConfigureAwait(false);
+						var validatorResult = await validator
+							.ValidateAsync(validationContext, context.CancellationToken)
+							.ConfigureAwait(false);
 
 						if (validationResult is null)
 						{

@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using HotChocolate.Configuration;
 using HotChocolate.Types.Descriptors.Definitions;
 
@@ -21,17 +21,18 @@ namespace AppAny.HotChocolate.FluentValidation
 
 			foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
 			{
-				var arguments = objectFieldDefinition.Arguments
-					.Where(x => x.ContextData.ShouldValidate())
+				var options = objectFieldDefinition.Arguments
+					.Where(argument => argument.ContextData.ShouldValidate())
+					.Select(argument => argument.ContextData.GetArgumentOptions())
 					.ToList();
 
-				if (arguments is { Count: > 0 })
+				if (options is { Count: > 0 })
 				{
-					foreach (var options in arguments.Select(argument => argument.ContextData.GetArgumentOptions()))
+					foreach (var option in options)
 					{
-						options.ErrorMapper ??= validationOptions.ErrorMapper;
-						options.SkipValidation ??= validationOptions.SkipValidation;
-						options.InputValidatorProviders ??= validationOptions.InputValidatorProviders;
+						option.ErrorMapper ??= validationOptions.ErrorMapper;
+						option.SkipValidation ??= validationOptions.SkipValidation;
+						option.InputValidatorProviders ??= validationOptions.InputValidatorProviders;
 					}
 
 					objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);

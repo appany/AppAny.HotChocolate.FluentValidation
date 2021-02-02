@@ -12,16 +12,13 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			foreach (var objectField in schema.Types.OfType<IObjectType>().SelectMany(type => type.Fields))
 			{
-				foreach (var argument in objectField.Arguments)
+				foreach (var argument in objectField.Arguments.Where(arg => arg.ContextData.ShouldValidate()))
 				{
-					if (argument.ContextData.ShouldValidate())
-					{
-						var extensionData = (ExtensionData)objectField.ContextData;
+					var extensionData = (ExtensionData)objectField.ContextData;
 
-						var objectOptions = extensionData.GetOrCreateObjectFieldOptions();
+					var objectOptions = extensionData.GetOrCreateObjectFieldOptions();
 
-						objectOptions.Arguments.Add(argument.Name, argument);
-					}
+					objectOptions.Arguments.Add(argument.Name, argument);
 				}
 			}
 		}

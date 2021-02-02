@@ -24,7 +24,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			Action<ValidationBuilder> configure)
 		{
 			var validationOptions = new ValidationOptions();
+
 			configure.Invoke(new DefaultValidationBuilder(validationOptions));
+
 			builder.SetContextData(ValidationDefaults.ValidationOptionsKey, validationOptions);
 
 			builder.TryAddTypeInterceptor<ValidationTypeInterceptor>();
