@@ -8,25 +8,15 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// <summary>
 		/// Configures argument for validation
 		/// </summary>
-		public static IArgumentDescriptor UseFluentValidation(this IArgumentDescriptor argumentDescriptor)
-		{
-			return argumentDescriptor.UseFluentValidation(_ =>
-			{
-			});
-		}
-
-		/// <summary>
-		/// Configures argument for validation
-		/// </summary>
 		public static IArgumentDescriptor UseFluentValidation(
 			this IArgumentDescriptor argumentDescriptor,
-			Action<ArgumentValidationBuilder> configure)
+			Action<ArgumentValidationBuilder>? configure = null)
 		{
 			argumentDescriptor.Extend().OnBeforeCreate(argumentDefinition =>
 			{
 				var options = argumentDefinition.ContextData.GetOrCreateArgumentOptions();
 
-				configure.Invoke(new DefaultArgumentValidationBuilder(options));
+				configure?.Invoke(new DefaultArgumentValidationBuilder(options));
 			});
 
 			return argumentDescriptor;

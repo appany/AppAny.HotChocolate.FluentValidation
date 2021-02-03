@@ -32,19 +32,6 @@ namespace AppAny.HotChocolate.FluentValidation
 				: null;
 		}
 
-		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
-		{
-			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
-		}
-
-		public static ArgumentValidationOptions? TryGetArgumentOptions(
-			this IReadOnlyDictionary<string, object?> contextData)
-		{
-			return contextData.TryGetValue(ValidationDefaults.ArgumentOptionsKey, out var data)
-				? (ArgumentValidationOptions)data!
-				: null;
-		}
-
 		public static ArgumentValidationOptions GetOrCreateArgumentOptions(this ExtensionData extensionData)
 		{
 			var options = extensionData.TryGetArgumentOptions();
@@ -58,7 +45,20 @@ namespace AppAny.HotChocolate.FluentValidation
 			return options;
 		}
 
-		public static bool ShouldValidate(this IReadOnlyDictionary<string, object?> contextData)
+		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
+		{
+			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
+		}
+
+		public static ArgumentValidationOptions? TryGetArgumentOptions(
+			this IReadOnlyDictionary<string, object?> contextData)
+		{
+			return contextData.TryGetValue(ValidationDefaults.ArgumentOptionsKey, out var data)
+				? (ArgumentValidationOptions)data!
+				: null;
+		}
+
+		public static bool ShouldValidateArgument(this IReadOnlyDictionary<string, object?> contextData)
 		{
 			return contextData.TryGetArgumentOptions() is not null;
 		}

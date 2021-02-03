@@ -22,7 +22,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
 			{
 				var options = objectFieldDefinition.Arguments
-					.Where(argument => argument.ContextData.ShouldValidate())
+					.Where(argument => argument.ContextData.ShouldValidateArgument())
 					.Select(argument => argument.ContextData.GetArgumentOptions())
 					.ToList();
 

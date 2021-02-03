@@ -98,12 +98,12 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
 			this ArgumentValidationBuilder builder,
-			Action<ValidationStrategy<TInput>> strategy)
+			Action<ValidationStrategy<TInput>> validationStrategy)
 			where TValidator : class, IValidator<TInput>
 		{
 			return builder.UseInputValidatorProviders(context =>
 				ValidationDefaults.InputValidators.FromValidatorsWithStrategy(
-					context.MiddlewareContext.Services.GetServices<TValidator>(), strategy));
+					context.MiddlewareContext.Services.GetServices<TValidator>(), validationStrategy));
 		}
 	}
 }
