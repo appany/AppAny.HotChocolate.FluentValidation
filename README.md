@@ -10,7 +10,7 @@ This library is a rework of internal package inside @appany
 
 ## Features
 
-- You don't pay for validation if the field has no validatable inputs
+- You don't pay for validation middleware if the field has no validatable inputs
 - You are not validating, and even trying to validate empty or not marked as validatable inputs
 - Most of extensibility points is just a composable delegates
 - Fine-tuning of validation for each field: conditional validation skipping, multiple validators or error mappers per input
