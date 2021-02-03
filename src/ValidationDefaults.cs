@@ -161,10 +161,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 						else
 						{
-							for (var index = 0; index < validatorResult.Errors.Count; index++)
-							{
-								validationResult.Errors.Add(validatorResult.Errors[index]);
-							}
+							validationResult.MergeValidationResult(validatorResult);
 						}
 					}
 
@@ -216,10 +213,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 						else
 						{
-							for (var index = 0; index < validatorResult.Errors.Count; index++)
-							{
-								validationResult.Errors.Add(validatorResult.Errors[index]);
-							}
+							validationResult.MergeValidationResult(validatorResult);
 						}
 					}
 
