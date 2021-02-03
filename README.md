@@ -8,6 +8,28 @@ Input field `HotChocolate` + `FluentValidation` integration
 
 This library is a rework of internal package inside @appany
 
+## Features
+
+- This library automatically adds validation middleware to input fields with validatable inputs only. You don't pay for validation if the field has no validatable inputs
+- You are not validating, and even trying to validate empty or not marked as validatable inputs
+- Functional approach preferred, most of extensibility points is just a composable delegates
+- Fine-tuning of validation for each field. Conditional validation skipping, multiple validators or error mapping per input
+- Basic attribute-based configuration, code-first preferred
+- Strongly typed `ValidationStrategy<T>` support
+- Each part of library is customizable from validator resolving to error mapping
+
+## Docs
+
+- [Abstractions](docs/core-abstractions.md)
+- [Defaults](docs/defaults.md)
+- Examples
+  - [Error mappers](docs/examples/error-mappers.md)
+  - [Validation strategies](docs/examples/validation-strategies.md)
+  - [Input validators](docs/examples/input-validators.md)
+  - [Input validator providers](docs/examples/input-validator-providers.md)
+  - [Root validator segregation](docs/examples/root-validator-segregation.md)
+  - [Argument level overrides](docs/examples/argument-level-overrides.md)
+
 ## Usage
 
 ```cs
@@ -47,19 +69,6 @@ descriptor.Field(x => x.Example(default!))
 
 ... Example([UseFluentValidation(typeof(ExampleInputValidator))] ExampleInput input) { ... }
 ```
-
-## Docs
-
-- [Abstractions](docs/core-abstractions.md)
-- [Features](docs/features.md)
-- [Defaults](docs/defaults.md)
-- Examples
-  - [Error mappers](docs/examples/error-mappers.md)
-  - [Validation strategies](docs/examples/validation-strategies.md)
-  - [Input validators](docs/examples/input-validators.md)
-  - [Input validator providers](docs/examples/input-validator-providers.md)
-  - [Root validator segregation](docs/examples/root-validator-segregation.md)
-  - [Argument level overrides](docs/examples/argument-level-overrides.md)
 
 ## Benchmarks
 
