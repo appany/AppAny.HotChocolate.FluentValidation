@@ -2,7 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/AppAny.HotChocolate.FluentValidation.svg)](https://www.nuget.org/packages/AppAny.HotChocolate.FluentValidation) ![Hotchocolate | FluentValidation](https://github.com/appany/AppAny.HotChocolate.FluentValidation/workflows/Hotchocolate%20%7C%20FluentValidation/badge.svg)
 
-Input field `HotChocolate` + `FluentValidation` integration
+Feature-rich, simple, fast and memory efficient input field `HotChocolate` + `FluentValidation` integration
 
 ## Disclaimer
 
@@ -16,7 +16,6 @@ This library is a rework of internal package inside @appany
 - Fine-tuning of validation for each field: conditional validation skipping, multiple validators or error mappers per input
 - Strongly typed `ValidationStrategy<T>` support
 - Basic attribute-based support
-- Feature-rich, simple, fast and memory efficient
 
 ## Docs
 
