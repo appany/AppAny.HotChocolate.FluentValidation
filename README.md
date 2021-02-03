@@ -16,7 +16,6 @@ This library is a rework of internal package inside @appany
 - Fine-tuning of validation for each field. Conditional validation skipping, multiple validators or error mappers per input
 - Basic attribute-based configuration, code-first preferred
 - Strongly typed `ValidationStrategy<T>` support
-- Each part of library is customizable from validator resolving to error mapping
 
 ## Docs
 
