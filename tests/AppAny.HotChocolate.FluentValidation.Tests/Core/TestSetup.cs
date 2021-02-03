@@ -11,6 +11,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public static class Mutations
 		{
 			public const string WithEmptyName = "mutation { test(input: { name: \"\" }) }";
+			public const string WithNullInput = "mutation { test(input: null) }";
 			public const string WithEmptyNameAndAddress = "mutation { test(input: { name: \"\", address: \"\" }) }";
 
 			public const string WithEmptyNameAndSecondInput =
