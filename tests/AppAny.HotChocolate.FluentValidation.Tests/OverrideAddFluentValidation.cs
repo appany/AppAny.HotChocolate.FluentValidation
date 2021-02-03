@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Results;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -93,7 +94,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_NullReference_WithoutValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseInputValidatorProviders(_ => default!))
+				builder.AddFluentValidation(opt => opt.UseInputValidators(default!))
 					.AddMutationType(new TestMutation(field =>
 						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation()))));
 
@@ -111,8 +112,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task Should_Execute_WithoutValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseInputValidatorProviders(_ =>
-						ValidationDefaults.InputValidators.FromValidators(Array.Empty<IValidator>())))
+				builder.AddFluentValidation(opt =>
+						opt.UseInputValidators(_ => new ValueTask<ValidationResult?>((ValidationResult?)null)))
 					.AddMutationType(new TestMutation(field =>
 						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation()))));
 

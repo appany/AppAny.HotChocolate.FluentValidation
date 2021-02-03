@@ -37,22 +37,14 @@ namespace AppAny.HotChocolate.FluentValidation
 							continue;
 						}
 
-						var argumentValue = middlewareContext.ArgumentValue<object?>(argument.Name);
+						var inputValidators = argumentOptions.InputValidators!;
 
-						if (argumentValue is null)
+						for (var providerIndex = 0; providerIndex < inputValidators.Count; providerIndex++)
 						{
-							continue;
-						}
-
-						for (var providerIndex = 0; providerIndex < argumentOptions.InputValidatorProviders!.Count; providerIndex++)
-						{
-							var inputValidatorProvider = argumentOptions.InputValidatorProviders[providerIndex];
-
-							var inputValidator = inputValidatorProvider
-								.Invoke(new InputValidatorProviderContext(middlewareContext, argument));
+							var inputValidator = inputValidators[providerIndex];
 
 							var validationResult = await inputValidator
-								.Invoke(new InputValidatorContext(argumentValue, middlewareContext.RequestAborted))
+								.Invoke(new InputValidatorContext(middlewareContext, argument))
 								.ConfigureAwait(false);
 
 							if (validationResult?.IsValid is null or true)

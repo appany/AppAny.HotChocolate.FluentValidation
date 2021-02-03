@@ -8,9 +8,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public ErrorMapper ErrorMapper { get; set; } = ValidationDefaults.ErrorMappers.Default;
 
-		public IList<InputValidatorProvider> InputValidatorProviders { get; set; } = new List<InputValidatorProvider>
+		public IList<InputValidator> InputValidators { get; set; } = new List<InputValidator>
 		{
-			ValidationDefaults.InputValidatorProviders.Default
+			ValidationDefaults.InputValidators.Default
 		};
 	}
 }

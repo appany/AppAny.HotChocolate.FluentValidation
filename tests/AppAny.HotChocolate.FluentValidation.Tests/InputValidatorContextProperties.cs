@@ -7,18 +7,18 @@ using Xunit;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class InputValidatorProviderContextProperties
+	public class InputValidatorContextProperties
 	{
 		[Fact]
 		public async Task Should_Pass_Values_AddFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper()
-						.UseInputValidatorProviders(context =>
+						.UseInputValidators(context =>
 						{
 							Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
 
-							return ValidationDefaults.InputValidatorProviders.Default(context);
+							return ValidationDefaults.InputValidators.Default(context);
 						}))
 					.AddMutationType(new TestMutation(field =>
 						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())))
@@ -50,11 +50,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{
-							opt.UseInputValidatorProviders(context =>
+							opt.UseInputValidators(context =>
 							{
 								Assert.Equal(typeof(TestPersonInput), context.Argument.RuntimeType);
 
-								return ValidationDefaults.InputValidatorProviders.Default(context);
+								return ValidationDefaults.InputValidators.Default(context);
 							});
 						}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());

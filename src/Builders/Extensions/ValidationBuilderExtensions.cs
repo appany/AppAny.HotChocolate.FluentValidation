@@ -55,15 +55,15 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
-		/// Adds default <see cref="InputValidatorProvider"/>. See <see cref="ValidationDefaults.InputValidatorProviders.Default"/>
+		/// Adds default <see cref="InputValidator"/>. See <see cref="ValidationDefaults.InputValidators.Default"/>
 		/// </summary>
-		public static TBuilder UseDefaultInputValidatorProvider<TBuilder>(
-			this CanUseInputValidatorProviders<TBuilder> builder,
-			params InputValidatorProvider[] inputValidatorProviders)
+		public static TBuilder UseDefaultInputValidator<TBuilder>(
+			this CanUseInputValidators<TBuilder> builder,
+			params InputValidator[] inputValidators)
 		{
-			return builder.UseInputValidatorProviders(
-				new InputValidatorProvider[] { ValidationDefaults.InputValidatorProviders.Default }
-					.Concat(inputValidatorProviders)
+			return builder.UseInputValidators(
+				new InputValidator[] { ValidationDefaults.InputValidators.Default }
+					.Concat(inputValidators)
 					.ToArray());
 		}
 	}

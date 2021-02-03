@@ -5,7 +5,7 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// </summary>
 	public interface ValidationBuilder
 		: CanSkipValidation<ValidationBuilder>,
-			CanUseInputValidatorProviders<ValidationBuilder>,
+			CanUseInputValidators<ValidationBuilder>,
 			CanUseErrorMapper<ValidationBuilder>
 	{
 	}
@@ -33,9 +33,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			return this;
 		}
 
-		public ValidationBuilder UseInputValidatorProviders(params InputValidatorProvider[] inputValidatorProviders)
+		public ValidationBuilder UseInputValidators(params InputValidator[] inputValidators)
 		{
-			options.InputValidatorProviders = inputValidatorProviders;
+			options.InputValidators = inputValidators;
 
 			return this;
 		}
