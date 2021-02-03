@@ -13,7 +13,7 @@ This library is a rework of internal package inside @appany
 - This library automatically adds validation middleware to input fields with validatable inputs only. You don't pay for validation if the field has no validatable inputs
 - You are not validating, and even trying to validate empty or not marked as validatable inputs
 - Functional approach preferred, most of extensibility points is just a composable delegates
-- Fine-tuning of validation for each field. Conditional validation skipping, multiple validators or error mapping per input
+- Fine-tuning of validation for each field. Conditional validation skipping, multiple validators or error mappers per input
 - Basic attribute-based configuration, code-first preferred
 - Strongly typed `ValidationStrategy<T>` support
 - Each part of library is customizable from validator resolving to error mapping
