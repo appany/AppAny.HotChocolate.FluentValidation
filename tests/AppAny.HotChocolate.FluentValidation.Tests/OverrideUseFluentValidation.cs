@@ -97,7 +97,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidator()
+		public async Task Should_UseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -127,7 +127,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidatorProvider()
+		public async Task Should_UseCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -376,7 +376,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidator()
+		public async Task Should_Execute_SkipValidation_WithValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -399,7 +399,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidatorProvider()
+		public async Task Should_Execute_SkipValidation_WithCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()

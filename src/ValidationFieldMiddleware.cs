@@ -39,9 +39,9 @@ namespace AppAny.HotChocolate.FluentValidation
 
 						var inputValidators = argumentOptions.InputValidators!;
 
-						for (var providerIndex = 0; providerIndex < inputValidators.Count; providerIndex++)
+						for (var validatorIndex = 0; validatorIndex < inputValidators.Count; validatorIndex++)
 						{
-							var inputValidator = inputValidators[providerIndex];
+							var inputValidator = inputValidators[validatorIndex];
 
 							var validationResult = await inputValidator
 								.Invoke(new InputValidatorContext(middlewareContext, argument))

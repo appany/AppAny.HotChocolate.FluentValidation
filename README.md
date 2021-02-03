@@ -25,7 +25,6 @@ This library is a rework of internal package inside @appany
   - [Error mappers](docs/examples/error-mappers.md)
   - [Validation strategies](docs/examples/validation-strategies.md)
   - [Input validators](docs/examples/input-validators.md)
-  - [Input validator providers](docs/examples/input-validator-providers.md)
   - [Root validator segregation](docs/examples/root-validator-segregation.md)
   - [Argument level overrides](docs/examples/argument-level-overrides.md)
 
@@ -48,7 +47,7 @@ services.AddGraphQLServer()
   {
     options.SkipValidation(...)
       .UseErrorMapper(...)
-      .UseInputValidatorProviders(...);
+      .UseInputValidators(...);
   });
 
 descriptor.Field(x => x.Example(default!))
@@ -56,7 +55,7 @@ descriptor.Field(x => x.Example(default!))
   {
     options.SkipValidation(...)
       .UseErrorMapper(...)
-      .UseInputValidatorProviders(...)
+      .UseInputValidators(...)
       .UseValidator<ExampleInputValidator>()
       .UseValidator<ExampleInput, ExampleInputValidator>()
       .UseValidator<ExampleInput, ExampleInputValidator>(strategy =>
