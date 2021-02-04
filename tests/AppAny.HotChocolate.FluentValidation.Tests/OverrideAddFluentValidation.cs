@@ -113,7 +113,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt =>
-						opt.UseInputValidators(_ => new ValueTask<ValidationResult?>((ValidationResult?)null)))
+						opt.UseInputValidators(_ => Task.FromResult((ValidationResult?)null)))
 					.AddMutationType(new TestMutation(field =>
 						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation()))));
 

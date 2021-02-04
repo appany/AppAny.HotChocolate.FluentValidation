@@ -128,7 +128,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Default <see cref="InputValidator"/> implementation
 			/// </summary>
-			public static async ValueTask<ValidationResult?> Default(InputValidatorContext validatorContext)
+			public static async Task<ValidationResult?> Default(InputValidatorContext validatorContext)
 			{
 				var argumentValue = validatorContext.MiddlewareContext.ArgumentValue<object?>(validatorContext.Argument.Name);
 
