@@ -21,18 +21,18 @@ namespace AppAny.HotChocolate.FluentValidation
 
 			foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
 			{
-				var options = objectFieldDefinition.Arguments
+				var argumentOptions = objectFieldDefinition.Arguments
 					.Where(argument => argument.ContextData.ShouldValidateArgument())
 					.Select(argument => argument.ContextData.GetArgumentOptions())
 					.ToList();
 
-				if (options is { Count: > 0 })
+				if (argumentOptions is { Count: > 0 })
 				{
-					foreach (var option in options)
+					foreach (var options in argumentOptions)
 					{
-						option.ErrorMapper ??= validationOptions.ErrorMapper;
-						option.SkipValidation ??= validationOptions.SkipValidation;
-						option.InputValidators ??= validationOptions.InputValidators;
+						options.ErrorMapper ??= validationOptions.ErrorMapper;
+						options.SkipValidation ??= validationOptions.SkipValidation;
+						options.InputValidators ??= validationOptions.InputValidators;
 					}
 
 					objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);

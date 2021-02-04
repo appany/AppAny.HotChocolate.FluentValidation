@@ -159,7 +159,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					}
 					else
 					{
-						validationResult.MergeValidationResult(validatorResult);
+						validationResult.MergeFailures(validatorResult);
 					}
 				}
 

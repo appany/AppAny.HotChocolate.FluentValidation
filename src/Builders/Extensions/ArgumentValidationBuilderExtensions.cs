@@ -15,23 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static ArgumentValidationBuilder UseValidator<TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
-			return builder.UseInputValidators(async context =>
-			{
-				var argumentValue = context.MiddlewareContext.ArgumentValue<object?>(context.Argument.Name);
-
-				if (argumentValue is null)
-				{
-					return null;
-				}
-
-				var validator = context.MiddlewareContext.Services.GetRequiredService<TValidator>();
-
-				var validationContext = new ValidationContext<object>(argumentValue);
-
-				return await validator
-					.ValidateAsync(validationContext, context.MiddlewareContext.RequestAborted)
-					.ConfigureAwait(false);
-			});
+			return builder.UseValidator(typeof(TValidator));
 		}
 
 		/// <summary>
@@ -41,41 +25,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static ArgumentValidationBuilder UseValidators<TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
-			return builder.UseInputValidators(async context =>
-			{
-				var argumentValue = context.MiddlewareContext.ArgumentValue<object?>(context.Argument.Name);
-
-				if (argumentValue is null)
-				{
-					return null;
-				}
-
-				var validators = (TValidator[])context.MiddlewareContext.Services.GetServices<TValidator>();
-
-				var validationContext = new ValidationContext<object>(argumentValue);
-
-				ValidationResult? validationResult = null;
-
-				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
-				{
-					var validator = validators[validatorIndex];
-
-					var validatorResult = await validator
-						.ValidateAsync(validationContext, context.MiddlewareContext.RequestAborted)
-						.ConfigureAwait(false);
-
-					if (validationResult is null)
-					{
-						validationResult = validatorResult;
-					}
-					else
-					{
-						validationResult.MergeValidationResult(validatorResult);
-					}
-				}
-
-				return validationResult;
-			});
+			return builder.UseValidators(typeof(TValidator));
 		}
 
 		/// <summary>
@@ -142,7 +92,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					}
 					else
 					{
-						validationResult.MergeValidationResult(validatorResult);
+						validationResult.MergeFailures(validatorResult);
 					}
 				}
 
@@ -236,7 +186,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					}
 					else
 					{
-						validationResult.MergeValidationResult(validatorResult);
+						validationResult.MergeFailures(validatorResult);
 					}
 				}
 
