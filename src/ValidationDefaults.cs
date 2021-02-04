@@ -128,18 +128,20 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Default <see cref="InputValidator"/> implementation
 			/// </summary>
-			public static async Task<ValidationResult?> Default(InputValidatorContext validatorContext)
+			public static async Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
 			{
-				var argumentValue = validatorContext.MiddlewareContext.ArgumentValue<object?>(validatorContext.Argument.Name);
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<object?>(inputValidatorContext.Argument.Name);
 
 				if (argumentValue is null)
 				{
 					return null;
 				}
 
-				var validatorType = validatorContext.Argument.GetGenericValidatorType();
+				var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
 
-				var validators = (IValidator[])validatorContext.MiddlewareContext.Services.GetServices(validatorType);
+				var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
 
 				var validationContext = new ValidationContext<object>(argumentValue);
 
@@ -150,7 +152,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					var validator = validators[validatorIndex];
 
 					var validatorResult = await validator
-						.ValidateAsync(validationContext, validatorContext.MiddlewareContext.RequestAborted)
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
 						.ConfigureAwait(false);
 
 					if (validationResult is null)

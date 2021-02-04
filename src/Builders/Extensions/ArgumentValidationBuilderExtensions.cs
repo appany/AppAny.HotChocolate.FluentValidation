@@ -37,20 +37,22 @@ namespace AppAny.HotChocolate.FluentValidation
 			this ArgumentValidationBuilder builder,
 			Type validatorType)
 		{
-			return builder.UseInputValidators(validatorContext =>
+			return builder.UseInputValidators(inputValidatorContext =>
 			{
-				var argumentValue = validatorContext.MiddlewareContext.ArgumentValue<object?>(validatorContext.Argument.Name);
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<object?>(inputValidatorContext.Argument.Name);
 
 				if (argumentValue is null)
 				{
 					return Task.FromResult<ValidationResult?>(null);
 				}
 
-				var validator = (IValidator)validatorContext.MiddlewareContext.Services.GetRequiredService(validatorType);
+				var validator = (IValidator)inputValidatorContext.MiddlewareContext.Services.GetRequiredService(validatorType);
 
 				var validationContext = new ValidationContext<object>(argumentValue);
 
-				return validator.ValidateAsync(validationContext, validatorContext.MiddlewareContext.RequestAborted);
+				return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
 			});
 		}
 
@@ -62,16 +64,18 @@ namespace AppAny.HotChocolate.FluentValidation
 			this ArgumentValidationBuilder builder,
 			Type validatorType)
 		{
-			return builder.UseInputValidators(async validatorContext =>
+			return builder.UseInputValidators(async inputValidatorContext =>
 			{
-				var argumentValue = validatorContext.MiddlewareContext.ArgumentValue<object?>(validatorContext.Argument.Name);
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<object?>(inputValidatorContext.Argument.Name);
 
 				if (argumentValue is null)
 				{
 					return null;
 				}
 
-				var validators = (IValidator[])validatorContext.MiddlewareContext.Services.GetServices(validatorType);
+				var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
 
 				var validationContext = new ValidationContext<object>(argumentValue);
 
@@ -82,7 +86,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					var validator = validators[validatorIndex];
 
 					var validatorResult = await validator
-						.ValidateAsync(validationContext, validatorContext.MiddlewareContext.RequestAborted)
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
 						.ConfigureAwait(false);
 
 					if (validationResult is null)
@@ -128,20 +132,22 @@ namespace AppAny.HotChocolate.FluentValidation
 			Action<ValidationStrategy<TInput>> validationStrategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return builder.UseInputValidators(validatorContext =>
+			return builder.UseInputValidators(inputValidatorContext =>
 			{
-				var argumentValue = validatorContext.MiddlewareContext.ArgumentValue<TInput>(validatorContext.Argument.Name);
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
 
 				if (argumentValue is null)
 				{
 					return Task.FromResult<ValidationResult?>(null);
 				}
 
-				var validator = validatorContext.MiddlewareContext.Services.GetRequiredService<TValidator>();
+				var validator = inputValidatorContext.MiddlewareContext.Services.GetRequiredService<TValidator>();
 
 				var validationContext = ValidationContext<TInput>.CreateWithOptions(argumentValue, validationStrategy);
 
-				return validator.ValidateAsync(validationContext, validatorContext.MiddlewareContext.RequestAborted);
+				return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
 			});
 		}
 
@@ -154,16 +160,18 @@ namespace AppAny.HotChocolate.FluentValidation
 			Action<ValidationStrategy<TInput>> validationStrategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return builder.UseInputValidators(async validatorContext =>
+			return builder.UseInputValidators(async inputValidatorContext =>
 			{
-				var argumentValue = validatorContext.MiddlewareContext.ArgumentValue<TInput>(validatorContext.Argument.Name);
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
 
 				if (argumentValue is null)
 				{
 					return null;
 				}
 
-				var validators = (TValidator[])validatorContext.MiddlewareContext.Services.GetServices<TValidator>();
+				var validators = (TValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices<TValidator>();
 
 				var validationContext = ValidationContext<TInput>.CreateWithOptions(argumentValue, validationStrategy);
 
@@ -174,7 +182,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					var validator = validators[validatorIndex];
 
 					var validatorResult = await validator
-						.ValidateAsync(validationContext, validatorContext.MiddlewareContext.RequestAborted)
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
 						.ConfigureAwait(false);
 
 					if (validationResult is null)
