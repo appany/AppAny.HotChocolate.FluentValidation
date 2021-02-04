@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// To override options use Code-first approach <see cref="ArgumentDescriptorExtensions"/>
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Parameter)]
-	public class UseFluentValidationAttribute : ArgumentDescriptorAttribute
+	public sealed class UseFluentValidationAttribute : ArgumentDescriptorAttribute
 	{
 		private readonly Type[] validators;
 

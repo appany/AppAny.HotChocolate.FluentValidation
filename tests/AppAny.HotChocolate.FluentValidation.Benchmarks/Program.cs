@@ -6,7 +6,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 	{
 		private static void Main()
 		{
-			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).RunAllJoined();
+			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly)
+				.Run();
+				// .RunAllJoined();
 		}
 	}
 }

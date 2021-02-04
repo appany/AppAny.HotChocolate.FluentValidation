@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Internal;
+using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -9,57 +10,101 @@ namespace AppAny.HotChocolate.FluentValidation
 	public static class ArgumentValidationBuilderExtensions
 	{
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidator<TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
-			return builder.UseInputValidatorProviders(context =>
-				ValidationDefaults.InputValidators.FromValidator(
-					context.MiddlewareContext.Services.GetRequiredService<TValidator>()));
+			return builder.UseValidator(typeof(TValidator));
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidators<TValidator>(this ArgumentValidationBuilder builder)
 			where TValidator : class, IValidator
 		{
-			return builder.UseInputValidatorProviders(context =>
-				ValidationDefaults.InputValidators.FromValidators(
-					context.MiddlewareContext.Services.GetServices<TValidator>()));
+			return builder.UseValidators(typeof(TValidator));
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses type to resolve <see cref="InputValidator"/>
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidator(
 			this ArgumentValidationBuilder builder,
 			Type validatorType)
 		{
-			return builder.UseInputValidatorProviders(context =>
-				ValidationDefaults.InputValidators.FromValidator(
-					(IValidator)context.MiddlewareContext.Services.GetService(validatorType)));
+			return builder.UseInputValidators(inputValidatorContext =>
+			{
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<object?>(inputValidatorContext.Argument.Name);
+
+				if (argumentValue is null)
+				{
+					return Task.FromResult<ValidationResult?>(null);
+				}
+
+				var validator = (IValidator)inputValidatorContext.MiddlewareContext.Services.GetRequiredService(validatorType);
+
+				var validationContext = new ValidationContext<object>(argumentValue);
+
+				return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
+			});
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses type to resolve <see cref="InputValidator"/>
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidators(
 			this ArgumentValidationBuilder builder,
 			Type validatorType)
 		{
-			return builder.UseInputValidatorProviders(context =>
-				ValidationDefaults.InputValidators.FromValidators(
-					(IEnumerable<IValidator>)context.MiddlewareContext.Services.GetServices(validatorType)));
+			return builder.UseInputValidators(async inputValidatorContext =>
+			{
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<object?>(inputValidatorContext.Argument.Name);
+
+				if (argumentValue is null)
+				{
+					return null;
+				}
+
+				var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+
+				var validationContext = new ValidationContext<object>(argumentValue);
+
+				ValidationResult? validationResult = null;
+
+				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
+				{
+					var validator = validators[validatorIndex];
+
+					var validatorResult = await validator
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
+						.ConfigureAwait(false);
+
+					if (validationResult is null)
+					{
+						validationResult = validatorResult;
+					}
+					else
+					{
+						validationResult.MergeFailures(validatorResult);
+					}
+				}
+
+				return validationResult;
+			});
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(this ArgumentValidationBuilder builder)
@@ -69,7 +114,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(this ArgumentValidationBuilder builder)
@@ -79,31 +124,79 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(
 			this ArgumentValidationBuilder builder,
-			Action<ValidationStrategy<TInput>> strategy)
+			Action<ValidationStrategy<TInput>> validationStrategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return builder.UseInputValidatorProviders(context =>
-				ValidationDefaults.InputValidators.FromValidatorWithStrategy(
-					context.MiddlewareContext.Services.GetRequiredService<TValidator>(), strategy));
+			return builder.UseInputValidators(inputValidatorContext =>
+			{
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
+
+				if (argumentValue is null)
+				{
+					return Task.FromResult<ValidationResult?>(null);
+				}
+
+				var validator = inputValidatorContext.MiddlewareContext.Services.GetRequiredService<TValidator>();
+
+				var validationContext = ValidationContext<TInput>.CreateWithOptions(argumentValue, validationStrategy);
+
+				return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
+			});
 		}
 
 		/// <summary>
-		/// Overrides global <see cref="InputValidatorProvider"/>.
+		/// Overrides global <see cref="InputValidator"/>.
 		/// Uses all <see cref="TValidator"/> to resolve <see cref="InputValidator"/>, with custom <see cref="ValidationStrategy{TInput}"/>
 		/// </summary>
 		public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
 			this ArgumentValidationBuilder builder,
-			Action<ValidationStrategy<TInput>> strategy)
+			Action<ValidationStrategy<TInput>> validationStrategy)
 			where TValidator : class, IValidator<TInput>
 		{
-			return builder.UseInputValidatorProviders(context =>
-				ValidationDefaults.InputValidators.FromValidatorsWithStrategy(
-					context.MiddlewareContext.Services.GetServices<TValidator>(), strategy));
+			return builder.UseInputValidators(async inputValidatorContext =>
+			{
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
+
+				if (argumentValue is null)
+				{
+					return null;
+				}
+
+				var validators = (TValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices<TValidator>();
+
+				var validationContext = ValidationContext<TInput>.CreateWithOptions(argumentValue, validationStrategy);
+
+				ValidationResult? validationResult = null;
+
+				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
+				{
+					var validator = validators[validatorIndex];
+
+					var validatorResult = await validator
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
+						.ConfigureAwait(false);
+
+					if (validationResult is null)
+					{
+						validationResult = validatorResult;
+					}
+					else
+					{
+						validationResult.MergeFailures(validatorResult);
+					}
+				}
+
+				return validationResult;
+			});
 		}
 	}
 }

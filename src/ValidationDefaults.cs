@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using HotChocolate;
 using FluentValidation;
-using FluentValidation.Internal;
 using FluentValidation.Results;
+using FluentValidation.Internal;
 using HotChocolate.Resolvers;
-using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -86,6 +83,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps graphql error code, path and message
 			/// </summary>
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
@@ -97,6 +95,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps useful extensions about input field, property, used validator, invalid value and severity
 			/// </summary>
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
@@ -110,6 +109,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Maps custom state and formatted message placeholder values
 			/// </summary>
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
@@ -126,124 +126,46 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static class InputValidators
 		{
 			/// <summary>
-			/// Creates <see cref="InputValidator"/> from single <see cref="IValidator"/>
+			/// Default <see cref="InputValidator"/> implementation
 			/// </summary>
-			public static InputValidator FromValidator(IValidator validator)
+			public static async Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
 			{
-				return async context =>
-				{
-					var validationContext = new ValidationContext<object>(context.Argument);
-
-					return await validator.ValidateAsync(validationContext, context.CancellationToken).ConfigureAwait(false);
-				};
-			}
-
-			/// <summary>
-			/// Creates <see cref="InputValidator"/> from multiple <see cref="IValidator"/>
-			/// </summary>
-			public static InputValidator FromValidators(IEnumerable<IValidator> validators)
-			{
-				return async context =>
-				{
-					var validationContext = new ValidationContext<object>(context.Argument);
-
-					ValidationResult? validationResult = null;
-
-					foreach (var validator in validators)
-					{
-						var validatorResult = await validator.ValidateAsync(
-							validationContext, context.CancellationToken).ConfigureAwait(false);
-
-						if (validationResult is null)
-						{
-							validationResult = validatorResult;
-						}
-						else
-						{
-							for (var index = 0; index < validatorResult.Errors.Count; index++)
-							{
-								validationResult.Errors.Add(validatorResult.Errors[index]);
-							}
-						}
-					}
-
-					return validationResult;
-				};
-			}
-
-			/// <summary>
-			/// Creates <see cref="InputValidator"/> from single <see cref="IValidator{TInput}"/> with <see cref="ValidationStrategy{TInput}"/>
-			/// </summary>
-			public static InputValidator FromValidatorWithStrategy<TInput>(
-				IValidator<TInput> validator,
-				Action<ValidationStrategy<TInput>> validationStrategy)
-			{
-				return async context =>
-				{
-					var validationContext = ValidationContext<TInput>.CreateWithOptions(
-						(TInput)context.Argument,
-						validationStrategy);
-
-					return await validator.ValidateAsync(validationContext, context.CancellationToken).ConfigureAwait(false);
-				};
-			}
-
-			/// <summary>
-			/// Creates <see cref="InputValidator"/> from multiple <see cref="IValidator{TInput}"/> with <see cref="ValidationStrategy{TInput}"/>
-			/// </summary>
-			public static InputValidator FromValidatorsWithStrategy<TInput>(
-				IEnumerable<IValidator<TInput>> validators,
-				Action<ValidationStrategy<TInput>> validationStrategy)
-			{
-				return async context =>
-				{
-					var validationContext = ValidationContext<TInput>.CreateWithOptions(
-						(TInput)context.Argument,
-						validationStrategy);
-
-					ValidationResult? validationResult = null;
-
-					foreach (var validator in validators)
-					{
-						var validatorResult = await validator.ValidateAsync(
-							validationContext, context.CancellationToken).ConfigureAwait(false);
-
-						if (validationResult is null)
-						{
-							validationResult = validatorResult;
-						}
-						else
-						{
-							for (var index = 0; index < validatorResult.Errors.Count; index++)
-							{
-								validationResult.Errors.Add(validatorResult.Errors[index]);
-							}
-						}
-					}
-
-					return validationResult;
-				};
-			}
-		}
-
-		/// <summary>
-		/// Default <see cref="InputValidatorProvider"/> implementations
-		/// </summary>
-		public static class InputValidatorProviders
-		{
-			/// <summary>
-			/// Resolves all <see cref="IValidator{T}"/> implementations from <see cref="IHasRuntimeType.RuntimeType"/>
-			/// </summary>
-			public static InputValidator Default(InputValidatorProviderContext inputValidatorProviderContext)
-			{
-				var validatorType = inputValidatorProviderContext.Argument.GetGenericValidatorType();
-
-				var validators = (IEnumerable<IValidator>)inputValidatorProviderContext
+				var argumentValue = inputValidatorContext
 					.MiddlewareContext
-					.Services
-					.GetServices(validatorType);
+					.ArgumentValue<object?>(inputValidatorContext.Argument.Name);
 
-				return InputValidators.FromValidators(validators);
+				if (argumentValue is null)
+				{
+					return null;
+				}
+
+				var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
+
+				var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+
+				var validationContext = new ValidationContext<object>(argumentValue);
+
+				ValidationResult? validationResult = null;
+
+				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
+				{
+					var validator = validators[validatorIndex];
+
+					var validatorResult = await validator
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
+						.ConfigureAwait(false);
+
+					if (validationResult is null)
+					{
+						validationResult = validatorResult;
+					}
+					else
+					{
+						validationResult.MergeFailures(validatorResult);
+					}
+				}
+
+				return validationResult;
 			}
 		}
 

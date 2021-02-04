@@ -8,6 +8,6 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public ErrorMapper? ErrorMapper { get; set; }
 
-		public IList<InputValidatorProvider>? InputValidatorProviders { get; set; }
+		public IList<InputValidator>? InputValidators { get; set; }
 	}
 }

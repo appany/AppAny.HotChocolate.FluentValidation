@@ -4,21 +4,21 @@ This library is **not handling** validator registration, so you should add all v
 
 ## ErrorMapper
 
-By default this library using `ValidationDefaults.ErrorMappers.Default`
+By default this library is using `ValidationDefaults.ErrorMappers.Default`
 
 To see error mapper examples [click here](examples/error-mappers.md)
 
-## InputValidatorProvider
+## InputValidator
 
-By default this library using `ValidationDefaults.InputValidatorProviders.Default`
+By default this library is using `ValidationDefaults.InputValidators.Default`
 
-It resolves `InputValidator` for passed `InputValidatorProviderContext`
+It resolves `InputValidator` for passed `InputValidatorContext`
 
-To see input validator provider examples [click here](examples/input-validator-providers.md)
+To see input validator examples [click here](examples/input-validators.md)
 
 ## ValidationStrategy configuration
 
-By default this library using `ValidationDefaults.ValidationStrategies.Default`
+By default this library is using `ValidationDefaults.ValidationStrategies.Default`
 
 It is doing nothing with validation rules
 
@@ -26,6 +26,6 @@ To see validation strategy examples [click here](examples/validation-strategies.
 
 ## SkipValidation
 
-By default this library using `ValidationDefaults.SkipValidation.Default`
+By default this library is using `ValidationDefaults.SkipValidation.Default`
 
 It is never skips

@@ -97,7 +97,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidator()
+		public async Task Should_UseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -127,16 +127,19 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidatorProvider()
+		public async Task Should_UseCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
 						{
-							fv.UseInputValidatorProviders(context =>
-								ValidationDefaults.InputValidators.FromValidator(
-									context.MiddlewareContext.Services.GetRequiredService<NotEmptyNameValidator>()));
+							fv.UseInputValidators(async context =>
+							{
+								var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
+
+								return await new NotEmptyNameValidator().ValidateAsync(argumentValue);
+							});
 						}))))
 					.Services.AddTransient<NotEmptyNameValidator>());
 
@@ -373,7 +376,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidator()
+		public async Task Should_Execute_SkipValidation_WithValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -396,15 +399,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidatorProvider()
+		public async Task Should_Execute_SkipValidation_WithCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
 					.AddMutationType(new TestMutation(field => field.Argument("input",
 						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 						{
-							opt.SkipValidation().UseInputValidatorProviders(_ =>
-								ValidationDefaults.InputValidators.FromValidator(new NotEmptyNameValidator()));
+							opt.SkipValidation()
+								.UseInputValidators(async context =>
+								{
+									var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
+
+									return await new NotEmptyNameValidator().ValidateAsync(argumentValue);
+								});
 						}))))
 					.Services.AddTransient<NotEmptyNameValidator>());
 
@@ -420,7 +428,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_Multiple_InputValidatorProviders()
+		public async Task Should_Use_Multiple_InputValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -428,11 +436,15 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>()
 							.UseFluentValidation(opt =>
 							{
-								opt.UseDefaultInputValidatorProvider(_ => async context =>
+								opt.UseDefaultInputValidator(async context =>
 								{
 									var validator = new NotEmptyAddressValidator();
 
-									return await validator.ValidateAsync((TestPersonInput)context.Argument, context.CancellationToken);
+									var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
+
+									return await validator
+										.ValidateAsync(argumentValue, context.MiddlewareContext.RequestAborted)
+										.ConfigureAwait(false);
 								});
 							}))))
 					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());

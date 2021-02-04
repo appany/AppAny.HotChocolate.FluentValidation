@@ -1,18 +1,10 @@
-using System.Collections.Generic;
 using HotChocolate;
-using HotChocolate.Types;
+using System.Collections.Generic;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ExtensionDataExtensions
 	{
-		public static IInputField? TryGetArgument(this IDictionary<string, IInputField> arguments, string name)
-		{
-			return arguments.TryGetValue(name, out var data)
-				? data
-				: null;
-		}
-
 		public static ObjectFieldValidationOptions GetOrCreateObjectFieldOptions(this ExtensionData extensionData)
 		{
 			var options = extensionData.TryGetObjectFieldOptions();
@@ -26,18 +18,18 @@ namespace AppAny.HotChocolate.FluentValidation
 			return options;
 		}
 
+		public static ObjectFieldValidationOptions GetObjectFieldOptions(
+			this IReadOnlyDictionary<string, object?> contextData)
+		{
+			return (ObjectFieldValidationOptions)contextData[ValidationDefaults.ObjectFieldOptionsKey]!;
+		}
+
 		public static ObjectFieldValidationOptions? TryGetObjectFieldOptions(
 			this IReadOnlyDictionary<string, object?> contextData)
 		{
 			return contextData.TryGetValue(ValidationDefaults.ObjectFieldOptionsKey, out var data)
 				? (ObjectFieldValidationOptions)data!
 				: null;
-		}
-
-		public static ObjectFieldValidationOptions GetObjectFieldOptions(
-			this IReadOnlyDictionary<string, object?> contextData)
-		{
-			return (ObjectFieldValidationOptions)contextData[ValidationDefaults.ObjectFieldOptionsKey]!;
 		}
 
 		public static ArgumentValidationOptions GetOrCreateArgumentOptions(this ExtensionData extensionData)
@@ -53,6 +45,11 @@ namespace AppAny.HotChocolate.FluentValidation
 			return options;
 		}
 
+		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
+		{
+			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
+		}
+
 		public static ArgumentValidationOptions? TryGetArgumentOptions(
 			this IReadOnlyDictionary<string, object?> contextData)
 		{
@@ -61,12 +58,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				: null;
 		}
 
-		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
-		{
-			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
-		}
-
-		public static bool ShouldValidate(this IReadOnlyDictionary<string, object?> contextData)
+		public static bool ShouldValidateArgument(this IReadOnlyDictionary<string, object?> contextData)
 		{
 			return contextData.TryGetArgumentOptions() is not null;
 		}

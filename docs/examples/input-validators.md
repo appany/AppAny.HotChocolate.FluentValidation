@@ -3,7 +3,7 @@
 Input validator is **just a delegate**
 
 - Executing one or more validators
-- Encapsulating generic calls
+- Encapsulating generic and validation strategy calls
 - Merging multiple `ValidationResult` into one
 
 ```cs
@@ -21,7 +21,7 @@ Like other parts of this library, you can write your own factory to create `Inpu
 ```cs
 public static InputValidator CreateCustomInputValidator()
 {
-  return (argument, cancellationToken) =>
+  return context =>
   {
     // Now you need to validate `argument` somehow and return ValidationResult
     return ...;
@@ -29,20 +29,20 @@ public static InputValidator CreateCustomInputValidator()
 }
 ```
 
-To use custom input validator you need to create custom `InputValidatorProvider` [click here](input-validator-providers.md)
+Custom input validator usage
 
 ```cs
 # global
 services.AddGraphQL()
   .AddFluentValidation(options =>
   {
-    options.UseInputValidatorProviders(context => CreateCustomInputValidator());
+    options.UseInputValidators(CreateCustomInputValidator());
   });
 
 # field
 descriptor.Field(x => x.Example(default!))
   .Argument("input", argument => argument.UseFluentValidation(options =>
   {
-    options.UseInputValidatorproviders(context => CreateCustomInputValidator())
+    options.UseInputValidators(CreateCustomInputValidator())
   }));
 ```
