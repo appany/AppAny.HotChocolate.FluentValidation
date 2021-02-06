@@ -27,7 +27,7 @@ This library is a rework of internal package inside @appany
   - [Input validators](docs/examples/input-validators.md)
   - [Root validator segregation](docs/examples/root-validator-segregation.md)
   - [Argument level overrides](docs/examples/argument-level-overrides.md)
-  - [Attribute based approach](docs/examples/attribute-based-approach.md)
+  - [Attribute-based approach](docs/examples/attribute-based-approach.md)
 
 ## Usage
 

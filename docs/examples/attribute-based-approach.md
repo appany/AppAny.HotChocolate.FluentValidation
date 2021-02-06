@@ -21,14 +21,25 @@ Use single validator type for multiple validators
 Use validator with custom validation strategy
 
 ```cs
-... Example(
-  [UseFluentValidation, UseValidator(typeof(ExampleInputValidator), IncludeProperties=new[]{"ExampleProperty"}, IncludeRuleSets=new[]{"FastValidation"})] ExampleInput input) { ... }
+... Example([
+  UseFluentValidation,
+  UseValidator(
+    typeof(ExampleInputValidator),
+    IncludeProperties=new[]{"ExampleProperty"},
+    IncludeRuleSets=new[]{"FastValidation"})
+  ] ExampleInput input) { ... }
 ```
 
 Use validators with custom [validation strategy](validation-strategies.md)
 
 ```cs
-... Example([UseFluentValidation, UseValidators(typeof(ExampleInputValidator), IncludeAllRuleSets=true, IncludeRulesNotInRuleSet=true)] ExampleInput input) { ... }
+... Example([
+  UseFluentValidation,
+  UseValidators(
+    typeof(ExampleInputValidator),
+    IncludeAllRuleSets=true,
+    IncludeRulesNotInRuleSet=true)
+  ] ExampleInput input) { ... }
 ```
 
 Use default [input validator](input-validators.md)
