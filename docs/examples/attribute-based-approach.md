@@ -18,7 +18,7 @@ Use single validator type for multiple validators
 ... Example([UseFluentValidation, UseValidators(typeof(IValidator<ExampleInput>))] ExampleInput input) { ... }
 ```
 
-Use validator with custom validation strategy
+Use validator with custom [validation strategy](validation-strategies.md)
 
 ```cs
 ... Example([
