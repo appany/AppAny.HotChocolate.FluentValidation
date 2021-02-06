@@ -102,8 +102,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
 					.SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
 					.SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
-					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity)
-					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue);
+					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity);
 			}
 
 			/// <summary>
@@ -113,6 +112,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
+					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue)
 					.SetExtension(ExtensionKeys.CustomStateKey, mappingContext.ValidationFailure.CustomState)
 					.SetExtension(
 						ExtensionKeys.FormattedMessagePlaceholderValuesKey,

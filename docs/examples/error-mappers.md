@@ -41,8 +41,7 @@
         "validator": "NotEmptyValidator",
         "argument": "input",
         "property": "Name",
-        "severity": "Error",
-        "attemptedValue": ""
+        "severity": "Error"
       }
     }
   ],

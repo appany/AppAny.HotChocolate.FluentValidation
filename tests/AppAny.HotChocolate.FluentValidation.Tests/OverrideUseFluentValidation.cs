@@ -88,11 +88,6 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
 					Assert.Equal(Severity.Error, severity.Value);
-				},
-				attemptedValue =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.AttemptedValueKey, attemptedValue.Key);
-					Assert.Equal("", attemptedValue.Value);
 				});
 		}
 
