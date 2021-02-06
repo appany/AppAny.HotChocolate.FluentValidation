@@ -188,7 +188,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator"/>
+			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator{TValidator}(ArgumentValidationBuilder)"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)

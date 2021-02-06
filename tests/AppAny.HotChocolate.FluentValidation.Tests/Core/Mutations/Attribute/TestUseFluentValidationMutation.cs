@@ -2,11 +2,12 @@ using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class TestAttributeMutation : ObjectType
+	public class TestUseFluentValidationMutation : ObjectType
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Field<TestAttributeMutation>(field => field.Test(default!)).Type<StringType>();
+			descriptor.Field<TestUseFluentValidationMutation>(
+				field => field.Test(default!)).Type<StringType>();
 		}
 
 		public string Test([UseFluentValidation] TestPersonInput input)
