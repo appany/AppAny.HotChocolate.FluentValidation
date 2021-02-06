@@ -15,7 +15,7 @@ This library is a rework of internal package inside @appany
 - Most of extensibility points is just a composable delegates
 - Fine-tuning of validation for each field: conditional validation skipping, multiple validators or error mappers per input
 - Strongly typed `ValidationStrategy<T>` support
-- Basic attribute-based support
+- First-class attribute-based approach support
 
 ## Docs
 
@@ -27,6 +27,7 @@ This library is a rework of internal package inside @appany
   - [Input validators](docs/examples/input-validators.md)
   - [Root validator segregation](docs/examples/root-validator-segregation.md)
   - [Argument level overrides](docs/examples/argument-level-overrides.md)
+  - [Attribute based approach](docs/examples/attribute-based-approach.md)
 
 ## Usage
 
@@ -65,7 +66,7 @@ descriptor.Field(x => x.Example(default!))
       });
   }));
 
-... Example([UseFluentValidation(typeof(ExampleInputValidator))] ExampleInput input) { ... }
+... Example([UseFluentValidation, UseValidator((typeof(ExampleInputValidator))] ExampleInput input) { ... }
 ```
 
 ## Benchmarks
