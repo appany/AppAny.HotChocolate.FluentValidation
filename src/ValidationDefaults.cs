@@ -1,10 +1,13 @@
+using System;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using HotChocolate;
 using FluentValidation;
 using FluentValidation.Results;
 using FluentValidation.Internal;
+using HotChocolate.Configuration;
 using HotChocolate.Resolvers;
+using HotChocolate.Types.Descriptors;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -35,6 +38,15 @@ namespace AppAny.HotChocolate.FluentValidation
 		/// Default validation field middleware
 		/// </summary>
 		public static FieldMiddleware Middleware { get; } = ValidationFieldMiddleware.Use;
+
+		/// <summary>
+		/// Default HotChocolate interceptors
+		/// </summary>
+		public static class Interceptors
+		{
+			public static OnCompleteType OnBeforeCompleteType { get; } = ValidationInterceptors.OnBeforeCompleteType;
+			public static Action<IDescriptorContext, ISchema> OnAfterCreate { get; } = ValidationInterceptors.OnAfterCreate;
+		}
 
 		/// <summary>
 		/// Default graphql error extensions keys
