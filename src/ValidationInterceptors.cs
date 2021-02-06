@@ -33,9 +33,7 @@ namespace AppAny.HotChocolate.FluentValidation
 				{
 					foreach (var options in argumentOptions)
 					{
-						options.ErrorMapper ??= validationOptions.ErrorMapper;
-						options.SkipValidation ??= validationOptions.SkipValidation;
-						options.InputValidators ??= validationOptions.InputValidators;
+						options.MergeValidationOptions(validationOptions);
 					}
 
 					objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
