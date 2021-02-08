@@ -72,3 +72,4 @@ descriptor.Field(x => x.Example(default!))
 ## Benchmarks
 
 - [I **swear** I will check correctness, run these benchmarks on my own environment and only after that I will make conclusions](tests/AppAny.HotChocolate.FluentValidation.Benchmarks/README.md)
+
