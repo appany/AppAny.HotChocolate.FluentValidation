@@ -37,7 +37,8 @@ services.AddGraphQLServer()
   .AddFluentValidation();
 
 descriptor.Field(x => x.Example(default!))
-  // Explicit over implicit preferred, you have to add .UseFluentValidation() to all arguments requiring validation
+  // Explicit over implicit preferred
+  // You have to add .UseFluentValidation() to all arguments requiring validation
   .Argument("input", argument => argument.UseFluentValidation());
 
 ... Example([UseFluentValidation] ExampleInput input) { ... }
