@@ -60,6 +60,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			public const string CodeKey = "code";
 			public const string ValidatorKey = "validator";
+			public const string FieldKey = "field";
 			public const string ArgumentKey = "argument";
 			public const string PropertyKey = "property";
 			public const string SeverityKey = "severity";
@@ -117,6 +118,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
+					.SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Field.Name)
 					.SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
 					.SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
 					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity);
