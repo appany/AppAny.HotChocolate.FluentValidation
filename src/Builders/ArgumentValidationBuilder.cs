@@ -7,8 +7,7 @@ namespace AppAny.HotChocolate.FluentValidation
 	/// </summary>
 	public interface ArgumentValidationBuilder
 		: CanSkipValidation<ArgumentValidationBuilder>,
-			CanUseInputValidators<ArgumentValidationBuilder>,
-			CanUseErrorMapper<ArgumentValidationBuilder>
+			CanUseInputValidators<ArgumentValidationBuilder>
 	{
 	}
 
@@ -40,26 +39,6 @@ namespace AppAny.HotChocolate.FluentValidation
 				{
 					options.InputValidators.Add(inputValidator);
 				}
-			}
-
-			return this;
-		}
-
-		public ArgumentValidationBuilder UseErrorMapper(ErrorMapper errorMapper)
-		{
-			if (options.ErrorMapper is null)
-			{
-				options.ErrorMapper = errorMapper;
-			}
-			else
-			{
-				var previousErrorMapper = options.ErrorMapper;
-
-				options.ErrorMapper = (builder, context) =>
-				{
-					previousErrorMapper(builder, context);
-					errorMapper(builder, context);
-				};
 			}
 
 			return this;

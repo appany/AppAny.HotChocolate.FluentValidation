@@ -1,4 +1,6 @@
-﻿using HotChocolate;
+﻿using System;
+using System.Collections.Generic;
+using AppAny.HotChocolate.FluentValidation.Types;
 using HotChocolate.Resolvers;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -10,6 +12,8 @@ namespace AppAny.HotChocolate.FluentValidation
 			return async middlewareContext =>
 			{
 				var argumentNodes = middlewareContext.Selection.SyntaxNode.Arguments;
+
+				var validationErrors = new Dictionary<string, ValidationArgument>(StringComparer.InvariantCultureIgnoreCase);
 
 				if (argumentNodes is { Count: > 0 })
 				{
@@ -38,6 +42,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						}
 
 						var inputValidators = argumentOptions.InputValidators!;
+						var argumentErrors = new Dictionary<string, ValidationPayload[]>(StringComparer.InvariantCultureIgnoreCase);
 
 						for (var validatorIndex = 0; validatorIndex < inputValidators.Count; validatorIndex++)
 						{
@@ -56,19 +61,37 @@ namespace AppAny.HotChocolate.FluentValidation
 							{
 								var validationFailure = validationResult.Errors[errorIndex];
 
-								var errorBuilder = ErrorBuilder.New();
-
-								argumentOptions.ErrorMapper!.Invoke(
-									errorBuilder,
-									new ErrorMappingContext(middlewareContext, argument, validationResult, validationFailure));
-
-								middlewareContext.ReportError(errorBuilder.Build());
+								// TODO: Get or create
+								argumentErrors[validationFailure.PropertyName] = new ValidationPayload[]
+								{
+									new()
+									{
+										Message = validationFailure.ErrorMessage,
+										Severity = validationFailure.Severity,
+										Validator = validationFailure.ErrorCode
+									}
+								};
 							}
+						}
+
+						if (argumentErrors is { Count: > 0 })
+						{
+							validationErrors.Add(argument.Name, new ValidationArgument
+							{
+								ArgumentErrors = argumentErrors
+							});
 						}
 					}
 				}
 
-				if (middlewareContext.HasErrors is false)
+				if (validationErrors is { Count: > 0 })
+				{
+					middlewareContext.Result = new ValidationSummary
+					{
+						ValidationErrors = validationErrors
+					};
+				}
+				else
 				{
 					await next(middlewareContext).ConfigureAwait(false);
 				}

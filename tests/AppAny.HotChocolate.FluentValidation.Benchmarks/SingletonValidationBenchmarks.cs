@@ -39,7 +39,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 					.Services.AddSingleton<TestInputValidator>());
 		}
 
-		[Benchmark]
+		// [Benchmark]
 		public Task RunWithoutValidation()
 		{
 			return withoutValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);
@@ -48,7 +48,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 		[Benchmark(Baseline = true)]
 		public Task RunWithValidation()
 		{
-			return withValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);
+			return withValidation.ExecuteAsync("mutation { test(input: { name: \"\" }) { ... on MyClass { name } ... on MyClassValidation { input { name { message } } } } }");
 		}
 
 		// [Benchmark(Description = "Broken since 11.0.8")]
@@ -57,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			return fluentChocoValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);
 		}
 
-		[Benchmark]
+		// [Benchmark]
 		public Task RunWithFairyBreadValidation()
 		{
 			return fairyBreadValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);

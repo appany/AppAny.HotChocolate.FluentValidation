@@ -8,4 +8,8 @@
 	  <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.9" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\AppAny.HotChocolate.FluentValidation.csproj" />
+	</ItemGroup>
+
 </Project>

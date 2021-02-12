@@ -49,21 +49,6 @@ namespace AppAny.HotChocolate.FluentValidation
 		}
 
 		/// <summary>
-		/// Default graphql error extensions keys
-		/// </summary>
-		public static class ExtensionKeys
-		{
-			public const string CodeKey = "code";
-			public const string ValidatorKey = "validator";
-			public const string ArgumentKey = "argument";
-			public const string PropertyKey = "property";
-			public const string SeverityKey = "severity";
-			public const string AttemptedValueKey = "attemptedValue";
-			public const string CustomStateKey = "customState";
-			public const string FormattedMessagePlaceholderValuesKey = "formattedMessagePlaceholderValues";
-		}
-
-		/// <summary>
 		/// Default <see cref="FluentValidation.SkipValidation"/> implementations
 		/// </summary>
 		public static class SkipValidation
@@ -84,51 +69,6 @@ namespace AppAny.HotChocolate.FluentValidation
 			public static ValueTask<bool> Skip(SkipValidationContext skipValidationContext)
 			{
 				return new(true);
-			}
-		}
-
-		/// <summary>
-		/// Default <see cref="ErrorMapper"/> implementations
-		/// </summary>
-		public static class ErrorMappers
-		{
-			/// <summary>
-			/// Maps graphql error code, path and message
-			/// </summary>
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static void Default(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
-			{
-				errorBuilder
-					.SetCode(Code)
-					.SetPath(mappingContext.MiddlewareContext.Path)
-					.SetMessage(mappingContext.ValidationFailure.ErrorMessage);
-			}
-
-			/// <summary>
-			/// Maps useful extensions about input field, property, used validator, invalid value and severity
-			/// </summary>
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
-			{
-				errorBuilder
-					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
-					.SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
-					.SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
-					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity);
-			}
-
-			/// <summary>
-			/// Maps custom state and formatted message placeholder values
-			/// </summary>
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
-			{
-				errorBuilder
-					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue)
-					.SetExtension(ExtensionKeys.CustomStateKey, mappingContext.ValidationFailure.CustomState)
-					.SetExtension(
-						ExtensionKeys.FormattedMessagePlaceholderValuesKey,
-						mappingContext.ValidationFailure.FormattedMessagePlaceholderValues);
 			}
 		}
 

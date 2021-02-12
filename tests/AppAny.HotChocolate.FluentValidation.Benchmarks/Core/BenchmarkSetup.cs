@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 	{
 		public static class Mutations
 		{
-			public const string WithEmptyName = "mutation { test(input: { name: \"\" }) }";
+			public const string WithEmptyName = "mutation { test(input: { name: \"\" }) { ... on MyClass { name } } }";
 			public const string WithEmptyInput = "mutation { test() }";
 			public const string WithNullInput = "mutation { test(input: null) }";
 		}

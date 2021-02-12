@@ -6,7 +6,6 @@ namespace AppAny.HotChocolate.FluentValidation
 			this ArgumentValidationOptions options,
 			ValidationOptions validationOptions)
 		{
-			options.ErrorMapper ??= validationOptions.ErrorMapper;
 			options.SkipValidation ??= validationOptions.SkipValidation;
 			options.InputValidators ??= validationOptions.InputValidators;
 		}
