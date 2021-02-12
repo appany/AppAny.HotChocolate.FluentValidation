@@ -18,6 +18,8 @@ namespace AppAny.HotChocolate.FluentValidation.Types
 		{
 			descriptor.Name(field + "Validation");
 
+			descriptor.Field(x => x.ValidationErrors).Ignore();
+
 			foreach (var (argument, properties) in arguments)
 			{
 				descriptor.Field(argument)

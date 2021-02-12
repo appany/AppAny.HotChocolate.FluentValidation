@@ -5,7 +5,6 @@ using AppAny.HotChocolate.FluentValidation.Types;
 using FluentValidation;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApplication
@@ -134,17 +133,19 @@ namespace WebApplication
 					var mutation = x.Name("Mutation");
 
 					mutation.Field<UserResolvers>(r => r.CreateUser(default!))
-						.Type(new ValidationResultType<CreateUserPayloadType>("CreateUser", new Dictionary<string, string[]>
-						{
-							["input"] = new[] { "userName", "email" }
-						}))
+						// .Type(new ValidationResultType<CreateUserPayloadType>("CreateUser", new Dictionary<string, string[]>
+						// {
+						// 	["input"] = new[] { "userName", "email" }
+						// }))
+						.Type<CreateUserPayloadType>()
 						.Argument("input", arg => arg.Type<CreateUserInputType>().UseFluentValidation());
 
 					mutation.Field<UserResolvers>(r => r.CreateProduct(default!))
-						.Type(new ValidationResultType<CreateProductPayloadType>("CreateProduct", new Dictionary<string, string[]>
-						{
-							["input"] = new[] { "name" }
-						}))
+						// .Type(new ValidationResultType<CreateProductPayloadType>("CreateProduct", new Dictionary<string, string[]>
+						// {
+						// 	["input"] = new[] { "name" }
+						// }))
+						.Type<CreateProductPayloadType>()
 						.Argument("input", arg => arg.Type<CreateProductInputType>().UseFluentValidation());
 				});
 		}

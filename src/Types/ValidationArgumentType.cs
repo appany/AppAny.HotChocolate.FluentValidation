@@ -20,6 +20,8 @@ namespace AppAny.HotChocolate.FluentValidation.Types
 		{
 			descriptor.Name(field + char.ToUpper(argument[0]) + argument[1..] + "Argument");
 
+			descriptor.Field(x => x.ArgumentErrors).Ignore();
+
 			foreach (var property in properties)
 			{
 				descriptor.Field(property)
