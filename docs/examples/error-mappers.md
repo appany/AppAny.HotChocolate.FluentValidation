@@ -39,6 +39,7 @@
       "extensions": {
         "code": "ValidationFailed",
         "validator": "NotEmptyValidator",
+        "field": "createUser",
         "argument": "input",
         "property": "Name",
         "severity": "Error"
@@ -64,6 +65,7 @@
       "extensions": {
         "code": "ValidationFailed",
         "validator": "NotEmptyValidator",
+        "field": "createUser",
         "argument": "input",
         "property": "Name",
         "severity": "Error",
