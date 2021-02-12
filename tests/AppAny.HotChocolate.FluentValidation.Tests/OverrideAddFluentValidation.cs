@@ -145,7 +145,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			{
 				builder.AddFluentValidation(opt =>
 					{
-						opt.UseInputValidators(_ => Task.FromResult((ValidationResult?)null));
+						opt.UseInputValidators(_ => Task.FromResult((global::FluentValidation.Results.ValidationResult?)null));
 					})
 					.AddMutationType(new TestMutation(field =>
 					{

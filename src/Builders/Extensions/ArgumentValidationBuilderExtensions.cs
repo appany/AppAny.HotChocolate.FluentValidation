@@ -69,7 +69,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (argumentValue is null)
 				{
-					return Task.FromResult<ValidationResult?>(null);
+					return Task.FromResult<global::FluentValidation.Results.ValidationResult?>(null);
 				}
 
 				var validator = (IValidator)inputValidatorContext.MiddlewareContext.Services.GetRequiredService(validatorType);
@@ -103,7 +103,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				var validationContext = new ValidationContext<object>(argumentValue);
 
-				ValidationResult? validationResult = null;
+				global::FluentValidation.Results.ValidationResult? validationResult = null;
 
 				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
 				{
@@ -144,7 +144,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (argumentValue is null)
 				{
-					return Task.FromResult<ValidationResult?>(null);
+					return Task.FromResult<global::FluentValidation.Results.ValidationResult?>(null);
 				}
 
 				var validator = (IValidator)inputValidatorContext.MiddlewareContext.Services.GetRequiredService(validatorType);
@@ -179,7 +179,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				var validationContext = ValidationContext<object>.CreateWithOptions(argumentValue, validationStrategy);
 
-				ValidationResult? validationResult = null;
+				global::FluentValidation.Results.ValidationResult? validationResult = null;
 
 				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
 				{
@@ -240,7 +240,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				if (argumentValue is null)
 				{
-					return Task.FromResult<ValidationResult?>(null);
+					return Task.FromResult<global::FluentValidation.Results.ValidationResult?>(null);
 				}
 
 				var validator = inputValidatorContext.MiddlewareContext.Services.GetRequiredService<TValidator>();
@@ -275,7 +275,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				var validationContext = ValidationContext<TInput>.CreateWithOptions(argumentValue, validationStrategy);
 
-				ValidationResult? validationResult = null;
+				global::FluentValidation.Results.ValidationResult? validationResult = null;
 
 				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
 				{

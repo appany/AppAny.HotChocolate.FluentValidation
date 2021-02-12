@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAny.HotChocolate.FluentV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAny.HotChocolate.FluentValidation.Benchmarks", "tests\AppAny.HotChocolate.FluentValidation.Benchmarks\AppAny.HotChocolate.FluentValidation.Benchmarks.csproj", "{2BE5B3D6-7BB2-4DA7-9D07-8A22B7EBE626}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppAny.HotChocolate.FluentValidation.Sandbox", "tests\AppAny.HotChocolate.FluentValidation.Sandbox\AppAny.HotChocolate.FluentValidation.Sandbox.csproj", "{F7B2E8EC-90AA-4981-8BB2-081B755847FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,10 +64,23 @@ Global
 		{2BE5B3D6-7BB2-4DA7-9D07-8A22B7EBE626}.Release|x64.Build.0 = Release|Any CPU
 		{2BE5B3D6-7BB2-4DA7-9D07-8A22B7EBE626}.Release|x86.ActiveCfg = Release|Any CPU
 		{2BE5B3D6-7BB2-4DA7-9D07-8A22B7EBE626}.Release|x86.Build.0 = Release|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Release|x64.Build.0 = Release|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0FC3EC24-F266-4059-A3B1-FEB45C2A953C} = {691DDD6D-5A9B-4A12-99AB-1A918EAC7C00}
 		{18430055-D437-46D7-AE6B-69FAE7553162} = {6F314F0D-BE80-42E8-80B3-F724A72F1655}
 		{2BE5B3D6-7BB2-4DA7-9D07-8A22B7EBE626} = {6F314F0D-BE80-42E8-80B3-F724A72F1655}
+		{F7B2E8EC-90AA-4981-8BB2-081B755847FE} = {6F314F0D-BE80-42E8-80B3-F724A72F1655}
 	EndGlobalSection
 EndGlobal

@@ -26,6 +26,9 @@ namespace AppAny.HotChocolate.FluentValidation
 				new DelegateSchemaInterceptor(
 					onAfterCreate: ValidationDefaults.Interceptors.OnAfterCreate));
 
+			builder.OnBeforeRegisterDependencies(
+				ValidationDefaults.Interceptors.OnBeforeRegisterDependencies);
+
 			return builder;
 		}
 	}

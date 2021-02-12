@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HotChocolate;
@@ -27,9 +28,9 @@ namespace AppAny.HotChocolate.FluentValidation
 				var argumentOptions = objectFieldDefinition.Arguments
 					.Where(argument => argument.ContextData.ShouldValidateArgument())
 					.Select(argument => argument.ContextData.GetArgumentOptions())
-					.ToList();
+					.ToArray();
 
-				if (argumentOptions is { Count: > 0 })
+				if (argumentOptions is { Length: > 0 })
 				{
 					foreach (var options in argumentOptions)
 					{
@@ -52,6 +53,51 @@ namespace AppAny.HotChocolate.FluentValidation
 					var objectOptions = extensionData.GetOrCreateObjectFieldOptions();
 
 					objectOptions.Arguments.Add(argument.Name, argument);
+				}
+			}
+		}
+
+		public static void OnBeforeRegisterDependencies(
+			ITypeDiscoveryContext discoveryContext,
+			DefinitionBase? definition,
+			IDictionary<string, object?> contextdata)
+		{
+			if (definition is not ObjectTypeDefinition objectTypeDefinition)
+			{
+				return;
+			}
+
+			foreach (var objectFieldDefinition in objectTypeDefinition.Fields)
+			{
+				var argumentNames = objectFieldDefinition.Arguments
+					.Where(argument => argument.ContextData.ShouldValidateArgument())
+					.Select(argument => argument.Name.Value)
+					.ToArray();
+
+				if (argumentNames is { Length: > 0 })
+				{
+					var innerType = objectFieldDefinition.Type switch
+					{
+						ExtendedTypeReference extendedTypeReference => extendedTypeReference.Type.Type,
+						SchemaTypeReference schemaTypeReference => schemaTypeReference.Type.GetType(),
+						_ => throw new InvalidOperationException()
+					};
+
+					objectFieldDefinition.ContextData.Add("TEst", "Works!");
+
+					var type = typeof(ValidationResultType<>).MakeGenericType(innerType);
+
+					var fieldName = objectFieldDefinition.Name.Value;
+
+					var typeName = char.ToUpper(fieldName[0]) + fieldName.Substring(1);
+
+					var typeInstance = type.GetConstructors()
+						.Single()
+						.Invoke(new object[]{ typeName, argumentNames });
+
+					objectFieldDefinition.Type = new SchemaTypeReference((IOutputType)typeInstance);
+
+					objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
 				}
 			}
 		}

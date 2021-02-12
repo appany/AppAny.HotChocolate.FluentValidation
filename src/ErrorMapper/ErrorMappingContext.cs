@@ -12,7 +12,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		public ErrorMappingContext(
 			IMiddlewareContext middlewareContext,
 			IInputField argument,
-			ValidationResult validationResult,
+			global::FluentValidation.Results.ValidationResult validationResult,
 			ValidationFailure validationFailure)
 		{
 			MiddlewareContext = middlewareContext;
@@ -23,7 +23,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 		public IMiddlewareContext MiddlewareContext { get; }
 		public IInputField Argument { get; }
-		public ValidationResult ValidationResult { get; }
+		public global::FluentValidation.Results.ValidationResult ValidationResult { get; }
 		public ValidationFailure ValidationFailure { get; }
 	}
 }

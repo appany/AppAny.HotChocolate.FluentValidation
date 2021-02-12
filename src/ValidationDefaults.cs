@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using HotChocolate;
@@ -8,6 +9,7 @@ using FluentValidation.Internal;
 using HotChocolate.Configuration;
 using HotChocolate.Resolvers;
 using HotChocolate.Types.Descriptors;
+using HotChocolate.Types.Descriptors.Definitions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -46,6 +48,9 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			public static OnCompleteType OnBeforeCompleteType { get; } = ValidationInterceptors.OnBeforeCompleteType;
 			public static Action<IDescriptorContext, ISchema> OnAfterCreate { get; } = ValidationInterceptors.OnAfterCreate;
+
+			public static OnInitializeType OnBeforeRegisterDependencies { get; } =
+				ValidationInterceptors.OnBeforeRegisterDependencies;
 		}
 
 		/// <summary>
@@ -140,7 +145,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			/// <summary>
 			/// Default <see cref="InputValidator"/> implementation
 			/// </summary>
-			public static async Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
+			public static async Task<global::FluentValidation.Results.ValidationResult?> Default(InputValidatorContext inputValidatorContext)
 			{
 				var argumentValue = inputValidatorContext
 					.MiddlewareContext
@@ -157,7 +162,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				var validationContext = new ValidationContext<object>(argumentValue);
 
-				ValidationResult? validationResult = null;
+				global::FluentValidation.Results.ValidationResult? validationResult = null;
 
 				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
 				{
