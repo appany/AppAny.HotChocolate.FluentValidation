@@ -1,10 +1,13 @@
+using System;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using HotChocolate;
 using FluentValidation;
 using FluentValidation.Results;
 using FluentValidation.Internal;
+using HotChocolate.Configuration;
 using HotChocolate.Resolvers;
+using HotChocolate.Types.Descriptors;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -37,12 +40,22 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static FieldMiddleware Middleware { get; } = ValidationFieldMiddleware.Use;
 
 		/// <summary>
+		/// Default HotChocolate interceptors
+		/// </summary>
+		public static class Interceptors
+		{
+			public static OnCompleteType OnBeforeCompleteType { get; } = ValidationInterceptors.OnBeforeCompleteType;
+			public static Action<IDescriptorContext, ISchema> OnAfterCreate { get; } = ValidationInterceptors.OnAfterCreate;
+		}
+
+		/// <summary>
 		/// Default graphql error extensions keys
 		/// </summary>
 		public static class ExtensionKeys
 		{
 			public const string CodeKey = "code";
 			public const string ValidatorKey = "validator";
+			public const string FieldKey = "field";
 			public const string ArgumentKey = "argument";
 			public const string PropertyKey = "property";
 			public const string SeverityKey = "severity";
@@ -100,10 +113,10 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				errorBuilder
 					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
+					.SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Field.Name)
 					.SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
 					.SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
-					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity)
-					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue);
+					.SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity);
 			}
 
 			/// <summary>
@@ -113,6 +126,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
+					.SetExtension(ExtensionKeys.AttemptedValueKey, mappingContext.ValidationFailure.AttemptedValue)
 					.SetExtension(ExtensionKeys.CustomStateKey, mappingContext.ValidationFailure.CustomState)
 					.SetExtension(
 						ExtensionKeys.FormattedMessagePlaceholderValuesKey,
@@ -176,7 +190,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator"/>
+			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator{TValidator}(ArgumentValidationBuilder)"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)

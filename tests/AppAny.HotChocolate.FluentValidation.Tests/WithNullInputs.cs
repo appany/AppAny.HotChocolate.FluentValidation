@@ -14,8 +14,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
 					.AddMutationType(new TestMutation(field =>
-						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation())))
-					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
+					{
+						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
+					})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
@@ -34,9 +39,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field =>
-						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation())))
-					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
-					.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>());
+					{
+						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
+					})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
+						.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
@@ -55,8 +65,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 					.AddMutationType(new TestMutation(field =>
-						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation())))
-					.Services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>());
+					{
+						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
+					})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));

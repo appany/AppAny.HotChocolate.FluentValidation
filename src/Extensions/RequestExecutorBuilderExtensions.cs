@@ -1,4 +1,5 @@
 using System;
+using HotChocolate.Configuration;
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,8 +20,11 @@ namespace AppAny.HotChocolate.FluentValidation
 
 			builder.SetContextData(ValidationDefaults.ValidationOptionsKey, validationOptions);
 
-			builder.TryAddTypeInterceptor<ValidationTypeInterceptor>();
-			builder.TryAddSchemaInterceptor<ValidationSchemaInterceptor>();
+			builder.OnBeforeCompleteType(ValidationDefaults.Interceptors.OnBeforeCompleteType);
+
+			builder.TryAddSchemaInterceptor(
+				new DelegateSchemaInterceptor(
+					onAfterCreate: ValidationDefaults.Interceptors.OnAfterCreate));
 
 			return builder;
 		}

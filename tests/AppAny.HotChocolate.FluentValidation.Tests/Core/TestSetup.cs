@@ -18,13 +18,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				"mutation { test(input: { name: \"\" }, input2: { name: \"\" }) }";
 		}
 
-		public static ValueTask<IRequestExecutor> CreateRequestExecutor(Action<IRequestExecutorBuilder> configure)
+		public static ValueTask<IRequestExecutor> CreateRequestExecutor(
+			Action<IRequestExecutorBuilder> configureExecutor,
+			Action<IServiceCollection>? configureServices = null)
 		{
 			var services = new ServiceCollection();
 
 			var executorBuilder = services.AddGraphQL().AddQueryType<TestQuery>();
 
-			configure.Invoke(executorBuilder);
+			configureExecutor.Invoke(executorBuilder);
+
+			configureServices?.Invoke(services);
 
 			return executorBuilder.BuildRequestExecutorAsync();
 		}

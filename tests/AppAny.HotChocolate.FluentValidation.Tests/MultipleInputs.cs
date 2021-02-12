@@ -12,12 +12,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task UseMultipleInputs_Validate_SingleInput()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field => field
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
-						.Argument("input2", arg => arg.Type<TestPersonInputType>())))
-					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
+			var executor = await TestSetup.CreateRequestExecutor(
+				builder =>
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
+								.Argument("input2", arg => arg.Type<TestPersonInputType>());
+						}));
+				},
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
@@ -40,12 +48,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task UseMultipleInputs_Validate_DoubleInput()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field => field
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
-						.Argument("input2", arg => arg.Type<TestPersonInputType>().UseFluentValidation())))
-					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
+			var executor = await TestSetup.CreateRequestExecutor(
+				builder =>
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation())
+								.Argument("input2", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
+						}));
+				},
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
@@ -82,12 +98,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task UseMultipleInputs_Validate_SecondInput()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field => field
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>())
-						.Argument("input2", arg => arg.Type<TestPersonInputType>().UseFluentValidation())))
-					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
+			var executor = await TestSetup.CreateRequestExecutor(
+				builder =>
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>())
+								.Argument("input2", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
+						}));
+				},
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
@@ -110,12 +134,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task UseMultipleInputs_Validate_NoInputs()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field => field
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>())
-						.Argument("input2", arg => arg.Type<TestPersonInputType>())))
-					.Services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>());
+			var executor = await TestSetup.CreateRequestExecutor(
+				builder =>
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>())
+								.Argument("input2", arg => arg.Type<TestPersonInputType>());
+						}));
+				},
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));

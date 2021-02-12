@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<Version>0.1.11</Version>
+		<Version>0.1.12</Version>
 		<LangVersion>9</LangVersion>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<IncludeSymbols>true</IncludeSymbols>
@@ -24,7 +24,7 @@
 	</PropertyGroup>
 
 	<ItemGroup Label="Packages">
-		<PackageReference Include="FluentValidation" Version="9.5.0" />
+		<PackageReference Include="FluentValidation" Version="9.5.1" />
 		<PackageReference Include="HotChocolate.Execution" Version="11.0.9" />
 	</ItemGroup>
 

@@ -12,23 +12,18 @@ namespace AppAny.HotChocolate.FluentValidation
 	[AttributeUsage(AttributeTargets.Parameter)]
 	public sealed class UseFluentValidationAttribute : ArgumentDescriptorAttribute
 	{
-		private readonly Type[] validators;
-
-		public UseFluentValidationAttribute(params Type[] validators)
-		{
-			this.validators = validators;
-		}
-
 		public override void OnConfigure(
 			IDescriptorContext context,
 			IArgumentDescriptor descriptor,
 			ParameterInfo parameter)
 		{
+			var fluentValidationAttributes = parameter.GetCustomAttributes<FluentValidationAttribute>();
+
 			descriptor.UseFluentValidation(options =>
 			{
-				foreach (var validator in validators)
+				foreach (var fluentValidationAttribute in fluentValidationAttributes)
 				{
-					options.UseValidator(validator);
+					fluentValidationAttribute.Configure(options);
 				}
 			});
 		}
