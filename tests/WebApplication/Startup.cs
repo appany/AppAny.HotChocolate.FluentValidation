@@ -117,6 +117,21 @@ namespace WebApplication
 		}
 	}
 
+	public class CreateProductPayload
+	{
+		public string Id { get; set; }
+		public string Name { get; set; }
+	}
+
+	public class CreateProductPayloadType : ObjectType<CreateProductPayload>
+	{
+		protected override void Configure(IObjectTypeDescriptor<CreateProductPayload> descriptor)
+		{
+			descriptor.Field(x => x.Id);
+			descriptor.Field(x => x.Name);
+		}
+	}
+
 	public class CreateUserInput
 	{
 		public string UserName { get; set; }
@@ -134,6 +149,19 @@ namespace WebApplication
 		}
 	}
 
+	public class CreateProductInput
+	{
+		public string Name { get; set; }
+	}
+
+	public class CreateProductInputType : InputObjectType<CreateProductInput>
+	{
+		protected override void Configure(IInputObjectTypeDescriptor<CreateProductInput> descriptor)
+		{
+			descriptor.Field(x => x.Name);
+		}
+	}
+
 	public class UserResolvers
 	{
 		public CreateUserPayload CreateUser(CreateUserInput input)
@@ -145,6 +173,15 @@ namespace WebApplication
 				UserName = input.UserName
 			};
 		}
+
+		public CreateProductPayload CreateProduct(CreateProductInput input)
+		{
+			return new()
+			{
+				Id = Guid.NewGuid().ToString("N"),
+				Name = input.Name
+			};
+		}
 	}
 
 	public class Startup
@@ -153,47 +190,74 @@ namespace WebApplication
 		{
 			services.AddGraphQLServer()
 				.AddQueryType(x => x.Name("Query").Field("test").Resolve("Works!"))
-				.AddMutationType(x => x.Name("Mutation")
-					.Field<UserResolvers>(r => r.CreateUser(default!))
-					.Type(new ValidationResultType<CreateUserPayloadType>("CreateUser", new Dictionary<string, string[]>
-					{
-						["input"] = new[] { "userName", "email", "password" }
-					}))
-					.Argument("input", arg => arg.Type<CreateUserInputType>())
-					.Use(next => async context =>
-					{
-						context.SetScopedValue("input:userName", new ValidationResult[]
+				.AddMutationType(x =>
+				{
+					var mutation = x.Name("Mutation");
+
+					mutation.Field<UserResolvers>(r => r.CreateUser(default!))
+						.Type(new ValidationResultType<CreateUserPayloadType>("CreateUser", new Dictionary<string, string[]>
 						{
-							new()
-							{
-								Message = "UserName is empty",
-								Severity = "Warning",
-								Validator = "ManualValidator"
-							}
-						});
-						context.SetScopedValue("input:email", new ValidationResult[]
+							["input"] = new[] { "userName", "email", "password" }
+						}))
+						.Argument("input", arg => arg.Type<CreateUserInputType>())
+						.Use(next => async context =>
 						{
-							new()
+							context.SetScopedValue("input:userName", new ValidationResult[]
 							{
-								Message = "Email is empty",
-								Severity = "Warning",
-								Validator = "ManualValidator"
-							}
-						});
-						context.SetScopedValue("input:password", new ValidationResult[]
-						{
-							new()
+								new()
+								{
+									Message = "UserName is empty",
+									Severity = "Warning",
+									Validator = "ManualValidator"
+								}
+							});
+							context.SetScopedValue("input:email", new ValidationResult[]
 							{
-								Message = "Password is empty",
-								Severity = "Warning",
-								Validator = "ManualValidator"
-							}
+								new()
+								{
+									Message = "Email is empty",
+									Severity = "Warning",
+									Validator = "ManualValidator"
+								}
+							});
+							context.SetScopedValue("input:password", new ValidationResult[]
+							{
+								new()
+								{
+									Message = "Password is empty",
+									Severity = "Warning",
+									Validator = "ManualValidator"
+								}
+							});
+
+							context.Result = new ValidationError();
+
+							// await next(context);
 						});
 
-						context.Result = new ValidationError();
+					mutation.Field<UserResolvers>(r => r.CreateProduct(default!))
+						.Type(new ValidationResultType<CreateProductPayloadType>("CreateProduct", new Dictionary<string, string[]>
+						{
+							["input"] = new[] { "name" }
+						}))
+						.Argument("input", arg => arg.Type<CreateProductInputType>())
+						.Use(next => async context =>
+						{
+							context.SetScopedValue("input:name", new ValidationResult[]
+							{
+								new()
+								{
+									Message = "Name is empty",
+									Severity = "Warning",
+									Validator = "ManualValidator"
+								}
+							});
 
-						// await next(context);
-					}));
+							context.Result = new ValidationError();
+
+							// await next(context);
+						});
+				});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
