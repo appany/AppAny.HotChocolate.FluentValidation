@@ -8,6 +8,12 @@ Feature-rich, simple, fast and memory efficient input field `HotChocolate` + `Fl
 
 This library is a rework of internal package inside @appany
 
+## Installation
+
+```bash
+$> dotnet add package AppAny.HotChocolate.FluentValidation
+```
+
 ## Features
 
 - You don't pay for validation middleware if the field has no validatable inputs
