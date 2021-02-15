@@ -16,6 +16,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			public const string WithEmptyNameAndSecondInput =
 				"mutation { test(input: { name: \"\" }, input2: { name: \"\" }) }";
+
+			public static string WithName(string name)
+			{
+				return $"mutation {{ test(input: {{ name: \"{name}\" }}) }}";
+			}
 		}
 
 		public static ValueTask<IRequestExecutor> CreateRequestExecutor(

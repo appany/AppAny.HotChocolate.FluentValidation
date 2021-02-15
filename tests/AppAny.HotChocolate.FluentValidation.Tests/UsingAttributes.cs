@@ -294,11 +294,68 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				},
 				services =>
 				{
-					services.AddTransient<NotEmptyNameValidator>();
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
 				});
 
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
+
+		[Fact]
+		public async Task Should_CustomSkipValidation_AttributeConfiguration()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestCustomSkipValidationMutation());
+				},
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				name =>
+				{
+					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+
+					Assert.Collection(name.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				});
+		}
+
+		[Fact]
+		public async Task Should_CustomSkipValidation_Skip()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestCustomSkipValidationMutation());
+				},
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithName("Custom")));
 
 			var (key, value) = Assert.Single(result.Data);
 

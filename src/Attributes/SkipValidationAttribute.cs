@@ -1,10 +1,17 @@
+using System.Threading.Tasks;
+
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public sealed class SkipValidationAttribute : FluentValidationAttribute
+	public class SkipValidationAttribute : FluentValidationAttribute
 	{
-		public override void Configure(ArgumentValidationBuilder builder)
+		public sealed override void Configure(ArgumentValidationBuilder builder)
 		{
-			builder.SkipValidation();
+			builder.SkipValidation(SkipValidation);
+		}
+
+		public virtual ValueTask<bool> SkipValidation(SkipValidationContext skipValidationContext)
+		{
+			return ValidationDefaults.SkipValidation.Skip(skipValidationContext);
 		}
 	}
 }
