@@ -4,10 +4,6 @@
 
 Feature-rich, simple, fast and memory efficient input field `HotChocolate` + `FluentValidation` integration
 
-## Disclaimer
-
-This library is a rework of internal package inside @appany
-
 ## Installation
 
 ```bash
@@ -23,33 +19,43 @@ $> dotnet add package AppAny.HotChocolate.FluentValidation
 - Strongly typed `ValidationStrategy<T>` support
 - First-class attribute-based approach support
 
-## Docs
-
-- [Abstractions](docs/core-abstractions.md)
-- [Defaults](docs/defaults.md)
-- Examples
-  - [Error mappers](docs/examples/error-mappers.md)
-  - [Validation strategies](docs/examples/validation-strategies.md)
-  - [Input validators](docs/examples/input-validators.md)
-  - [Root validator segregation](docs/examples/root-validator-segregation.md)
-  - [Argument level overrides](docs/examples/argument-level-overrides.md)
-  - [Attribute-based approach](docs/examples/attribute-based-approach.md)
-
 ## Usage
 
+1. Add **FluentValidation** [validator](https://docs.fluentvalidation.net/en/latest/start.html)
+
 ```cs
-# Basic
+public class ExampleInput
+{
+  public string Example { get; set; }
+}
+
+public class ExampleInputValidator : AbstractValidator<ExampleInput>
+{
+  public ExampleInputValidator()
+  {
+    RuleFor(input => input.Example)
+      .NotEmpty()
+      .WithMessage("Example is empty");
+  }
+}
+```
+
+2. Configure **HotChocolate** + **FluentValidation** integration
+
+```cs
 services.AddGraphQLServer()
   .AddFluentValidation();
 
 descriptor.Field(x => x.Example(default!))
   // Explicit over implicit preferred
-  // You have to add .UseFluentValidation() to all arguments requiring validation
+  // You have to add .UseFluentValidation()/attribute to all arguments requiring validation
   .Argument("input", argument => argument.UseFluentValidation());
 
 ... Example([UseFluentValidation] ExampleInput input) { ... }
+```
 
-# Customizations
+3. Extend and customize
+```cs
 services.AddGraphQLServer()
   .AddFluentValidation(options =>
   {
@@ -75,6 +81,19 @@ descriptor.Field(x => x.Example(default!))
 
 ... Example([UseFluentValidation, UseValidator((typeof(ExampleInputValidator))] ExampleInput input) { ... }
 ```
+
+
+## Docs
+
+- [Abstractions](docs/core-abstractions.md)
+- [Defaults](docs/defaults.md)
+- Examples
+  - [Error mappers](docs/examples/error-mappers.md)
+  - [Validation strategies](docs/examples/validation-strategies.md)
+  - [Input validators](docs/examples/input-validators.md)
+  - [Root validator segregation](docs/examples/root-validator-segregation.md)
+  - [Argument level overrides](docs/examples/argument-level-overrides.md)
+  - [Attribute-based approach](docs/examples/attribute-based-approach.md)
 
 ## Benchmarks
 
