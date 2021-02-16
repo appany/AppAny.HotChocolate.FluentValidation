@@ -2,6 +2,10 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      release:
+        description: Release
+        required: true
 
 jobs:
   release:
@@ -22,6 +26,7 @@ jobs:
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         PROJECT_FILE_PATH: src/AppAny.HotChocolate.FluentValidation.csproj
+        VERSION_STATIC: ${{ github.event.inputs.release }}
         TAG_FORMAT: '*'
         NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
         INCLUDE_SYMBOLS: true
@@ -32,8 +37,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.publish.outputs.VERSION }}
-        release_name: ${{ steps.publish.outputs.VERSION }}
+        tag_name: ${{ github.event.inputs.release }}
+        release_name: ${{ github.event.inputs.release }}
 
     - name: Release | Assets | Nuget
       uses: actions/upload-release-asset@v1.0.2
