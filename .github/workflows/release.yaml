@@ -35,22 +35,22 @@ jobs:
         tag_name: ${{ steps.nuget.outputs.VERSION }}
         release_name: ${{ steps.nuget.outputs.VERSION }}
 
-      - name: Release | Assets | Nuget
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_name: ${{ steps.nuget.outputs.PACKAGE_NAME }}
-          asset_path: ${{ steps.nuget.outputs.PACKAGE_PATH }}
-          asset_content_type: application/zip
+    - name: Release | Assets | Nuget
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_name: ${{ steps.nuget.outputs.PACKAGE_NAME }}
+        asset_path: ${{ steps.nuget.outputs.PACKAGE_PATH }}
+        asset_content_type: application/zip
 
-      - name: Release | Assets | Nuget | Symbols
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_name: ${{ steps.nuget.outputs.SYMBOLS_PACKAGE_NAME }}
-          asset_path: ${{ steps.nuget.outputs.SYMBOLS_PACKAGE_PATH }}
-          asset_content_type: application/zip
+    - name: Release | Assets | Nuget | Symbols
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_name: ${{ steps.nuget.outputs.SYMBOLS_PACKAGE_NAME }}
+        asset_path: ${{ steps.nuget.outputs.SYMBOLS_PACKAGE_PATH }}
+        asset_content_type: application/zip
