@@ -18,13 +18,13 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Release | Publish
-      id: nuget
+      id: publish
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         PROJECT_FILE_PATH: src/AppAny.HotChocolate.FluentValidation.csproj
-        TAG_COMMIT: true
         TAG_FORMAT: '*'
         NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
+        INCLUDE_SYMBOLS: true
 
     - name: Release
       id: release
@@ -32,8 +32,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.nuget.outputs.VERSION }}
-        release_name: ${{ steps.nuget.outputs.VERSION }}
+        tag_name: ${{ steps.publish.outputs.VERSION }}
+        release_name: ${{ steps.publish.outputs.VERSION }}
 
     - name: Release | Assets | Nuget
       uses: actions/upload-release-asset@v1.0.2
@@ -41,8 +41,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }}
-        asset_name: ${{ steps.nuget.outputs.PACKAGE_NAME }}
-        asset_path: ${{ steps.nuget.outputs.PACKAGE_PATH }}
+        asset_name: ${{ steps.publish.outputs.PACKAGE_NAME }}
+        asset_path: ${{ steps.publish.outputs.PACKAGE_PATH }}
         asset_content_type: application/zip
 
     - name: Release | Assets | Nuget | Symbols
@@ -51,6 +51,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }}
-        asset_name: ${{ steps.nuget.outputs.SYMBOLS_PACKAGE_NAME }}
-        asset_path: ${{ steps.nuget.outputs.SYMBOLS_PACKAGE_PATH }}
+        asset_name: ${{ steps.publish.outputs.SYMBOLS_PACKAGE_NAME }}
+        asset_path: ${{ steps.publish.outputs.SYMBOLS_PACKAGE_PATH }}
         asset_content_type: application/zip
