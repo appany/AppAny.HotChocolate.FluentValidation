@@ -1,6 +1,6 @@
 # AppAny.HotChocolate.FluentValidation
 
-[![Nuget](https://img.shields.io/nuget/v/AppAny.HotChocolate.FluentValidation.svg)](https://www.nuget.org/packages/AppAny.HotChocolate.FluentValidation) ![Hotchocolate | FluentValidation](https://github.com/appany/AppAny.HotChocolate.FluentValidation/workflows/Hotchocolate%20%7C%20FluentValidation/badge.svg)
+[![Nuget](https://img.shields.io/nuget/v/AppAny.HotChocolate.FluentValidation.svg)](https://www.nuget.org/packages/AppAny.HotChocolate.FluentValidation) ![Hotchocolate | FluentValidation](https://github.com/appany/AppAny.HotChocolate.FluentValidation/workflows/Hotchocolate%20%7C%20FluentValidation/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/appany/AppAny.HotChocolate.FluentValidation/badge.svg?branch=main)](https://coveralls.io/github/appany/AppAny.HotChocolate.FluentValidation?branch=main)
 
 Feature-rich, simple, fast and memory efficient input field `HotChocolate` + `FluentValidation` integration
 
