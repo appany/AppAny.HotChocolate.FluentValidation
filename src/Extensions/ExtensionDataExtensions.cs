@@ -1,5 +1,6 @@
 using HotChocolate;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
@@ -18,6 +19,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return options;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ObjectFieldValidationOptions GetObjectFieldOptions(
 			this IReadOnlyDictionary<string, object?> contextData)
 		{
@@ -45,6 +47,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return options;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ArgumentValidationOptions GetArgumentOptions(this IReadOnlyDictionary<string, object?> contextData)
 		{
 			return (ArgumentValidationOptions)contextData[ValidationDefaults.ArgumentOptionsKey]!;
@@ -63,6 +66,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			return contextData.TryGetArgumentOptions() is not null;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValidationOptions GetValidationOptions(this IDictionary<string, object?> contextData)
 		{
 			return (ValidationOptions)contextData[ValidationDefaults.ValidationOptionsKey]!;
