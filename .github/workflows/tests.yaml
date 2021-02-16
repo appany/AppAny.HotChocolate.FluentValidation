@@ -1,30 +1,28 @@
-name: Hotchocolate | FluentValidation
+name: Tests
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build:
-    name: Hotchocolate | FluentValidation | Tests
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
     steps:
-    - name: Hotchocolate | FluentValidation | Checkout
+    - name: Tests | Checkout
       uses: actions/checkout@v2
 
-    - name: Hotchocolate | FluentValidation | .NET Core
+    - name: Tests | Setup
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
 
-    - name: Hotchocolate | FluentValidation | Tests
+    - name: Tests
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=coverage/ /p:CoverletOutputFormat=lcov
 
-    - name: Hotchocolate | FluentValidation | Tests | Coverage | Publish
+    - name: Tests | Coverage
       uses: coverallsapp/github-action@v1.0.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
