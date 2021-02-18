@@ -17,17 +17,17 @@ $> dotnet add package AppAny.HotChocolate.FluentValidation
 
 ## 💡 Features 💡
 
-🚩 You don't pay for validation middleware if the field has no validatable inputs
+🚩 You **don't pay** for validation middleware if the field has **no validatable inputs**
 
-🚩 You are not validating, and even trying to validate empty or not marked as validatable inputs
+🚩 You are **not validating**, and even trying to validate **empty or not marked** as validatable inputs
 
-🚩 Most of extensibility points is just a composable delegates
+🚩 Most of extensibility points are just **composable delegates**
 
-🚩 Fine-tuning of validation for each field: conditional validation skipping, multiple validators or error mappers per input
+🚩 **Fine-tuning** of validation for each field: conditional validation skipping, multiple validators or error mappers per input
 
 🚩 Strongly typed `ValidationStrategy<T>` support
 
-🚩 First-class attribute-based approach support
+🚩 First-class **attribute-based approach** support
 
 ## 🎨 Usage 🎨
 
