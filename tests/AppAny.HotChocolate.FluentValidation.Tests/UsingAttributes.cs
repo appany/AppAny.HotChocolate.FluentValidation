@@ -409,5 +409,119 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						});
 				});
 		}
+
+		[Fact]
+		public async Task UseValidatorWithValidationStrategy()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestUseValidatorWithValidationStrategyMutation());
+				},
+				services =>
+				{
+					services.AddTransient<NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				name =>
+				{
+					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+
+					Assert.Collection(name.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				});
+		}
+
+		[Fact]
+		public async Task UseValidatorWithValidationStrategyAddress()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestUseValidatorWithValidationStrategyAddressMutation());
+				},
+				services =>
+				{
+					services.AddTransient<NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
+
+		[Fact]
+		public async Task UseValidatorsWithValidationStrategy()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestUseValidatorsWithValidationStrategyMutation());
+				},
+				services =>
+				{
+					services.AddTransient<NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				name =>
+				{
+					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+
+					Assert.Collection(name.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(ValidationDefaults.Code, code.Value);
+						});
+				});
+		}
+
+		[Fact]
+		public async Task UseValidatorsWithValidationStrategyAddress()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestUseValidatorsWithValidationStrategyAddressMutation());
+				},
+				services =>
+				{
+					services.AddTransient<NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
 	}
 }

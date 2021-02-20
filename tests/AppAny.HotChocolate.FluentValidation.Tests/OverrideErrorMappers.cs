@@ -250,5 +250,66 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 						});
 				});
 		}
+
+		[Fact]
+		public async Task MultipleErrorMappers()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+							{
+								opt.UseDefaultErrorMapper()
+									.UseDefaultErrorMapperWithDetails();
+							}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			var error = Assert.Single(result.Errors);
+
+			Assert.Equal(ValidationDefaults.Code, error.Code);
+			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
+
+			Assert.Collection(error.Extensions,
+				code =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+					Assert.Equal(ValidationDefaults.Code, code.Value);
+				},
+				validator =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.ValidatorKey, validator.Key);
+					Assert.Equal("NotEmptyValidator", validator.Value);
+				},
+				field =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
+					Assert.Equal(new NameString("test"), field.Value);
+				},
+				argument =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
+					Assert.Equal(new NameString("input"), argument.Value);
+				},
+				property =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
+					Assert.Equal("Name", property.Value);
+				},
+				severity =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
+					Assert.Equal(Severity.Error, severity.Value);
+				});
+		}
 	}
 }
