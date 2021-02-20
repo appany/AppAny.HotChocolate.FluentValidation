@@ -12,7 +12,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class OverrideAddFluentValidation
 	{
 		[Fact]
-		public async Task Should_HaveNullResult_ValidationError_WithoutExtensionCodes()
+		public async Task NullResult_WithCodeExtension()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -47,7 +47,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_HaveNullResult_WithValidatorOverride()
+		public async Task NullResult_ValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -86,7 +86,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Throw_NoMessageSet_ErrorMapper_WithoutDefault()
+		public async Task ThrowsNoMessageSet()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -117,7 +117,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_NullReference_WithoutValidation()
+		public async Task ThrowsNullInputValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 			{
@@ -139,7 +139,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_WithoutValidation()
+		public async Task CustomInputValidatorHasNoValidators()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 			{

@@ -9,7 +9,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class WithNullInputs
 	{
 		[Fact]
-		public async Task Should_HaveNullResult_ValidationError_ExtensionCodes()
+		public async Task Default()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -34,7 +34,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseMultipleValidators_ByConvention()
+		public async Task MultipleValidators()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -60,7 +60,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseValidatorByConvention_DoubleProperty()
+		public async Task UseValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())

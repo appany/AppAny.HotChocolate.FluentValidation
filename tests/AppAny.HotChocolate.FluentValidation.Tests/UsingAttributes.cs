@@ -11,7 +11,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class UsingAttributes
 	{
 		[Fact]
-		public async Task Should_Use_AttributeConfiguration()
+		public async Task AttributeConfiguration()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -44,7 +44,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_DefaultInputValidator()
+		public async Task DefaultInputValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -77,7 +77,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_DefaultErrorMapper()
+		public async Task DefaultErrorMapper()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -110,7 +110,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_DefaultErrorMapperWithDetails()
+		public async Task DefaultErrorMapperWithDetails()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -166,7 +166,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_DefaultErrorMapperWithExtendedDetails()
+		public async Task DefaultErrorMapperWithExtendedDetails()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -252,7 +252,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_AttributeConfiguration_CustomValidator()
+		public async Task AttributeConfigurationWithCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -285,7 +285,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_SkipValidation_AttributeConfiguration()
+		public async Task AttributeConfigurationWithSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -309,7 +309,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_CustomSkipValidation_AttributeConfiguration()
+		public async Task AttributeConfigurationWithCustomSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
@@ -342,7 +342,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_CustomSkipValidation_Skip()
+		public async Task CustomSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{

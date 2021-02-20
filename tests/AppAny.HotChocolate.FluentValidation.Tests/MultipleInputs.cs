@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class MultipleInputs
 	{
 		[Fact]
-		public async Task UseMultipleInputs_Validate_SingleInput()
+		public async Task SingleInput()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -46,7 +46,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task UseMultipleInputs_Validate_DoubleInput()
+		public async Task DoubleInput()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -96,7 +96,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task UseMultipleInputs_Validate_SecondInput()
+		public async Task SecondInput()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -132,7 +132,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task UseMultipleInputs_Validate_NoInputs()
+		public async Task NoInputs()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>

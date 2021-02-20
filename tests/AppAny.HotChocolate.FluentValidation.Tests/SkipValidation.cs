@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class SkipValidation
 	{
 		[Fact]
-		public async Task Should_Execute_FieldSkipValidation()
+		public async Task FieldSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -39,7 +39,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_FieldSkipValidation_Predecate()
+		public async Task FieldSkipValidationPredecate()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -68,7 +68,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_GlobalSkipValidation()
+		public async Task GlobalSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation())
@@ -93,7 +93,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_GlobalSkipValidation_Predecate()
+		public async Task GlobalSkipValidationPredecate()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt =>
@@ -121,7 +121,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_GlobalSkipValidationDefault_OverrideSkip()
+		public async Task GlobalSkipValidationFieldOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
@@ -150,7 +150,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Fail_GlobalSkipValidation_OverrideToDefault()
+		public async Task FieldSkipValidationDefault()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())

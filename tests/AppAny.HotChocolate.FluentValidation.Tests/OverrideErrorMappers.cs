@@ -12,7 +12,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class OverrideErrorMappers
 	{
 		[Fact]
-		public async Task Should_SetExtension_AddFluentValidation()
+		public async Task AddFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt =>
@@ -56,7 +56,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_SetExtension_UseFluentValidation()
+		public async Task UseFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -102,7 +102,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseDefaultErrorMapperWithDetails()
+		public async Task UseDefaultErrorMapperWithDetails()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithDetails())
@@ -162,7 +162,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseDefaultErrorMapperWithExtendedDetails()
+		public async Task UseDefaultErrorMapperWithExtendedDetails()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())

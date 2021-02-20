@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class ErrorMappingContextProperties
 	{
 		[Fact]
-		public async Task Should_Pass_Values_AddFluentValidation()
+		public async Task AddFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
@@ -54,7 +54,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Pass_Values_UseFluentValidation()
+		public async Task UseFluentValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(
 				builder =>
