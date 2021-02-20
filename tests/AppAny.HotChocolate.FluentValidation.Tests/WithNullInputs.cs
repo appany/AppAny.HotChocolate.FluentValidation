@@ -307,5 +307,63 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			Assert.Null(result.Errors);
 		}
+
+		[Fact]
+		public async Task UseValidatorOverrideFullWithValidationStrategy()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation(opt =>
+							{
+								opt.UseValidator<TestPersonInput, IValidator<TestPersonInput>>
+									(strategy => strategy.IncludeProperties("Name"));
+							}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
+
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
+
+		[Fact]
+		public async Task UseValidatorsOverrideFullWithValidationStrategy()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation(opt =>
+							{
+								opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>
+									(strategy => strategy.IncludeProperties("Name"));
+							}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
+
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
 	}
 }
