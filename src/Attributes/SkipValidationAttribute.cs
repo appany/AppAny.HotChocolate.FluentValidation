@@ -9,7 +9,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			builder.SkipValidation(SkipValidation);
 		}
 
-		public virtual ValueTask<bool> SkipValidation(SkipValidationContext skipValidationContext)
+		protected virtual ValueTask<bool> SkipValidation(SkipValidationContext skipValidationContext)
 		{
 			return ValidationDefaults.SkipValidation.Skip(skipValidationContext);
 		}

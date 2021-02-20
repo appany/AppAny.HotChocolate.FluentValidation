@@ -7,7 +7,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	{
 		public const string SkipName = "Custom";
 
-		public override ValueTask<bool> SkipValidation(SkipValidationContext skipValidationContext)
+		protected override ValueTask<bool> SkipValidation(SkipValidationContext skipValidationContext)
 		{
 			var argumentValue = skipValidationContext
 				.MiddlewareContext
