@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class UseValidators
 	{
 		[Fact]
-		public async Task UseValidators_Generic()
+		public async Task UseValidatorsGeneric()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -35,12 +35,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			Assert.Collection(result.Errors,
-				nameIsEmpty => Assert.Equal("Name is empty", nameIsEmpty.Message),
-				addressIsEmpty => Assert.Equal("Address is empty", addressIsEmpty.Message));
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
+				addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
 		}
 
 		[Fact]
-		public async Task UseValidators_NonGeneric()
+		public async Task UseValidatorsWithType()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -65,12 +65,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			Assert.Collection(result.Errors,
-				nameIsEmpty => Assert.Equal("Name is empty", nameIsEmpty.Message),
-				addressIsEmpty => Assert.Equal("Address is empty", addressIsEmpty.Message));
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
+				addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
 		}
 
 		[Fact]
-		public async Task UseValidators_GenericWithInputParameter()
+		public async Task UseValidatorsGenericWithInputParameter()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -94,12 +94,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			Assert.Collection(result.Errors,
-				nameIsEmpty => Assert.Equal("Name is empty", nameIsEmpty.Message),
-				addressIsEmpty => Assert.Equal("Address is empty", addressIsEmpty.Message));
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
+				addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
 		}
 
 		[Fact]
-		public async Task UseValidators_GenericWithInputParameterAndValidationStrategy()
+		public async Task UseValidatorsGenericWithInputParameterAndValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -126,12 +126,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			Assert.Collection(result.Errors,
-				nameIsEmpty => Assert.Equal("Name is empty", nameIsEmpty.Message),
-				addressIsEmpty => Assert.Equal("Address is empty", addressIsEmpty.Message));
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
+				addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
 		}
 
 		[Fact]
-		public async Task UseValidators_GenericWithInputParameterAndPartialValidationStrategy()
+		public async Task UseValidatorsGenericWithInputParameterAndPartialValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -158,7 +158,163 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			Assert.Collection(result.Errors,
-				nameIsEmpty => Assert.Equal("Name is empty", nameIsEmpty.Message));
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
+		}
+
+		[Fact]
+		public async Task UseValidatorGenericWithValidationStrategyName()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<IValidator<TestPersonInput>>(strategy =>
+									{
+										strategy.IncludeProperties("Name");
+									});
+								}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
+		}
+
+		[Fact]
+		public async Task UseValidatorGenericWithValidationStrategyAddress()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<IValidator<TestPersonInput>>(strategy =>
+									{
+										strategy.IncludeProperties("Address");
+									});
+								}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
+		}
+
+		[Fact]
+		public async Task UseValidatorGenericWithValidationStrategy()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<IValidator<TestPersonInput>>(strategy =>
+									{
+										strategy.IncludeProperties("NotExists");
+									});
+								}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
+						.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
+
+		[Fact]
+		public async Task UseValidatorsGenericWithValidationStrategyNameAndAddress()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation()
+					.AddMutationType(new TestMutation(field =>
+					{
+						field.Argument("input",
+							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+							{
+								opt.UseValidators<IValidator<TestPersonInput>>(strategy =>
+								{
+									strategy.IncludeProperties("Name", "Address");
+								});
+							}));
+					})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
+						.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
+				addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
+		}
+
+		[Fact]
+		public async Task UseValidatorsGenericWithValidationStrategyName()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				builder.AddFluentValidation()
+					.AddMutationType(new TestMutation(field =>
+					{
+						field.Argument("input",
+							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+							{
+								opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>(strategy =>
+								{
+									strategy.IncludeProperties("Name");
+								});
+							}));
+					})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
+						.AddTransient<IValidator<TestPersonInput>, NotEmptyAddressValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			Assert.Collection(result.Errors,
+				nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
 		}
 	}
 }

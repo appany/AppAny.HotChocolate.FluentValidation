@@ -2,16 +2,16 @@ using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class TestUseDefaultErrorMapperMutation : ObjectType
+	public class TestUseValidatorWithValidationStrategyAddressMutation : ObjectType
 	{
 		protected override void Configure(IObjectTypeDescriptor descriptor)
 		{
-			descriptor.Field<TestUseDefaultErrorMapperMutation>(
+			descriptor.Field<TestUseValidatorWithValidationStrategyAddressMutation>(
 				field => field.Test(default!)).Type<StringType>();
 		}
 
 		public string Test(
-			[UseFluentValidation, UseDefaultErrorMapper]
+			[UseFluentValidation, UseValidator(typeof(NotEmptyNameValidator), IncludeProperties = new[] { "Address" })]
 			TestPersonInput input)
 		{
 			return "test";

@@ -12,7 +12,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 	public class OverrideUseFluentValidation
 	{
 		[Fact]
-		public async Task Should_UseOnlyDefaultErrorMapper()
+		public async Task UseDefaultErrorMapperFieldOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())
@@ -48,7 +48,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseDefaultAndExtensionsErrorMapper()
+		public async Task UseDefaultErrorMapperWithDetailsFieldOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -109,7 +109,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseValidatorOverride()
+		public async Task UseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -145,7 +145,43 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseCustomValidator()
+		public async Task UseValidatorTypedOverride()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator(typeof(NotEmptyNameValidator));
+								}));
+						})),
+				services =>
+				{
+					services.AddTransient<NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+			result.AssertNullResult();
+
+			var error = Assert.Single(result.Errors);
+
+			Assert.Equal(ValidationDefaults.Code, error.Code);
+			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
+
+			Assert.Collection(error.Extensions,
+				code =>
+				{
+					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+					Assert.Equal(ValidationDefaults.Code, code.Value);
+				});
+		}
+
+		[Fact]
+		public async Task UseInputValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -183,7 +219,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseMultipleCustomValidators()
+		public async Task MultipleUseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -234,7 +270,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseMultipleCustomValidators_ExplicitInputType()
+		public async Task UseValidatorTypeOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -285,7 +321,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseMultipleCustomValidators_WithValidationStrategy_IgnoreAddress()
+		public async Task UseValidatorWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -326,7 +362,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseMultipleCustomValidators_SameProperty()
+		public async Task UseValidatorTwice()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -377,7 +413,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_UseSingleCustomValidator_DoubleProperty()
+		public async Task UseCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
@@ -427,7 +463,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithValidatorOverride()
+		public async Task SkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -456,7 +492,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Execute_SkipValidation_WithCustomValidator()
+		public async Task SkipValidationWithInputValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
@@ -491,7 +527,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		}
 
 		[Fact]
-		public async Task Should_Use_Multiple_InputValidator()
+		public async Task UseDefaultInputValidatorWithCustom()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				builder.AddFluentValidation()
