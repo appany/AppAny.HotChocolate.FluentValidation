@@ -19,30 +19,30 @@ Intel Core i7-9700K CPU 3.60GHz (Coffee Lake), 1 CPU, 8 logical and 8 physical c
 
 |                      Method |      Mean |     Error |    StdDev | Ratio | RatioSD |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |---------------------------- |----------:|----------:|----------:|------:|--------:|-------:|-------:|------:|----------:|
-|        RunWithoutValidation |  7.961 μs | 0.0383 μs | 0.0358 μs |  0.33 |    0.00 | 1.2512 | 0.0153 |     - |   7.66 KB |
-|           RunWithValidation | 24.140 μs | 0.2255 μs | 0.2109 μs |  1.00 |    0.00 | 1.7090 | 0.0305 |     - |  10.44 KB |
-| RunWithFairyBreadValidation | 25.801 μs | 0.3395 μs | 0.3010 μs |  1.07 |    0.02 | 1.8616 | 0.0305 |     - |   11.5 KB |
+|        RunWithoutValidation |  7.867 μs | 0.0654 μs | 0.0611 μs |  0.34 |    0.00 | 1.2512 | 0.0153 |     - |   7.66 KB |
+|           RunWithValidation | 23.161 μs | 0.0769 μs | 0.0682 μs |  1.00 |    0.00 | 1.7090 | 0.0305 |     - |  10.44 KB |
+| RunWithFairyBreadValidation | 27.293 μs | 0.5176 μs | 0.5084 μs |  1.18 |    0.02 | 1.8616 | 0.0305 |     - |   11.5 KB |
 
 ## ScopedValidationBenchmarks
 
 |                      Method |      Mean |     Error |    StdDev | Ratio |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |---------------------------- |----------:|----------:|----------:|------:|-------:|-------:|------:|----------:|
-|        RunWithoutValidation |  8.112 μs | 0.0641 μs | 0.0569 μs |  0.23 | 1.2512 | 0.0153 |     - |   7.66 KB |
-|           RunWithValidation | 34.869 μs | 0.1993 μs | 0.1766 μs |  1.00 | 2.0752 | 0.0610 |     - |  12.67 KB |
-| RunWithFairyBreadValidation | 39.196 μs | 0.3058 μs | 0.2711 μs |  1.12 | 2.6245 | 0.0610 |     - |  16.23 KB |
+|        RunWithoutValidation |  8.375 μs | 0.0701 μs | 0.0547 μs |  0.25 | 1.2512 | 0.0153 |     - |   7.66 KB |
+|           RunWithValidation | 34.070 μs | 0.3079 μs | 0.2880 μs |  1.00 | 2.0752 | 0.0610 |     - |  12.67 KB |
+| RunWithFairyBreadValidation | 37.546 μs | 0.3047 μs | 0.2701 μs |  1.10 | 2.6245 | 0.0610 |     - |  16.23 KB |
 
 ## EmptyInputsValidationBenchmarks
 
-|                      Method |     Mean |     Error |    StdDev | Ratio |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
-|---------------------------- |---------:|----------:|----------:|------:|-------:|-------:|------:|----------:|
-|        RunWithoutValidation | 7.983 μs | 0.0794 μs | 0.0743 μs |  0.99 | 1.2512 | 0.0153 |     - |   7.64 KB |
-|           RunWithValidation | 8.069 μs | 0.0555 μs | 0.0519 μs |  1.00 | 1.2512 | 0.0153 |     - |   7.64 KB |
-| RunWithFairyBreadValidation | 9.020 μs | 0.0870 μs | 0.0814 μs |  1.12 | 1.2970 | 0.0153 |     - |   7.93 KB |
+|                      Method |     Mean |     Error |    StdDev | Ratio | RatioSD |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
+|---------------------------- |---------:|----------:|----------:|------:|--------:|-------:|-------:|------:|----------:|
+|        RunWithoutValidation | 7.887 μs | 0.1505 μs | 0.1257 μs |  0.99 |    0.02 | 1.2512 | 0.0153 |     - |   7.64 KB |
+|           RunWithValidation | 7.968 μs | 0.0712 μs | 0.0631 μs |  1.00 |    0.00 | 1.2512 | 0.0153 |     - |   7.64 KB |
+| RunWithFairyBreadValidation | 8.926 μs | 0.0845 μs | 0.0749 μs |  1.12 |    0.01 | 1.2970 | 0.0153 |     - |   7.93 KB |
 
 ## NullInputsValidationBenchmarks
 
 |                      Method |     Mean |     Error |    StdDev | Ratio |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
 |---------------------------- |---------:|----------:|----------:|------:|-------:|-------:|------:|----------:|
-|        RunWithoutValidation | 7.943 μs | 0.0745 μs | 0.0696 μs |  0.93 | 1.2512 | 0.0153 |     - |   7.65 KB |
-|           RunWithValidation | 8.520 μs | 0.0366 μs | 0.0325 μs |  1.00 | 1.2512 | 0.0153 |     - |   7.65 KB |
-| RunWithFairyBreadValidation | 9.157 μs | 0.0487 μs | 0.0431 μs |  1.07 | 1.2970 | 0.0153 |     - |   7.94 KB |
+|        RunWithoutValidation | 7.643 μs | 0.0495 μs | 0.0463 μs |  0.90 | 1.2512 | 0.0153 |     - |   7.65 KB |
+|           RunWithValidation | 8.508 μs | 0.0608 μs | 0.0539 μs |  1.00 | 1.2512 | 0.0153 |     - |   7.65 KB |
+| RunWithFairyBreadValidation | 8.700 μs | 0.0609 μs | 0.0570 μs |  1.02 | 1.2970 | 0.0153 |     - |   7.94 KB |
