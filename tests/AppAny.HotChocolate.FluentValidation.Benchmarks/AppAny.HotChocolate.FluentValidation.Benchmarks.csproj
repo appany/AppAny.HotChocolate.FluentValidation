@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
-		<PackageReference Include="FairyBread" Version="4.1.0" />
+		<PackageReference Include="FairyBread" Version="5.1.0" />
 		<PackageReference Include="FluentChoco" Version="2.0.0" />
 	</ItemGroup>
 

@@ -34,9 +34,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 					.Services.AddSingleton<IValidator<TestInput>, TestInputValidator>());
 
 			fairyBreadValidation = await BenchmarkSetup.CreateRequestExecutor(
-				builder => builder.AddFairyBread(opt => opt.AssembliesToScanForValidators = new[] { typeof(Program).Assembly })
+				builder => builder.AddFairyBread()
 					.AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>())))
-					.Services.AddSingleton<TestInputValidator>());
+					.Services.AddSingleton<TestInputValidator>().AddSingleton<IValidator<TestInput>, TestInputValidator>());
 		}
 
 		[Benchmark]
