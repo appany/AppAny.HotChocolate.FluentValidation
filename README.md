@@ -23,7 +23,7 @@ $> dotnet add package AppAny.HotChocolate.FluentValidation
 
 🚩 Most of extensibility points are just **composable delegates**
 
-🚩 **Fine-tuning** of validation for each field: conditional validation skipping, multiple validators or error mappers per input
+🚩 **Fine-tuning** of validation for each field: conditional validation skipping, multiple validators or error mappers per input, validation strategy support
 
 🚩 Strongly typed `ValidationStrategy<T>` support
 
