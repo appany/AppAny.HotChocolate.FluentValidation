@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public static class ArgumentValidationBuilderExtensions
+	public static class UseValidatorExtensions
 	{
 		/// <summary>
 		/// Overrides global <see cref="InputValidator"/>.
