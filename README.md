@@ -80,6 +80,10 @@ descriptor.Field(x => x.Example(default!))
     options.SkipValidation(...)
       .UseErrorMapper(...)
       .UseInputValidators(...)
+      .UseValidationStrategy((context, strategy) =>
+      {
+        // ...
+      })
       .UseValidator<ExampleInputValidator>()
       .UseValidator<ExampleInput, ExampleInputValidator>()
       .UseValidator<ExampleInput, ExampleInputValidator>(strategy =>
