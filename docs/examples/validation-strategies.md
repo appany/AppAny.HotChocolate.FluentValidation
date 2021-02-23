@@ -25,4 +25,42 @@ descriptor.Field(x => x.Example(default!))
   })))
 ```
 
+Dynamic validation strategy
+
+```cs
+descriptor.Field(x => x.Example(default!))
+  .Argument("input", argument => argument.UseFluentValidation(options =>
+  {
+    // ValidationStrategy<Example>
+    options.UseValidationStrategy<Example>((context, strategy) =>
+    {
+      var strategyService = context.MiddlewareContext.Service<IStrategyService>();
+
+      if (strategyService.ShouldIncludeExampleProperty())
+      {
+        strategy.IncludeProperties(input => input.ExampleProperty);
+      }
+    });
+  })))
+```
+
+Dynamic validation strategy with custom input validator
+
+```cs
+descriptor.Field(x => x.Example(default!))
+  .Argument("input", argument => argument.UseFluentValidation(options =>
+  {
+    // ValidationStrategy<Example>
+    options.UseValidator<Example, ExampleInput>((context, strategy) =>
+    {
+      var strategyService = context.MiddlewareContext.Service<IStrategyService>();
+
+      if (strategyService.ShouldIncludeExampleProperty())
+      {
+        strategy.IncludeProperties(input => input.ExampleProperty);
+      }
+    });
+  })))
+```
+
 Read more on FluentValidation site <https://docs.fluentvalidation.net/en/latest/rulesets.html>

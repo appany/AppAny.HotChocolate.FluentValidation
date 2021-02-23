@@ -181,6 +181,51 @@ namespace AppAny.HotChocolate.FluentValidation
 
 				return validationResult;
 			}
+
+			/// <summary>
+			/// Default <see cref="InputValidator"/> implementation
+			/// </summary>
+			public static async Task<ValidationResult?> WithStrategy<TInput>(
+				InputValidatorContext inputValidatorContext,
+				Action<ValidationStrategy<TInput>> validationStrategy)
+			{
+				var argumentValue = inputValidatorContext
+					.MiddlewareContext
+					.ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
+
+				if (argumentValue is null)
+				{
+					return null;
+				}
+
+				var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
+
+				var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+
+				var validationContext = ValidationContext<TInput>.CreateWithOptions(argumentValue, validationStrategy);
+
+				ValidationResult? validationResult = null;
+
+				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
+				{
+					var validator = validators[validatorIndex];
+
+					var validatorResult = await validator
+						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
+						.ConfigureAwait(false);
+
+					if (validationResult is null)
+					{
+						validationResult = validatorResult;
+					}
+					else
+					{
+						validationResult.MergeFailures(validatorResult);
+					}
+				}
+
+				return validationResult;
+			}
 		}
 
 		/// <summary>
@@ -190,7 +235,7 @@ namespace AppAny.HotChocolate.FluentValidation
 		{
 			/// <summary>
 			/// Doing nothing by default.
-			/// To override validation strategy use <see cref="ArgumentValidationBuilderExtensions.UseValidator{TValidator}(ArgumentValidationBuilder)"/>
+			/// To override validation strategy use <see cref="UseValidatorExtensions.UseValidator{TValidator}(ArgumentValidationBuilder)"/>
 			/// </summary>
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)

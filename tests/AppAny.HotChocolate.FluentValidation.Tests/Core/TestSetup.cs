@@ -21,6 +21,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			{
 				return $"mutation {{ test(input: {{ name: \"{name}\" }}) }}";
 			}
+
+			public static string WithAddress(string address)
+			{
+				return $"mutation {{ test(input: {{ name: \"\", address: \"{address}\" }}) }}";
+			}
 		}
 
 		public static ValueTask<IRequestExecutor> CreateRequestExecutor(
