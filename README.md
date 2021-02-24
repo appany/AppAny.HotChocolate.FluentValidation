@@ -93,7 +93,6 @@ descriptor.Field(x => x.Example(default!))
 ... Example([UseFluentValidation, UseValidator((typeof(ExampleInputValidator))] ExampleInput input) { ... }
 ```
 
-
 ## 📝 Docs 📝
 
 - 📄 [Abstractions](docs/core-abstractions.md)
