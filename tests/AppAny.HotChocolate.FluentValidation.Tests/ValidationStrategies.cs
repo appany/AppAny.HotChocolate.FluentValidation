@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,14 +47,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error1 = Assert.Single(result1.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error1.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
 
 			Assert.Collection(error1.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 
 			var result2 = Assert.IsType<QueryResult>(
@@ -114,14 +115,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error1 = Assert.Single(result1.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error1.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
 
 			Assert.Collection(error1.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 
 			var result2 = Assert.IsType<QueryResult>(
@@ -182,14 +183,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error1 = Assert.Single(result1.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error1.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
 
 			Assert.Collection(error1.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 
 			var result2 = Assert.IsType<QueryResult>(
@@ -250,14 +251,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error1 = Assert.Single(result1.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error1.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
 
 			Assert.Collection(error1.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 
 			var result2 = Assert.IsType<QueryResult>(
@@ -318,14 +319,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error1 = Assert.Single(result1.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error1.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
 
 			Assert.Collection(error1.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 
 			var result2 = Assert.IsType<QueryResult>(
@@ -386,14 +387,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error1 = Assert.Single(result1.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error1.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
 
 			Assert.Collection(error1.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 
 			var result2 = Assert.IsType<QueryResult>(

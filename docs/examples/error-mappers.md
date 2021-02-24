@@ -5,23 +5,36 @@
 - All extension methods has overrides to pass more error mappers
 - All error mappers can be composed with other
 
+```cs
+public class NotEmptyNameValidator : AbstractValidator<ExampleInput>
+{
+  public NotEmptyNameValidator()
+  {
+    RuleFor(input => input.ExampleProperty)
+      .NotEmpty()
+      .WithMessage("Property is empty")
+      .WithErrorCode("ERR0123");
+  }
+}
+```
+
 ## .UseDefaultErrorMapper()
 
 ```json
 {
   "errors": [
     {
-      "message": "Name is empty",
+      "message": "Property is empty",
       "path": [
-        "createUser"
+        "example"
       ],
       "extensions": {
-        "code": "ValidationFailed"
+        "code": "ERR0123"
       }
     }
   ],
   "data": {
-    "createUser": null
+    "example": null
   }
 }
 ```
@@ -32,22 +45,21 @@
 {
   "errors": [
     {
-      "message": "Name is empty",
+      "message": "Property is empty",
       "path": [
-        "createUser"
+        "example"
       ],
       "extensions": {
-        "code": "ValidationFailed",
-        "validator": "NotEmptyValidator",
-        "field": "createUser",
+        "code": "ERR0123",
+        "field": "example",
         "argument": "input",
-        "property": "Name",
+        "property": "ExampleProperty",
         "severity": "Error"
       }
     }
   ],
   "data": {
-    "createUser": null
+    "example": null
   }
 }
 ```
@@ -58,28 +70,27 @@
 {
   "errors": [
     {
-      "message": "Name is empty",
+      "message": "Property is empty",
       "path": [
-        "createUser"
+        "example"
       ],
       "extensions": {
-        "code": "ValidationFailed",
-        "validator": "NotEmptyValidator",
-        "field": "createUser",
+        "code": "ERR0123",
+        "field": "example",
         "argument": "input",
-        "property": "Name",
+        "property": "ExampleProperty",
         "severity": "Error",
         "attemptedValue": "",
         "customState": null,
         "formattedMessagePlaceholderValues": {
-          "PropertyName": "Name",
+          "PropertyName": "ExampleProperty",
           "PropertyValue": ""
         }
       }
     }
   ],
   "data": {
-    "createUser": null
+    "example": null
   }
 }
 ```

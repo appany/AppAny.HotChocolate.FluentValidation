@@ -15,11 +15,6 @@ namespace AppAny.HotChocolate.FluentValidation
 	public static class ValidationDefaults
 	{
 		/// <summary>
-		/// Default graphql error code for failed validation
-		/// </summary>
-		public const string Code = "ValidationFailed";
-
-		/// <summary>
 		/// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ValidationOptions"/>
 		/// </summary>
 		public const string ValidationOptionsKey = "ValidationOptions";
@@ -54,7 +49,6 @@ namespace AppAny.HotChocolate.FluentValidation
 		public static class ExtensionKeys
 		{
 			public const string CodeKey = "code";
-			public const string ValidatorKey = "validator";
 			public const string FieldKey = "field";
 			public const string ArgumentKey = "argument";
 			public const string PropertyKey = "property";
@@ -100,7 +94,7 @@ namespace AppAny.HotChocolate.FluentValidation
 			public static void Default(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
-					.SetCode(Code)
+					.SetCode(mappingContext.ValidationFailure.ErrorCode)
 					.SetPath(mappingContext.MiddlewareContext.Path)
 					.SetMessage(mappingContext.ValidationFailure.ErrorMessage);
 			}
@@ -112,7 +106,6 @@ namespace AppAny.HotChocolate.FluentValidation
 			public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
 			{
 				errorBuilder
-					.SetExtension(ExtensionKeys.ValidatorKey, mappingContext.ValidationFailure.ErrorCode)
 					.SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Field.Name)
 					.SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
 					.SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)

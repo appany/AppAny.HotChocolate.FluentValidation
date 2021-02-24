@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,14 +35,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error = Assert.Single(result.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
 			Assert.Collection(error.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 		}
 
@@ -71,26 +72,26 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				input =>
 				{
-					Assert.Equal(ValidationDefaults.Code, input.Code);
+					Assert.Equal(nameof(NotEmptyValidator), input.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, input.Message);
 
 					Assert.Collection(input.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				},
 				input2 =>
 				{
-					Assert.Equal(ValidationDefaults.Code, input2.Code);
+					Assert.Equal(nameof(NotEmptyValidator), input2.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, input2.Message);
 
 					Assert.Collection(input2.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -120,14 +121,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error = Assert.Single(result.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
 			Assert.Collection(error.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 		}
 

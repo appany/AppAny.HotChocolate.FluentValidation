@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
+using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,14 +36,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error = Assert.Single(result.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
 			Assert.Collection(error.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 		}
 
@@ -74,14 +75,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			var error = Assert.Single(result.Errors);
 
-			Assert.Equal(ValidationDefaults.Code, error.Code);
+			Assert.Equal(nameof(NotEmptyValidator), error.Code);
 			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
 			Assert.Collection(error.Extensions,
 				code =>
 				{
 					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
+					Assert.Equal(nameof(NotEmptyValidator), code.Value);
 				});
 		}
 
