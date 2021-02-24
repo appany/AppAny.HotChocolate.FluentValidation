@@ -43,9 +43,9 @@ public class ExampleInputValidator : AbstractValidator<ExampleInput>
 {
   public ExampleInputValidator()
   {
-    RuleFor(input => input.Example)
+    RuleFor(input => input.ExampleProperty)
       .NotEmpty()
-      .WithMessage("Example is empty");
+      .WithMessage("Property is empty");
   }
 }
 ```
