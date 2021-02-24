@@ -207,5 +207,36 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			Assert.Null(result.Errors);
 		}
+
+		[Fact]
+		public async Task DynamicValidationStrategy_WithNullInput()
+		{
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation(opt =>
+							{
+								opt.UseValidationStrategy(strategy =>
+								{
+									strategy.IncludeProperties("Address");
+								});
+							}));
+						})),
+				services =>
+				{
+					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+				});
+
+			var result = Assert.IsType<QueryResult>(
+				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
+
+			var (key1, value1) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key1);
+			Assert.Equal("test", value1);
+
+			Assert.Null(result.Errors);
+		}
 	}
 }

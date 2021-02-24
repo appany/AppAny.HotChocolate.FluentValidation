@@ -29,7 +29,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				});
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithMultipleInputsEmptyName));
 
 			result.AssertNullResult();
 
@@ -65,7 +65,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				});
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithMultipleInputsEmptyName));
 
 			result.AssertNullResult();
 
@@ -115,7 +115,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				});
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithMultipleInputsEmptyName));
 
 			result.AssertNullResult();
 
@@ -151,7 +151,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				});
 
 			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyNameAndSecondInput));
+				await executor.ExecuteAsync(TestSetup.Mutations.WithMultipleInputsEmptyName));
 
 			var (key, value) = Assert.Single(result.Data);
 
