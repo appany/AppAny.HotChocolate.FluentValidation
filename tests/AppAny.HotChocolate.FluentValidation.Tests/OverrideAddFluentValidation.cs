@@ -93,9 +93,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.IsType<InvalidOperationException>(error.Exception);
+			Assert.Collection(result.Errors,
+				error => Assert.IsType<InvalidOperationException>(error.Exception));
 		}
 
 		[Fact]
@@ -115,9 +114,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.IsType<NullReferenceException>(error.Exception);
+			Assert.Collection(result.Errors,
+				error => Assert.IsType<NullReferenceException>(error.Exception));
 		}
 
 		[Fact]

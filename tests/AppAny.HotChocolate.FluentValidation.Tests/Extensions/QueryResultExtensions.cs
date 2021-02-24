@@ -32,23 +32,23 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			string message,
 			params Action<KeyValuePair<string, object?>>[] elementInspectors)
 		{
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(code, error.Code);
-			Assert.Equal(message, error.Message);
-
-			var extensions = new Action<KeyValuePair<string, object?>>[]
-			{
-				codeExtension =>
+			Assert.Collection(result.Errors,
+				error =>
 				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, codeExtension.Key);
-					Assert.Equal(code, codeExtension.Value);
-				}
-			}.Concat(elementInspectors).ToArray();
+					Assert.Equal(code, error.Code);
+					Assert.Equal(message, error.Message);
 
-			Assert.Collection(error.Extensions, extensions);
+					var extensions = new Action<KeyValuePair<string, object?>>[]
+					{
+						codeExtension =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, codeExtension.Key);
+							Assert.Equal(code, codeExtension.Value);
+						}
+					}.Concat(elementInspectors).ToArray();
+
+					Assert.Collection(error.Extensions, extensions);
+				});
 		}
-
-
 	}
 }

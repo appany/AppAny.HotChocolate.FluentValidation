@@ -66,36 +66,38 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
+			Assert.Collection(result.Errors,
+				error =>
+				{
+					Assert.Equal(nameof(NotEmptyValidator), error.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
-			Assert.Equal(nameof(NotEmptyValidator), error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				},
-				field =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
-					Assert.Equal(new NameString("test"), field.Value);
-				},
-				argument =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
-					Assert.Equal(new NameString("input"), argument.Value);
-				},
-				property =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
-					Assert.Equal("Name", property.Value);
-				},
-				severity =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
-					Assert.Equal(Severity.Error, severity.Value);
+					Assert.Collection(error.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
+						},
+						field =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
+							Assert.Equal(new NameString("test"), field.Value);
+						},
+						argument =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
+							Assert.Equal(new NameString("input"), argument.Value);
+						},
+						property =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
+							Assert.Equal("Name", property.Value);
+						},
+						severity =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
+							Assert.Equal(Severity.Error, severity.Value);
+						});
 				});
 		}
 
