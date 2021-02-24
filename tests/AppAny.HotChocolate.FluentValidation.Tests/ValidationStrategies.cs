@@ -54,22 +54,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
 
-			var (key1, value1) = Assert.Single(result2.Data);
-
-			Assert.Equal("test", key1);
-			Assert.Equal("test", value1);
-
-			Assert.Null(result2.Errors);
+			result2.AssertSuceessResult();
 
 			var result3 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithAddress("WithAddress")));
 
-			var (key2, value2) = Assert.Single(result3.Data);
-
-			Assert.Equal("test", key2);
-			Assert.Equal("test", value2);
-
-			Assert.Null(result3.Errors);
+			result3.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -116,22 +106,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
 
-			var (key1, value1) = Assert.Single(result2.Data);
-
-			Assert.Equal("test", key1);
-			Assert.Equal("test", value1);
-
-			Assert.Null(result2.Errors);
+			result2.AssertSuceessResult();
 
 			var result3 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithAddress("WithAddress")));
 
-			var (key2, value2) = Assert.Single(result3.Data);
-
-			Assert.Equal("test", key2);
-			Assert.Equal("test", value2);
-
-			Assert.Null(result3.Errors);
+			result3.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -178,22 +158,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
 
-			var (key1, value1) = Assert.Single(result2.Data);
-
-			Assert.Equal("test", key1);
-			Assert.Equal("test", value1);
-
-			Assert.Null(result2.Errors);
+			result2.AssertSuceessResult();
 
 			var result3 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithAddress("WithAddress")));
 
-			var (key2, value2) = Assert.Single(result3.Data);
-
-			Assert.Equal("test", key2);
-			Assert.Equal("test", value2);
-
-			Assert.Null(result3.Errors);
+			result3.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -240,22 +210,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
 
-			var (key1, value1) = Assert.Single(result2.Data);
-
-			Assert.Equal("test", key1);
-			Assert.Equal("test", value1);
-
-			Assert.Null(result2.Errors);
+			result2.AssertSuceessResult();
 
 			var result3 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithAddress("WithAddress")));
 
-			var (key2, value2) = Assert.Single(result3.Data);
-
-			Assert.Equal("test", key2);
-			Assert.Equal("test", value2);
-
-			Assert.Null(result3.Errors);
+			result3.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -302,22 +262,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
 
-			var (key1, value1) = Assert.Single(result2.Data);
-
-			Assert.Equal("test", key1);
-			Assert.Equal("test", value1);
-
-			Assert.Null(result2.Errors);
+			result2.AssertSuceessResult();
 
 			var result3 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithAddress("WithAddress")));
 
-			var (key2, value2) = Assert.Single(result3.Data);
-
-			Assert.Equal("test", key2);
-			Assert.Equal("test", value2);
-
-			Assert.Null(result3.Errors);
+			result3.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -364,22 +314,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
 
-			var (key1, value1) = Assert.Single(result2.Data);
-
-			Assert.Equal("test", key1);
-			Assert.Equal("test", value1);
-
-			Assert.Null(result2.Errors);
+			result2.AssertSuceessResult();
 
 			var result3 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithAddress("WithAddress")));
 
-			var (key2, value2) = Assert.Single(result3.Data);
-
-			Assert.Equal("test", key2);
-			Assert.Equal("test", value2);
-
-			Assert.Null(result3.Errors);
+			result3.AssertSuceessResult();
 		}
 	}
 }

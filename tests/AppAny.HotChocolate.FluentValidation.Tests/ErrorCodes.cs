@@ -29,6 +29,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
 			result.AssertNullResult();
+
 			result.AssertDefaultErrorMapper(
 				NotEmptyNameWithErrorCodeValidator.Code,
 				NotEmptyNameValidator.Message);

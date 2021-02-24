@@ -16,6 +16,16 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Null(value);
 		}
 
+		public static void AssertSuceessResult(this QueryResult result)
+		{
+			var (key, value) = Assert.Single(result.Data);
+
+			Assert.Equal("test", key);
+			Assert.Equal("test", value);
+
+			Assert.Null(result.Errors);
+		}
+
 		public static void AssertDefaultErrorMapper(
 			this QueryResult result,
 			string code,
@@ -38,5 +48,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			Assert.Collection(error.Extensions, extensions);
 		}
+
+
 	}
 }

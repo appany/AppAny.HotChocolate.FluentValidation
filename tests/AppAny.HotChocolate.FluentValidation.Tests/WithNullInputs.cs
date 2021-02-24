@@ -25,12 +25,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -51,12 +46,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -78,12 +68,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -108,12 +93,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -138,12 +118,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -168,12 +143,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -198,12 +168,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -228,12 +193,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -258,12 +218,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -288,12 +243,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -318,12 +268,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -349,12 +294,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -380,12 +320,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 	}
 }
