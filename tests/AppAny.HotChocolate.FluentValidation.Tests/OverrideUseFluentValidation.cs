@@ -15,15 +15,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseDefaultErrorMapperFieldOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseDefaultErrorMapper();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithExtendedDetails())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseDefaultErrorMapper();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -34,32 +36,26 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task UseDefaultErrorMapperWithDetailsFieldOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseDefaultErrorMapperWithDetails();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseDefaultErrorMapperWithDetails();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -107,15 +103,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseValidator<NotEmptyNameValidator>();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<NotEmptyNameValidator>();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>();
@@ -126,23 +124,16 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task UseValidatorTypedOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -151,7 +142,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 								{
 									opt.UseValidator(typeof(NotEmptyNameValidator));
 								}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>();
@@ -162,34 +154,28 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task UseInputValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field => field.Argument("input",
-						arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-						{
-							opt.UseInputValidators(async context =>
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field => field.Argument("input",
+							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
 							{
-								var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
+								opt.UseInputValidators(async context =>
+								{
+									var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
 
-								return await new NotEmptyNameValidator().ValidateAsync(argumentValue);
-							});
-						})))),
+									return await new NotEmptyNameValidator().ValidateAsync(argumentValue);
+								});
+							}))));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>();
@@ -200,33 +186,27 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task MultipleUseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseValidator<NotEmptyNameValidator>()
-									.UseValidator<NotEmptyAddressValidator>();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<NotEmptyNameValidator>()
+										.UseValidator<NotEmptyAddressValidator>();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>().AddTransient<NotEmptyAddressValidator>();
@@ -268,16 +248,18 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorTypeOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseValidator<TestPersonInput, NotEmptyNameValidator>()
-									.UseValidator<TestPersonInput, NotEmptyAddressValidator>();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<TestPersonInput, NotEmptyNameValidator>()
+										.UseValidator<TestPersonInput, NotEmptyAddressValidator>();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>().AddTransient<NotEmptyAddressValidator>();
@@ -319,18 +301,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseValidator<NotEmptyNameValidator>()
-									.UseValidator<TestPersonInput, NotEmptyAddressValidator>(strategy =>
-										// Validates address, but includes only name
-										strategy.IncludeProperties(input => input.Name));
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<NotEmptyNameValidator>()
+										.UseValidator<TestPersonInput, NotEmptyAddressValidator>(strategy =>
+											// Validates address, but includes only name
+											strategy.IncludeProperties(input => input.Name));
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>().AddTransient<NotEmptyAddressValidator>();
@@ -360,16 +344,18 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorTwice()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.UseValidator<NotEmptyNameValidator>()
-									.UseValidator<NotEmptyNameValidator>();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.UseValidator<NotEmptyNameValidator>()
+										.UseValidator<NotEmptyNameValidator>();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>().AddTransient<NotEmptyAddressValidator>();
@@ -411,15 +397,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseCustomValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
-							{
-								fv.UseValidator<DoubleNotEmptyNameValidator>();
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(fv =>
+								{
+									fv.UseValidator<DoubleNotEmptyNameValidator>();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<DoubleNotEmptyNameValidator>();
@@ -461,15 +449,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task SkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.SkipValidation().UseValidator<NotEmptyNameValidator>();
-							}));
-					})),
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.SkipValidation().UseValidator<NotEmptyNameValidator>();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>();
@@ -490,21 +480,24 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task SkipValidationWithInputValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.SkipValidation()
-									.UseInputValidators(async context =>
-									{
-										var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.SkipValidation()
+										.UseInputValidators(async context =>
+										{
+											var argumentValue =
+												context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
 
-										return await new NotEmptyNameValidator().ValidateAsync(argumentValue);
-									});
-							}));
-					})),
+											return await new NotEmptyNameValidator().ValidateAsync(argumentValue);
+										});
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<NotEmptyNameValidator>();
@@ -525,22 +518,24 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseDefaultInputValidatorWithCustom()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field => field
-						.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>()
-							.UseFluentValidation(opt =>
-							{
-								opt.UseDefaultInputValidator(async context =>
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field => field
+							.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>()
+								.UseFluentValidation(opt =>
 								{
-									var validator = new NotEmptyAddressValidator();
+									opt.UseDefaultInputValidator(async context =>
+									{
+										var validator = new NotEmptyAddressValidator();
 
-									var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
+										var argumentValue = context.MiddlewareContext.ArgumentValue<TestPersonInput>(context.Argument.Name);
 
-									return await validator
-										.ValidateAsync(argumentValue, context.MiddlewareContext.RequestAborted)
-										.ConfigureAwait(false);
-								});
-							})))),
+										return await validator
+											.ValidateAsync(argumentValue, context.MiddlewareContext.RequestAborted)
+											.ConfigureAwait(false);
+									});
+								}))));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();

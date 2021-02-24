@@ -63,11 +63,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidator()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<TestPersonInputType>().UseFluentValidation());
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -88,6 +90,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -95,7 +98,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidator<IValidator<TestPersonInput>>();
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -116,6 +120,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorsOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -123,7 +128,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidators<IValidator<TestPersonInput>>();
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -144,6 +150,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorTypedOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -151,7 +158,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidator(typeof(IValidator<TestPersonInput>));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -172,6 +180,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorsTypedOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -179,7 +188,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidators(typeof(IValidator<TestPersonInput>));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -200,6 +210,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorOverrideWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -207,7 +218,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidator<IValidator<TestPersonInput>>(strategy => strategy.IncludeProperties("Name"));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -228,6 +240,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorsOverrideWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -235,7 +248,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidators<IValidator<TestPersonInput>>(strategy => strategy.IncludeProperties("Name"));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -256,6 +270,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorTypedOverrideWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -263,7 +278,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidator(typeof(IValidator<TestPersonInput>), strategy => strategy.IncludeProperties("Name"));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -284,6 +300,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorsTypedOverrideWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -291,7 +308,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 							{
 								opt.UseValidators(typeof(IValidator<TestPersonInput>), strategy => strategy.IncludeProperties("Name"));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -312,6 +330,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorOverrideFullWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -320,7 +339,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 								opt.UseValidator<TestPersonInput, IValidator<TestPersonInput>>
 									(strategy => strategy.IncludeProperties("Name"));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();
@@ -341,6 +361,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorsOverrideFullWithValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -349,7 +370,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 								opt.UseValidators<TestPersonInput, IValidator<TestPersonInput>>
 									(strategy => strategy.IncludeProperties("Name"));
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();

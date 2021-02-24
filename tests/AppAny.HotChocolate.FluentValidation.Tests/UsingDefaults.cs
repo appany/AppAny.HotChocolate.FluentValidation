@@ -14,11 +14,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task ExtensionCode()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-					})),
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -29,28 +31,22 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task UseMultipleValidators()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>()
@@ -93,11 +89,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task UseValidatorByConvention()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, DoubleNotEmptyNameValidator>();

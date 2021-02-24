@@ -14,6 +14,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task DynamicValidationStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation()
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -34,7 +35,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 									}
 								});
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -45,17 +47,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result1.AssertNullResult();
 
-			var error1 = Assert.Single(result1.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
-
-			Assert.Collection(error1.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result1.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
@@ -82,6 +76,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task DynamicValidationStrategy_UseValidator_Strategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation()
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -102,7 +97,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 									}
 								});
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -113,17 +109,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result1.AssertNullResult();
 
-			var error1 = Assert.Single(result1.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
-
-			Assert.Collection(error1.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result1.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
@@ -150,6 +138,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task DynamicValidationStrategy_UseValidatorsStrategy()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation()
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -170,7 +159,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 									}
 								});
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -181,17 +171,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result1.AssertNullResult();
 
-			var error1 = Assert.Single(result1.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
-
-			Assert.Collection(error1.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result1.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
@@ -218,6 +200,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task DynamicValidationStrategy_UseValidators()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation()
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -238,7 +221,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 									}
 								});
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -249,17 +233,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result1.AssertNullResult();
 
-			var error1 = Assert.Single(result1.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
-
-			Assert.Collection(error1.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result1.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
@@ -286,6 +262,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task DynamicValidationStrategy_Typed()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation()
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -306,7 +283,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 									}
 								});
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -317,17 +295,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result1.AssertNullResult();
 
-			var error1 = Assert.Single(result1.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
-
-			Assert.Collection(error1.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result1.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
@@ -354,6 +324,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task DynamicValidationStrategy_UseValidators_Typed()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
+				{
 					builder.AddFluentValidation()
 						.AddMutationType(new TestMutation(field =>
 						{
@@ -374,7 +345,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 									}
 								});
 							}));
-						})),
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -385,17 +357,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result1.AssertNullResult();
 
-			var error1 = Assert.Single(result1.Errors);
-
-			Assert.Equal(nameof(NotEmptyValidator), error1.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error1.Message);
-
-			Assert.Collection(error1.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(nameof(NotEmptyValidator), code.Value);
-				});
+			result1.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("WithName")));
