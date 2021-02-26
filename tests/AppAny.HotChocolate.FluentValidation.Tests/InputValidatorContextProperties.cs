@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +13,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task AddFluentValidation()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(
-				builder =>
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
 					builder.AddFluentValidation(opt =>
 						{
@@ -40,24 +40,15 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(ValidationDefaults.Code, error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task UseFluentValidation()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(
-				builder =>
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
@@ -84,17 +75,9 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(ValidationDefaults.Code, error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 	}
 }

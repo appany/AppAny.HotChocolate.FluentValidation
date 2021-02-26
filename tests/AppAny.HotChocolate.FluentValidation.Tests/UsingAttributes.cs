@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Validators;
 using HotChocolate;
 using HotChocolate.Execution;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,14 +32,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -64,14 +65,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -97,14 +98,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -127,41 +128,38 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
+			Assert.Collection(result.Errors,
+				error =>
+				{
+					Assert.Equal(nameof(NotEmptyValidator), error.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
-			Assert.Equal(ValidationDefaults.Code, error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
-				},
-				validator =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.ValidatorKey, validator.Key);
-					Assert.Equal("NotEmptyValidator", validator.Value);
-				},
-				field =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
-					Assert.Equal(new NameString("test"), field.Value);
-				},
-				argument =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
-					Assert.Equal(new NameString("input"), argument.Value);
-				},
-				property =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
-					Assert.Equal("Name", property.Value);
-				},
-				severity =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
-					Assert.Equal(Severity.Error, severity.Value);
+					Assert.Collection(error.Extensions,
+						code =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
+						},
+						field =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
+							Assert.Equal(new NameString("test"), field.Value);
+						},
+						argument =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
+							Assert.Equal(new NameString("input"), argument.Value);
+						},
+						property =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
+							Assert.Equal("Name", property.Value);
+						},
+						severity =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
+							Assert.Equal(Severity.Error, severity.Value);
+						});
 				});
 		}
 
@@ -183,70 +181,67 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
+			Assert.Collection(result.Errors,
+				error =>
+				{
+					Assert.Equal(nameof(NotEmptyValidator), error.Code);
+					Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
-			Assert.Equal(ValidationDefaults.Code, error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
-				},
-				validator =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.ValidatorKey, validator.Key);
-					Assert.Equal("NotEmptyValidator", validator.Value);
-				},
-				field =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
-					Assert.Equal(new NameString("test"), field.Value);
-				},
-				argument =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
-					Assert.Equal(new NameString("input"), argument.Value);
-				},
-				property =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
-					Assert.Equal("Name", property.Value);
-				},
-				severity =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
-					Assert.Equal(Severity.Error, severity.Value);
-				},
-				attemptedValue =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.AttemptedValueKey, attemptedValue.Key);
-					Assert.Equal("", attemptedValue.Value);
-				},
-				customState =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CustomStateKey, customState.Key);
-					Assert.Null(customState.Value);
-				},
-				formattedMessagePlaceholerValues =>
-				{
-					Assert.Equal(
-						ValidationDefaults.ExtensionKeys.FormattedMessagePlaceholderValuesKey,
-						formattedMessagePlaceholerValues.Key);
-
-					var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholerValues.Value);
-
-					Assert.Collection(values,
-						propertyName =>
+					Assert.Collection(error.Extensions,
+						code =>
 						{
-							Assert.Equal("PropertyName", Assert.IsType<string>(propertyName.Key));
-							Assert.Equal("Name", Assert.IsType<string>(propertyName.Value));
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						},
-						propertyValue =>
+						field =>
 						{
-							Assert.Equal("PropertyValue", Assert.IsType<string>(propertyValue.Key));
-							Assert.Equal("", Assert.IsType<string>(propertyValue.Value));
+							Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
+							Assert.Equal(new NameString("test"), field.Value);
+						},
+						argument =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
+							Assert.Equal(new NameString("input"), argument.Value);
+						},
+						property =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
+							Assert.Equal("Name", property.Value);
+						},
+						severity =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
+							Assert.Equal(Severity.Error, severity.Value);
+						},
+						attemptedValue =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.AttemptedValueKey, attemptedValue.Key);
+							Assert.Equal("", attemptedValue.Value);
+						},
+						customState =>
+						{
+							Assert.Equal(ValidationDefaults.ExtensionKeys.CustomStateKey, customState.Key);
+							Assert.Null(customState.Value);
+						},
+						formattedMessagePlaceholerValues =>
+						{
+							Assert.Equal(
+								ValidationDefaults.ExtensionKeys.FormattedMessagePlaceholderValuesKey,
+								formattedMessagePlaceholerValues.Key);
+
+							var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholerValues.Value);
+
+							Assert.Collection(values,
+								propertyName =>
+								{
+									Assert.Equal("PropertyName", Assert.IsType<string>(propertyName.Key));
+									Assert.Equal("Name", Assert.IsType<string>(propertyName.Value));
+								},
+								propertyValue =>
+								{
+									Assert.Equal("PropertyValue", Assert.IsType<string>(propertyValue.Key));
+									Assert.Equal("", Assert.IsType<string>(propertyValue.Value));
+								});
 						});
 				});
 		}
@@ -272,14 +267,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -300,12 +295,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -329,14 +319,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -357,12 +347,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithName("Custom")));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -386,26 +371,26 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				},
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -431,14 +416,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -464,14 +449,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -497,14 +482,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -525,12 +510,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -549,12 +529,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
@@ -578,14 +553,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
@@ -606,12 +581,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 	}
 }

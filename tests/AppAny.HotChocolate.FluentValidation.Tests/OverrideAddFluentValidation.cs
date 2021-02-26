@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
+using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +15,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		[Fact]
 		public async Task NullResult_WithCodeExtension()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(
-				builder =>
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
@@ -33,24 +33,15 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(ValidationDefaults.Code, error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task NullResult_ValidatorOverride()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(
-				builder =>
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
 					builder.AddFluentValidation(opt => opt.UseDefaultErrorMapper())
 						.AddMutationType(new TestMutation(field =>
@@ -72,24 +63,15 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.Equal(ValidationDefaults.Code, error.Code);
-			Assert.Equal(NotEmptyNameValidator.Message, error.Message);
-
-			Assert.Collection(error.Extensions,
-				code =>
-				{
-					Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-					Assert.Equal(ValidationDefaults.Code, code.Value);
-				});
+			result.AssertDefaultErrorMapper(
+				nameof(NotEmptyValidator),
+				NotEmptyNameValidator.Message);
 		}
 
 		[Fact]
 		public async Task ThrowsNoMessageSet()
 		{
-			var executor = await TestSetup.CreateRequestExecutor(
-				builder =>
+			var executor = await TestSetup.CreateRequestExecutor(builder =>
 				{
 					builder.AddFluentValidation(opt => opt.UseErrorMapper(ValidationDefaults.ErrorMappers.Details))
 						.AddMutationType(new TestMutation(field =>
@@ -111,9 +93,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.IsType<InvalidOperationException>(error.Exception);
+			Assert.Collection(result.Errors,
+				error => Assert.IsType<InvalidOperationException>(error.Exception));
 		}
 
 		[Fact]
@@ -133,9 +114,8 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
 			result.AssertNullResult();
 
-			var error = Assert.Single(result.Errors);
-
-			Assert.IsType<NullReferenceException>(error.Exception);
+			Assert.Collection(result.Errors,
+				error => Assert.IsType<NullReferenceException>(error.Exception));
 		}
 
 		[Fact]
@@ -156,12 +136,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 	}
 }

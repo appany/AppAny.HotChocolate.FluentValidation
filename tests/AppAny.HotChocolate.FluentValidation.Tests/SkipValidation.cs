@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +14,17 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 		public async Task FieldSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.SkipValidation();
-							}));
-					})),
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.SkipValidation();
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -30,27 +33,24 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
 		public async Task FieldSkipValidationPredecate()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation()
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
-							}));
-					})),
+				{
+					builder.AddFluentValidation()
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -59,23 +59,20 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
 		public async Task GlobalSkipValidation()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.SkipValidation())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.SkipValidation())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -84,26 +81,23 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
 		public async Task GlobalSkipValidationPredecate()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt =>
-					{
-						opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
-					})
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-					})),
+				{
+					builder.AddFluentValidation(opt =>
+						{
+							opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
+						})
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -112,27 +106,24 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
 		public async Task GlobalSkipValidationFieldOverride()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -141,27 +132,24 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			var result = Assert.IsType<QueryResult>(
 				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			var (key, value) = Assert.Single(result.Data);
-
-			Assert.Equal("test", key);
-			Assert.Equal("test", value);
-
-			Assert.Null(result.Errors);
+			result.AssertSuceessResult();
 		}
 
 		[Fact]
 		public async Task FieldSkipValidationDefault()
 		{
 			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
-					.AddMutationType(new TestMutation(field =>
-					{
-						field.Argument("input",
-							arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-							{
-								opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
-							}));
-					})),
+				{
+					builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
+						.AddMutationType(new TestMutation(field =>
+						{
+							field.Argument("input",
+								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+								{
+									opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
+								}));
+						}));
+				},
 				services =>
 				{
 					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
@@ -175,14 +163,14 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				name =>
 				{
-					Assert.Equal(ValidationDefaults.Code, name.Code);
+					Assert.Equal(nameof(NotEmptyValidator), name.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
 					Assert.Collection(name.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(ValidationDefaults.Code, code.Value);
+							Assert.Equal(nameof(NotEmptyValidator), code.Value);
 						});
 				});
 		}
