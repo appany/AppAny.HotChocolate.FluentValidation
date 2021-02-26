@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  release:
+  package:
     name: Package
     runs-on: ubuntu-20.04
 
