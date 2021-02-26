@@ -23,7 +23,6 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Package | Publish
-      id: publish
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
