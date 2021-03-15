@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/appany/AppAny.HotChocolate.FluentValidation/branch/main/graph/badge.svg?token=4ZNLBYOTCI)](https://codecov.io/gh/appany/AppAny.HotChocolate.FluentValidation)
 
 
-⚡️ Feature-rich, simple, fast and memory efficient input field `HotChocolate` + `FluentValidation` integration ⚡️
+⚡️ Feature-rich, but simple, super fast and memory efficient input field `HotChocolate` + `FluentValidation` integration ⚡️
 
 ## 🔧 Installation 🔧
 
