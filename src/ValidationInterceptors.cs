@@ -37,6 +37,7 @@ namespace AppAny.HotChocolate.FluentValidation
 					}
 
 					objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
+					objectFieldDefinition.ContextData.CreateObjectFieldOptions();
 				}
 			}
 		}
@@ -47,11 +48,9 @@ namespace AppAny.HotChocolate.FluentValidation
 			{
 				foreach (var argument in objectField.Arguments.Where(arg => arg.ContextData.ShouldValidateArgument()))
 				{
-					var extensionData = (ExtensionData)objectField.ContextData;
+					var objectOptions = objectField.ContextData.TryGetObjectFieldOptions();
 
-					var objectOptions = extensionData.GetOrCreateObjectFieldOptions();
-
-					objectOptions.Arguments.Add(argument.Name, argument);
+					objectOptions?.Arguments.Add(argument.Name, argument);
 				}
 			}
 		}
