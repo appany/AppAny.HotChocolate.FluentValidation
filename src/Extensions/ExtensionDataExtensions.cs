@@ -6,17 +6,9 @@ namespace AppAny.HotChocolate.FluentValidation
 {
 	internal static class ExtensionDataExtensions
 	{
-		public static ObjectFieldValidationOptions GetOrCreateObjectFieldOptions(this ExtensionData extensionData)
+		public static void CreateObjectFieldOptions(this ExtensionData extensionData)
 		{
-			var options = extensionData.TryGetObjectFieldOptions();
-
-			if (options is null)
-			{
-				options = new ObjectFieldValidationOptions();
-				extensionData.Add(ValidationDefaults.ObjectFieldOptionsKey, options);
-			}
-
-			return options;
+			extensionData[ValidationDefaults.ObjectFieldOptionsKey] = new ObjectFieldValidationOptions();
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +40,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			result.AssertDefaultErrorMapper(
-				nameof(NotEmptyValidator),
+				"NotEmptyValidator",
 				NotEmptyNameValidator.Message);
 		}
 
@@ -76,7 +75,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			result.AssertDefaultErrorMapper(
-				nameof(NotEmptyValidator),
+				"NotEmptyValidator",
 				NotEmptyNameValidator.Message);
 		}
 	}

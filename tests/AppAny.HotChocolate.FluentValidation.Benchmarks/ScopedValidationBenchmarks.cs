@@ -51,7 +51,7 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
 			return withValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);
 		}
 
-		// [Benchmark(Description = "Broken since 11.0.8")]
+		[Benchmark]
 		public Task RunWithFluentChocoValidation()
 		{
 			return fluentChocoValidation.ExecuteAsync(BenchmarkSetup.Mutations.WithEmptyName);

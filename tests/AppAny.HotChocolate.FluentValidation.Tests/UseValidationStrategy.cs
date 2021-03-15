@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +47,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result1.AssertNullResult();
 
 			result1.AssertDefaultErrorMapper(
-				nameof(NotEmptyValidator),
+				"NotEmptyValidator",
 				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(
@@ -128,7 +127,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result1.AssertNullResult();
 
 			result1.AssertDefaultErrorMapper(
-				nameof(NotEmptyValidator),
+				"NotEmptyValidator",
 				NotEmptyNameValidator.Message);
 
 			var result2 = Assert.IsType<QueryResult>(

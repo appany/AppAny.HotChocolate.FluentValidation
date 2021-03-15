@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Validators;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +32,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			result.AssertDefaultErrorMapper(
-				nameof(NotEmptyValidator),
+				"NotEmptyValidator",
 				NotEmptyNameValidator.Message);
 		}
 
@@ -62,26 +61,26 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			Assert.Collection(result.Errors,
 				input =>
 				{
-					Assert.Equal(nameof(NotEmptyValidator), input.Code);
+					Assert.Equal("NotEmptyValidator", input.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, input.Message);
 
 					Assert.Collection(input.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(nameof(NotEmptyValidator), code.Value);
+							Assert.Equal("NotEmptyValidator", code.Value);
 						});
 				},
 				input2 =>
 				{
-					Assert.Equal(nameof(NotEmptyValidator), input2.Code);
+					Assert.Equal("NotEmptyValidator", input2.Code);
 					Assert.Equal(NotEmptyNameValidator.Message, input2.Message);
 
 					Assert.Collection(input2.Extensions,
 						code =>
 						{
 							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal(nameof(NotEmptyValidator), code.Value);
+							Assert.Equal("NotEmptyValidator", code.Value);
 						});
 				});
 		}
@@ -109,7 +108,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 			result.AssertNullResult();
 
 			result.AssertDefaultErrorMapper(
-				nameof(NotEmptyValidator),
+				"NotEmptyValidator",
 				NotEmptyNameValidator.Message);
 		}
 

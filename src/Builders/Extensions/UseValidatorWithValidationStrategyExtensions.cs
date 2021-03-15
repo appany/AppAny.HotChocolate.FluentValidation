@@ -239,14 +239,7 @@ namespace AppAny.HotChocolate.FluentValidation
 						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
 						.ConfigureAwait(false);
 
-					if (validationResult is null)
-					{
-						validationResult = validatorResult;
-					}
-					else
-					{
-						validationResult.MergeFailures(validatorResult);
-					}
+					validationResult = validatorResult;
 				}
 
 				return validationResult;
