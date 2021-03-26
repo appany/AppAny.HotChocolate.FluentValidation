@@ -4,26 +4,26 @@ using FluentValidation.Results;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	/// <summary>
-	/// Context for <see cref="ErrorMapper"/>
-	/// </summary>
-	public readonly ref struct ErrorMappingContext
-	{
-		public ErrorMappingContext(
-			IMiddlewareContext middlewareContext,
-			IInputField argument,
-			ValidationResult validationResult,
-			ValidationFailure validationFailure)
-		{
-			MiddlewareContext = middlewareContext;
-			Argument = argument;
-			ValidationResult = validationResult;
-			ValidationFailure = validationFailure;
-		}
+  /// <summary>
+  /// Context for <see cref="ErrorMapper"/>
+  /// </summary>
+  public readonly ref struct ErrorMappingContext
+  {
+    public ErrorMappingContext(
+      IMiddlewareContext middlewareContext,
+      IInputField argument,
+      ValidationResult validationResult,
+      ValidationFailure validationFailure)
+    {
+      MiddlewareContext = middlewareContext;
+      Argument = argument;
+      ValidationResult = validationResult;
+      ValidationFailure = validationFailure;
+    }
 
-		public IMiddlewareContext MiddlewareContext { get; }
-		public IInputField Argument { get; }
-		public ValidationResult ValidationResult { get; }
-		public ValidationFailure ValidationFailure { get; }
-	}
+    public IMiddlewareContext MiddlewareContext { get; }
+    public IInputField Argument { get; }
+    public ValidationResult ValidationResult { get; }
+    public ValidationFailure ValidationFailure { get; }
+  }
 }

@@ -6,79 +6,79 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-	public static class UseValidationStrategyExtensions
-	{
-		/// <summary>
-		/// Overrides <see cref="ValidationStrategy{T}"/>.
-		/// </summary>
-		public static ArgumentValidationBuilder UseValidationStrategy(
-			this ArgumentValidationBuilder builder,
-			Action<ValidationStrategy<object>> validationStrategy)
-		{
-			return builder.UseValidationStrategy<object>((_, strategy) => validationStrategy(strategy));
-		}
+  public static class UseValidationStrategyExtensions
+  {
+    /// <summary>
+    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    /// </summary>
+    public static ArgumentValidationBuilder UseValidationStrategy(
+      this ArgumentValidationBuilder builder,
+      Action<ValidationStrategy<object>> validationStrategy)
+    {
+      return builder.UseValidationStrategy<object>((_, strategy) => validationStrategy(strategy));
+    }
 
-		/// <summary>
-		/// Overrides <see cref="ValidationStrategy{T}"/>.
-		/// </summary>
-		public static ArgumentValidationBuilder UseValidationStrategy(
-			this ArgumentValidationBuilder builder,
-			Action<InputValidatorContext, ValidationStrategy<object>> validationStrategy)
-		{
-			return builder.UseValidationStrategy<object>(validationStrategy);
-		}
+    /// <summary>
+    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    /// </summary>
+    public static ArgumentValidationBuilder UseValidationStrategy(
+      this ArgumentValidationBuilder builder,
+      Action<InputValidatorContext, ValidationStrategy<object>> validationStrategy)
+    {
+      return builder.UseValidationStrategy<object>(validationStrategy);
+    }
 
-		/// <summary>
-		/// Overrides <see cref="ValidationStrategy{T}"/>.
-		/// </summary>
-		public static ArgumentValidationBuilder UseValidationStrategy<TInput>(
-			this ArgumentValidationBuilder builder,
-			Action<ValidationStrategy<TInput>> validationStrategy)
-		{
-			return builder.UseValidationStrategy<TInput>((_, strategy) => validationStrategy(strategy));
-		}
+    /// <summary>
+    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    /// </summary>
+    public static ArgumentValidationBuilder UseValidationStrategy<TInput>(
+      this ArgumentValidationBuilder builder,
+      Action<ValidationStrategy<TInput>> validationStrategy)
+    {
+      return builder.UseValidationStrategy<TInput>((_, strategy) => validationStrategy(strategy));
+    }
 
-		/// <summary>
-		/// Overrides <see cref="ValidationStrategy{T}"/>.
-		/// </summary>
-		public static ArgumentValidationBuilder UseValidationStrategy<TInput>(
-			this ArgumentValidationBuilder builder,
-			Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
-		{
-			return builder.UseInputValidators(async inputValidatorContext =>
-			{
-				var argumentValue = inputValidatorContext
-					.MiddlewareContext
-					.ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
+    /// <summary>
+    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    /// </summary>
+    public static ArgumentValidationBuilder UseValidationStrategy<TInput>(
+      this ArgumentValidationBuilder builder,
+      Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
+    {
+      return builder.UseInputValidators(async inputValidatorContext =>
+      {
+        var argumentValue = inputValidatorContext
+          .MiddlewareContext
+          .ArgumentValue<TInput>(inputValidatorContext.Argument.Name);
 
-				if (argumentValue is null)
-				{
-					return null;
-				}
+        if (argumentValue is null)
+        {
+          return null;
+        }
 
-				var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
+        var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
 
-				var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+        var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
 
-				var validationContext = ValidationContext<TInput>.CreateWithOptions(
-					argumentValue,
-					strategy => validationStrategy(inputValidatorContext, strategy));
+        var validationContext = ValidationContext<TInput>.CreateWithOptions(
+          argumentValue,
+          strategy => validationStrategy(inputValidatorContext, strategy));
 
-				ValidationResult? validationResult = null;
+        ValidationResult? validationResult = null;
 
-				for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
-				{
-					var validator = validators[validatorIndex];
+        for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
+        {
+          var validator = validators[validatorIndex];
 
-					var validatorResult = await validator
-						.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
-						.ConfigureAwait(false);
+          var validatorResult = await validator
+            .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
+            .ConfigureAwait(false);
 
-					validationResult = validatorResult;
-				}
+          validationResult = validatorResult;
+        }
 
-				return validationResult;
-			});
-		}
-	}
+        return validationResult;
+      });
+    }
+  }
 }
