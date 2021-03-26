@@ -7,171 +7,171 @@ using Xunit;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-	public class SkipValidation
-	{
-		[Fact]
-		public async Task FieldSkipValidation()
-		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				{
-					builder.AddFluentValidation()
-						.AddMutationType(new TestMutation(field =>
-						{
-							field.Argument("input",
-								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-								{
-									opt.SkipValidation();
-								}));
-						}));
-				},
-				services =>
-				{
-					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
-				});
+  public class SkipValidation
+  {
+    [Fact]
+    public async Task FieldSkipValidation()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation()
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input",
+                arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+                {
+                  opt.SkipValidation();
+                }));
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
 
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			result.AssertSuceessResult();
-		}
+      result.AssertSuceessResult();
+    }
 
-		[Fact]
-		public async Task FieldSkipValidationPredecate()
-		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				{
-					builder.AddFluentValidation()
-						.AddMutationType(new TestMutation(field =>
-						{
-							field.Argument("input",
-								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-								{
-									opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
-								}));
-						}));
-				},
-				services =>
-				{
-					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
-				});
+    [Fact]
+    public async Task FieldSkipValidationPredecate()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation()
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input",
+                arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+                {
+                  opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
+                }));
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
 
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			result.AssertSuceessResult();
-		}
+      result.AssertSuceessResult();
+    }
 
-		[Fact]
-		public async Task GlobalSkipValidation()
-		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				{
-					builder.AddFluentValidation(opt => opt.SkipValidation())
-						.AddMutationType(new TestMutation(field =>
-						{
-							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-						}));
-				},
-				services =>
-				{
-					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
-				});
+    [Fact]
+    public async Task GlobalSkipValidation()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation(opt => opt.SkipValidation())
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
 
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			result.AssertSuceessResult();
-		}
+      result.AssertSuceessResult();
+    }
 
-		[Fact]
-		public async Task GlobalSkipValidationPredecate()
-		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				{
-					builder.AddFluentValidation(opt =>
-						{
-							opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
-						})
-						.AddMutationType(new TestMutation(field =>
-						{
-							field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
-						}));
-				},
-				services =>
-				{
-					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
-				});
+    [Fact]
+    public async Task GlobalSkipValidationPredecate()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation(opt =>
+            {
+              opt.SkipValidation(context => new ValueTask<bool>(context.Argument.Name == "input"));
+            })
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input", arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
 
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			result.AssertSuceessResult();
-		}
+      result.AssertSuceessResult();
+    }
 
-		[Fact]
-		public async Task GlobalSkipValidationFieldOverride()
-		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				{
-					builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
-						.AddMutationType(new TestMutation(field =>
-						{
-							field.Argument("input",
-								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-								{
-									opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
-								}));
-						}));
-				},
-				services =>
-				{
-					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
-				});
+    [Fact]
+    public async Task GlobalSkipValidationFieldOverride()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation(opt => opt.SkipValidation(ValidationDefaults.SkipValidation.Default))
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input",
+                arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+                {
+                  opt.SkipValidation(ValidationDefaults.SkipValidation.Skip);
+                }));
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
 
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			result.AssertSuceessResult();
-		}
+      result.AssertSuceessResult();
+    }
 
-		[Fact]
-		public async Task FieldSkipValidationDefault()
-		{
-			var executor = await TestSetup.CreateRequestExecutor(builder =>
-				{
-					builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
-						.AddMutationType(new TestMutation(field =>
-						{
-							field.Argument("input",
-								arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
-								{
-									opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
-								}));
-						}));
-				},
-				services =>
-				{
-					services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
-				});
+    [Fact]
+    public async Task FieldSkipValidationDefault()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation(opt => opt.SkipValidation().UseDefaultErrorMapper())
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input",
+                arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(opt =>
+                {
+                  opt.SkipValidation(ValidationDefaults.SkipValidation.Default);
+                }));
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
 
-			var result = Assert.IsType<QueryResult>(
-				await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-			result.AssertNullResult();
+      result.AssertNullResult();
 
-			Assert.Collection(result.Errors,
-				name =>
-				{
-					Assert.Equal("NotEmptyValidator", name.Code);
-					Assert.Equal(NotEmptyNameValidator.Message, name.Message);
+      Assert.Collection(result.Errors,
+        name =>
+        {
+          Assert.Equal("NotEmptyValidator", name.Code);
+          Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-					Assert.Collection(name.Extensions,
-						code =>
-						{
-							Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
-							Assert.Equal("NotEmptyValidator", code.Value);
-						});
-				});
-		}
-	}
+          Assert.Collection(name.Extensions,
+            code =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+              Assert.Equal("NotEmptyValidator", code.Value);
+            });
+        });
+    }
+  }
 }

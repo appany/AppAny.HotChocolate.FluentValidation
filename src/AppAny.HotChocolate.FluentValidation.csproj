@@ -1,44 +1,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<Version>0.2.1</Version>
-		<LangVersion>9</LangVersion>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Version>0.2.1</Version>
+    <LangVersion>9</LangVersion>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</PackageProjectUrl>
-		<PackageIcon>logo.png</PackageIcon>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright ©2021 AppAny</Copyright>
-		<Authors>sergeyshaykhullin</Authors>
-		<Description>HotChocolate GraphQL FluentValidation integration</Description>
-		<PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
-	</PropertyGroup>
+  <PropertyGroup>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/appany/AppAny.HotChocolate.FluentValidation</PackageProjectUrl>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright ©2021 AppAny</Copyright>
+    <Authors>sergeyshaykhullin</Authors>
+    <Description>HotChocolate GraphQL FluentValidation integration</Description>
+    <PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
+  </PropertyGroup>
 
-	<ItemGroup Label="Packages">
-		<PackageReference Include="FluentValidation" Version="10.0.0-preview4" />
-		<PackageReference Include="HotChocolate.Execution" Version="11.1.0-preview.86" />
-	</ItemGroup>
+  <ItemGroup Label="Packages">
+    <PackageReference Include="FluentValidation" Version="10.0.0-preview4" />
+    <PackageReference Include="HotChocolate.Execution" Version="11.1.0-rc.4" />
+  </ItemGroup>
 
-	<ItemGroup Label="Assets">
-		<None Include="../assets/logo.png">
-			<Pack>true</Pack>
-			<Visible>false</Visible>
-			<PackagePath />
-		</None>
-		<None Include="../LICENSE">
-			<Pack>true</Pack>
-			<Visible>false</Visible>
-			<PackagePath />
-		</None>
-	</ItemGroup>
+  <ItemGroup Label="Assets">
+    <None Include="../assets/logo.png">
+      <Pack>true</Pack>
+      <Visible>false</Visible>
+      <PackagePath />
+    </None>
+    <None Include="../LICENSE">
+      <Pack>true</Pack>
+      <Visible>false</Visible>
+      <PackagePath />
+    </None>
+  </ItemGroup>
 
 </Project>
