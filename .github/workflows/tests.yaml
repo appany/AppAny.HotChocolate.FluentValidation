@@ -2,9 +2,9 @@ name: Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 env:
@@ -19,21 +19,20 @@ jobs:
     timeout-minutes: 5
 
     steps:
-    - name: Tests | Checkout
-      uses: actions/checkout@v2
+      - name: Tests | Checkout
+        uses: actions/checkout@v2
 
-    - name: Tests | Setup
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.READ_REGISTRY_TOKEN }}
+      - name: Tests | Setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.READ_REGISTRY_TOKEN }}
 
-    - name: Tests
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=../../ /p:CoverletOutputFormat=lcov
+      - name: Tests
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=../../ /p:CoverletOutputFormat=lcov
 
-    - name: Tests | Coverage
-      uses: codecov/codecov-action@v1
-      with:
-        files: ${{ env.COVERAGE_REPORT }}
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Tests | Coverage
+        uses: codecov/codecov-action@v1
+        with:
+          files: ${{ env.COVERAGE_REPORT }}
