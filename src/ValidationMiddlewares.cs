@@ -3,9 +3,9 @@ using HotChocolate.Resolvers;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-  internal static class ValidationFieldMiddleware
+  internal static class ValidationMiddlewares
   {
-    public static FieldDelegate Use(FieldDelegate next)
+    public static FieldDelegate Field(FieldDelegate next)
     {
       return async middlewareContext =>
       {

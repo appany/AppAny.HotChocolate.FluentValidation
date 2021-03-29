@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using HotChocolate;
@@ -7,7 +6,6 @@ using FluentValidation.Results;
 using FluentValidation.Internal;
 using HotChocolate.Configuration;
 using HotChocolate.Resolvers;
-using HotChocolate.Types.Descriptors;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -32,7 +30,7 @@ namespace AppAny.HotChocolate.FluentValidation
     /// <summary>
     /// Default validation field middleware
     /// </summary>
-    public static FieldMiddleware Middleware { get; } = ValidationFieldMiddleware.Use;
+    public static FieldMiddleware Middleware { get; } = ValidationMiddlewares.Field;
 
     /// <summary>
     /// Default HotChocolate interceptors
@@ -40,7 +38,7 @@ namespace AppAny.HotChocolate.FluentValidation
     public static class Interceptors
     {
       public static OnCompleteType OnBeforeCompleteType { get; } = ValidationInterceptors.OnBeforeCompleteType;
-      public static Action<IDescriptorContext, ISchema> OnAfterCreate { get; } = ValidationInterceptors.OnAfterCreate;
+      public static OnAfterSchemaCreate OnAfterSchemaCreate { get; } = ValidationInterceptors.OnAfterSchemaCreate;
     }
 
     /// <summary>

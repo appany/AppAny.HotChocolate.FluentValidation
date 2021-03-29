@@ -42,7 +42,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
     }
 
-    public static void OnAfterCreate(IDescriptorContext context, ISchema schema)
+    public static void OnAfterSchemaCreate(IDescriptorContext context, ISchema schema)
     {
       foreach (var objectField in schema.Types.OfType<IObjectType>().SelectMany(type => type.Fields))
       {
