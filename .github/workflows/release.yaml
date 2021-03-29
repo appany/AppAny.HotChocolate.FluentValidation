@@ -15,20 +15,20 @@ jobs:
     timeout-minutes: 5
 
     steps:
-    - name: Release | Checkout
-      uses: actions/checkout@v2
+      - name: Release | Checkout
+        uses: actions/checkout@v2
 
-    - name: Release | Tag
-      id: tag
-      uses: zwaldowski/semver-release-action@v2
-      with:
-        bump: ${{ github.event.inputs.release }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - name: Release | Tag
+        id: tag
+        uses: zwaldowski/semver-release-action@v2
+        with:
+          bump: ${{ github.event.inputs.release }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-    - name: Release
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ steps.tag.outputs.version }}
-        token: ${{ secrets.CREATE_RELEASE_TOKEN }}
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag.outputs.version }}
+          token: ${{ secrets.CREATE_RELEASE_TOKEN }}
