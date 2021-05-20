@@ -5,7 +5,7 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class ValidationBuilderExtensions
   {
     /// <summary>
-    /// Always skips validation <see cref="ValidationDefaults.SkipValidation.Skip"/>
+    ///   Always skips validation <see cref="ValidationDefaults.SkipValidation.Skip" />
     /// </summary>
     public static TBuilder SkipValidation<TBuilder>(this CanSkipValidation<TBuilder> builder)
     {
@@ -13,7 +13,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Uses default <see cref="MapError"/>. See <see cref="ValidationDefaults.ErrorMappers.Default"/>
+    ///   Uses default <see cref="MapError" />. See <see cref="ValidationDefaults.ErrorMappers.Default" />
     /// </summary>
     public static TBuilder UseDefaultErrorMapper<TBuilder>(
       this CanUseErrorMapper<TBuilder> builder,
@@ -27,7 +27,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Adds default <see cref="MapError"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
+    ///   Adds default <see cref="MapError" /> with details. See <see cref="ValidationDefaults.ErrorMappers.Default" /> and
+    ///   <see cref="ValidationDefaults.ErrorMappers.Details" />
     /// </summary>
     public static TBuilder UseDefaultErrorMapperWithDetails<TBuilder>(
       this CanUseErrorMapper<TBuilder> builder,
@@ -41,7 +42,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Adds default <see cref="MapError"/> with details. See <see cref="ValidationDefaults.ErrorMappers.Default"/> and <see cref="ValidationDefaults.ErrorMappers.Details"/>
+    ///   Adds default <see cref="MapError" /> with details. See <see cref="ValidationDefaults.ErrorMappers.Default" /> and
+    ///   <see cref="ValidationDefaults.ErrorMappers.Details" />
     /// </summary>
     public static TBuilder UseDefaultErrorMapperWithExtendedDetails<TBuilder>(
       this CanUseErrorMapper<TBuilder> builder,
@@ -55,7 +57,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Adds default <see cref="ValidateInput"/>. See <see cref="ValidationDefaults.InputValidators.Default"/>
+    ///   Adds default <see cref="ValidateInput" />. See <see cref="ValidationDefaults.InputValidators.Default" />
     /// </summary>
     public static TBuilder UseDefaultInputValidator<TBuilder>(
       this CanUseInputValidators<TBuilder> builder,

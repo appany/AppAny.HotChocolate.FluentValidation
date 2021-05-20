@@ -9,9 +9,9 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
   [MemoryDiagnoser]
   public class EmptyInputsValidationBenchmarks
   {
+    private IRequestExecutor fairyBreadValidation = default!;
     private IRequestExecutor withoutValidation = default!;
     private IRequestExecutor withValidation = default!;
-    private IRequestExecutor fairyBreadValidation = default!;
 
     [GlobalSetup]
     public async Task GlobalSetup()

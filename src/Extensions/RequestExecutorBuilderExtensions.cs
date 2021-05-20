@@ -7,7 +7,7 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class RequestExecutorBuilderExtensions
   {
     /// <summary>
-    /// Adds default validation services with <see cref="ValidationBuilder"/> overrides
+    ///   Adds default validation services with <see cref="ValidationBuilder" /> overrides
     /// </summary>
     public static IRequestExecutorBuilder AddFluentValidation(
       this IRequestExecutorBuilder builder,

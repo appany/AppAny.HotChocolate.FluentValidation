@@ -3,7 +3,7 @@ using System.Linq;
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Configures input field validation options
+  ///   Configures input field validation options
   /// </summary>
   public interface ArgumentValidationBuilder
     : CanSkipValidation<ArgumentValidationBuilder>,

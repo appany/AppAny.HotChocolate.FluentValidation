@@ -1,7 +1,7 @@
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Configures global validation options
+  ///   Configures global validation options
   /// </summary>
   public interface ValidationBuilder
     : CanSkipValidation<ValidationBuilder>,

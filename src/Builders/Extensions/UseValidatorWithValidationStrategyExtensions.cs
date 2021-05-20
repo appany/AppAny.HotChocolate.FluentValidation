@@ -7,8 +7,8 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class UseValidatorWithValidationStrategyExtensions
   {
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses <see cref="TValidator"/> to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses <see cref="TValidator" /> to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TValidator>(
       this ArgumentValidationBuilder builder,
@@ -19,8 +19,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses <see cref="TValidator"/> to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses <see cref="TValidator" /> to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TValidator>(
       this ArgumentValidationBuilder builder,
@@ -31,8 +31,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses all <see cref="TValidator"/> to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses all <see cref="TValidator" /> to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TValidator>(
       this ArgumentValidationBuilder builder,
@@ -43,8 +43,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses all <see cref="TValidator"/> to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses all <see cref="TValidator" /> to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TValidator>(
       this ArgumentValidationBuilder builder,
@@ -55,8 +55,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator(
       this ArgumentValidationBuilder builder,
@@ -67,8 +67,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator(
       this ArgumentValidationBuilder builder,
@@ -79,8 +79,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators(
       this ArgumentValidationBuilder builder,
@@ -91,8 +91,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators(
       this ArgumentValidationBuilder builder,
@@ -103,8 +103,9 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses <see cref="TValidator"/> to resolve <see cref="ValidateInput"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses <see cref="TValidator" /> to resolve <see cref="ValidateInput" /> with
+    ///   <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}" /> strategy
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(this ArgumentValidationBuilder builder)
       where TValidator : class, IValidator<TInput>
@@ -113,8 +114,9 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses all <see cref="TValidator"/> to resolve <see cref="ValidateInput"/> with <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}"/> strategy
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses all <see cref="TValidator" /> to resolve <see cref="ValidateInput" /> with
+    ///   <see cref="ValidationDefaults.ValidationStrategies.Default{TInput}" /> strategy
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(this ArgumentValidationBuilder builder)
       where TValidator : class, IValidator<TInput>
@@ -123,8 +125,9 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses <see cref="TValidator"/> to resolve <see cref="ValidateInput"/>, with custom <see cref="ValidationStrategy{TInput}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses <see cref="TValidator" /> to resolve <see cref="ValidateInput" />, with custom
+    ///   <see cref="ValidationStrategy{TInput}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(
       this ArgumentValidationBuilder builder,
@@ -135,8 +138,9 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses <see cref="TValidator"/> to resolve <see cref="ValidateInput"/>, with custom <see cref="ValidationStrategy{TInput}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses <see cref="TValidator" /> to resolve <see cref="ValidateInput" />, with custom
+    ///   <see cref="ValidationStrategy{TInput}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TInput, TValidator>(
       this ArgumentValidationBuilder builder,
@@ -147,8 +151,9 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses all <see cref="TValidator"/> to resolve <see cref="ValidateInput"/>, with custom <see cref="ValidationStrategy{TInput}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses all <see cref="TValidator" /> to resolve <see cref="ValidateInput" />, with custom
+    ///   <see cref="ValidationStrategy{TInput}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
       this ArgumentValidationBuilder builder,
@@ -159,8 +164,9 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses all <see cref="TValidator"/> to resolve <see cref="ValidateInput"/>, with custom <see cref="ValidationStrategy{TInput}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses all <see cref="TValidator" /> to resolve <see cref="ValidateInput" />, with custom
+    ///   <see cref="ValidationStrategy{TInput}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TInput, TValidator>(
       this ArgumentValidationBuilder builder,
@@ -170,11 +176,9 @@ namespace AppAny.HotChocolate.FluentValidation
       return builder.UseValidators(typeof(TValidator), validationStrategy);
     }
 
-
-
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" /> with <see cref="ValidationStrategy{T}" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TInput>(
       this ArgumentValidationBuilder builder,
@@ -182,15 +186,15 @@ namespace AppAny.HotChocolate.FluentValidation
       Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<TInput>,
-        ValidationDefaults.InputValidators.ValidationContextWithStrategy(validationStrategy)!,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<TInput>,
+        ValidationDefaults.InputValidators.Steps.ValidationContextWithStrategy(validationStrategy)!,
         _ => validatorType,
-        ValidationDefaults.InputValidators.Validator);
+        ValidationDefaults.InputValidators.Steps.Validator);
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TInput>(
       this ArgumentValidationBuilder builder,
@@ -198,10 +202,10 @@ namespace AppAny.HotChocolate.FluentValidation
       Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<TInput>,
-        ValidationDefaults.InputValidators.ValidationContextWithStrategy(validationStrategy)!,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<TInput>,
+        ValidationDefaults.InputValidators.Steps.ValidationContextWithStrategy(validationStrategy)!,
         _ => validatorType,
-        ValidationDefaults.InputValidators.Validators);
+        ValidationDefaults.InputValidators.Steps.Validators);
     }
   }
 }
