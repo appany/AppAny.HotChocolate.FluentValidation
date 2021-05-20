@@ -43,10 +43,10 @@ namespace AppAny.HotChocolate.FluentValidation
       Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<TInput>,
-        ValidationDefaults.InputValidators.ValidationContextWithStrategy(validationStrategy)!,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<TInput>,
+        ValidationDefaults.InputValidators.Steps.ValidationContextWithStrategy(validationStrategy)!,
         inputValidatorContext => inputValidatorContext.Argument.GetGenericValidatorType(),
-        ValidationDefaults.InputValidators.Validators);
+        ValidationDefaults.InputValidators.Steps.Validators);
     }
   }
 }

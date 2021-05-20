@@ -34,10 +34,10 @@ namespace AppAny.HotChocolate.FluentValidation
       Type validatorType)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<object>,
-        ValidationDefaults.InputValidators.ValidationContext,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<object>,
+        ValidationDefaults.InputValidators.Steps.ValidationContext,
         _ => validatorType,
-        ValidationDefaults.InputValidators.Validator);
+        ValidationDefaults.InputValidators.Steps.Validator);
     }
 
     /// <summary>
@@ -49,10 +49,10 @@ namespace AppAny.HotChocolate.FluentValidation
       Type validatorType)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<object>,
-        ValidationDefaults.InputValidators.ValidationContext,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<object>,
+        ValidationDefaults.InputValidators.Steps.ValidationContext,
         _ => validatorType,
-        ValidationDefaults.InputValidators.Validators);
+        ValidationDefaults.InputValidators.Steps.Validators);
     }
   }
 }

@@ -136,100 +136,106 @@ namespace AppAny.HotChocolate.FluentValidation
       /// </summary>
       public static Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
       {
-        var argumentValue = ArgumentValue<object>(inputValidatorContext);
+        var argumentValue = Steps.ArgumentValue<object>(inputValidatorContext);
 
         if (argumentValue is null)
         {
           return Task.FromResult<ValidationResult?>(null);
         }
 
-        var validationContext = ValidationContext(inputValidatorContext, argumentValue);
+        var validationContext = Steps.ValidationContext(inputValidatorContext, argumentValue);
 
         var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
 
-        return Validators(inputValidatorContext, validationContext, validatorType);
+        return Steps.Validators(inputValidatorContext, validationContext, validatorType);
       }
 
       /// <summary>
-      /// Default <see cref="GetArgumentValue{TInput}"/> implementation
+      /// Default <see cref="ValidateInput"/> steps implementations
       /// </summary>
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static TInput? ArgumentValue<TInput>(InputValidatorContext inputValidatorContext)
+      public static class Steps
       {
-        return inputValidatorContext
-          .MiddlewareContext
-          .ArgumentValue<TInput?>(inputValidatorContext.Argument.Name);
-      }
-
-      /// <summary>
-      /// Default <see cref="GetValidationContext{TInput}"/> implementation
-      /// </summary>
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static IValidationContext ValidationContext<TInput>(
-        InputValidatorContext inputValidatorContext,
-        TInput argumentValue)
-      {
-        return new ValidationContext<TInput>(argumentValue);
-      }
-
-      /// <summary>
-      /// Default <see cref="GetValidationContext{TInput}"/> implementation with <see cref="ValidationStrategy{TInput}"/>
-      /// </summary>
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static GetValidationContext<TInput> ValidationContextWithStrategy<TInput>(
-        Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
-      {
-        return (inputValidatorContext, argumentValue) =>
+        /// <summary>
+        /// Default <see cref="GetArgumentValue{TInput}"/> implementation
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TInput? ArgumentValue<TInput>(InputValidatorContext inputValidatorContext)
         {
-          // TODO: Hacks
-          return global::FluentValidation.ValidationContext<TInput>.CreateWithOptions(
-            argumentValue,
-            strategy => validationStrategy(inputValidatorContext, strategy));
-        };
-      }
-
-      /// <summary>
-      /// Default <see cref="GetValidationResult"/> implementation
-      /// </summary>
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static Task<ValidationResult?> Validator(
-        InputValidatorContext inputValidatorContext,
-        IValidationContext validationContext,
-        Type validatorType)
-      {
-        var validator = (IValidator)inputValidatorContext.MiddlewareContext
-          .Services
-          .GetRequiredService(validatorType);
-
-        return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
-      }
-
-      /// <summary>
-      /// Default <see cref="GetValidationResult"/> implementation for multiple <see cref="IValidator"/>
-      /// </summary>
-      [MethodImpl(MethodImplOptions.AggressiveInlining)]
-      public static async Task<ValidationResult?> Validators(
-        InputValidatorContext inputValidatorContext,
-        IValidationContext validationContext,
-        Type validatorType)
-      {
-        var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
-
-        ValidationResult? validationResult = null;
-
-        for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
-        {
-          var validator = validators[validatorIndex];
-
-          var validatorResult = await validator
-            .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
-            .ConfigureAwait(false);
-
-          // Shared ValidationResult
-          validationResult = validatorResult;
+          return inputValidatorContext
+            .MiddlewareContext
+            .ArgumentValue<TInput?>(inputValidatorContext.Argument.Name);
         }
 
-        return validationResult;
+        /// <summary>
+        /// Default <see cref="GetValidationContext{TInput}"/> implementation
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IValidationContext ValidationContext<TInput>(
+          InputValidatorContext inputValidatorContext,
+          TInput argumentValue)
+        {
+          return new ValidationContext<TInput>(argumentValue);
+        }
+
+        /// <summary>
+        /// Default <see cref="GetValidationContext{TInput}"/> implementation with <see cref="ValidationStrategy{TInput}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GetValidationContext<TInput> ValidationContextWithStrategy<TInput>(
+          Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
+        {
+          return (inputValidatorContext, argumentValue) =>
+          {
+            // TODO: Hacks
+            return global::FluentValidation.ValidationContext<TInput>.CreateWithOptions(
+              argumentValue,
+              strategy => validationStrategy(inputValidatorContext, strategy));
+          };
+        }
+
+        /// <summary>
+        /// Default <see cref="GetValidationResult"/> implementation
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<ValidationResult?> Validator(
+          InputValidatorContext inputValidatorContext,
+          IValidationContext validationContext,
+          Type validatorType)
+        {
+          var validator = (IValidator)inputValidatorContext.MiddlewareContext
+            .Services
+            .GetRequiredService(validatorType);
+
+          return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
+        }
+
+        /// <summary>
+        /// Default <see cref="GetValidationResult"/> implementation for multiple <see cref="IValidator"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static async Task<ValidationResult?> Validators(
+          InputValidatorContext inputValidatorContext,
+          IValidationContext validationContext,
+          Type validatorType)
+        {
+          var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+
+          ValidationResult? validationResult = null;
+
+          for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
+          {
+            var validator = validators[validatorIndex];
+
+            var validatorResult = await validator
+              .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
+              .ConfigureAwait(false);
+
+            // Shared ValidationResult
+            validationResult = validatorResult;
+          }
+
+          return validationResult;
+        }
       }
     }
 

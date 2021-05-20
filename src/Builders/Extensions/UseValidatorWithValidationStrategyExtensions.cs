@@ -170,8 +170,6 @@ namespace AppAny.HotChocolate.FluentValidation
       return builder.UseValidators(typeof(TValidator), validationStrategy);
     }
 
-
-
     /// <summary>
     /// Overrides global <see cref="ValidateInput"/>.
     /// Uses type to resolve <see cref="ValidateInput"/> with <see cref="ValidationStrategy{T}"/>
@@ -182,10 +180,10 @@ namespace AppAny.HotChocolate.FluentValidation
       Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<TInput>,
-        ValidationDefaults.InputValidators.ValidationContextWithStrategy(validationStrategy)!,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<TInput>,
+        ValidationDefaults.InputValidators.Steps.ValidationContextWithStrategy(validationStrategy)!,
         _ => validatorType,
-        ValidationDefaults.InputValidators.Validator);
+        ValidationDefaults.InputValidators.Steps.Validator);
     }
 
     /// <summary>
@@ -198,10 +196,10 @@ namespace AppAny.HotChocolate.FluentValidation
       Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
     {
       return builder.UseInputValidator(
-        ValidationDefaults.InputValidators.ArgumentValue<TInput>,
-        ValidationDefaults.InputValidators.ValidationContextWithStrategy(validationStrategy)!,
+        ValidationDefaults.InputValidators.Steps.ArgumentValue<TInput>,
+        ValidationDefaults.InputValidators.Steps.ValidationContextWithStrategy(validationStrategy)!,
         _ => validatorType,
-        ValidationDefaults.InputValidators.Validators);
+        ValidationDefaults.InputValidators.Steps.Validators);
     }
   }
 }
