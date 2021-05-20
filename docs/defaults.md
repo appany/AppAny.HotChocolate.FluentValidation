@@ -12,7 +12,7 @@ To see error mapper examples [click here](examples/error-mappers.md)
 
 By default this library is using `ValidationDefaults.InputValidators.Default`
 
-It resolves `InputValidator` for passed `InputValidatorContext`
+It resolves `ValidateInput` for passed `InputValidatorContext`
 
 To see input validator examples [click here](examples/input-validators.md)
 
