@@ -1,8 +1,5 @@
 using System;
-using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
@@ -36,23 +33,11 @@ namespace AppAny.HotChocolate.FluentValidation
       this ArgumentValidationBuilder builder,
       Type validatorType)
     {
-      return builder.UseInputValidators(inputValidatorContext =>
-      {
-        var argumentValue = inputValidatorContext
-          .MiddlewareContext
-          .ArgumentValue<object?>(inputValidatorContext.Argument.Name);
-
-        if (argumentValue is null)
-        {
-          return Task.FromResult<ValidationResult?>(null);
-        }
-
-        var validator = (IValidator)inputValidatorContext.MiddlewareContext.Services.GetRequiredService(validatorType);
-
-        var validationContext = new ValidationContext<object>(argumentValue);
-
-        return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
-      });
+      return builder.UseInputValidator(
+        ValidationDefaults.InputValidators.ArgumentValue<object>,
+        ValidationDefaults.InputValidators.ValidationContext,
+        _ => validatorType,
+        ValidationDefaults.InputValidators.Validator);
     }
 
     /// <summary>
@@ -63,36 +48,11 @@ namespace AppAny.HotChocolate.FluentValidation
       this ArgumentValidationBuilder builder,
       Type validatorType)
     {
-      return builder.UseInputValidators(async inputValidatorContext =>
-      {
-        var argumentValue = inputValidatorContext
-          .MiddlewareContext
-          .ArgumentValue<object?>(inputValidatorContext.Argument.Name);
-
-        if (argumentValue is null)
-        {
-          return null;
-        }
-
-        var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
-
-        var validationContext = new ValidationContext<object>(argumentValue);
-
-        ValidationResult? validationResult = null;
-
-        for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
-        {
-          var validator = validators[validatorIndex];
-
-          var validatorResult = await validator
-            .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
-            .ConfigureAwait(false);
-
-          validationResult = validatorResult;
-        }
-
-        return validationResult;
-      });
+      return builder.UseInputValidator(
+        ValidationDefaults.InputValidators.ArgumentValue<object>,
+        ValidationDefaults.InputValidators.ValidationContext,
+        _ => validatorType,
+        ValidationDefaults.InputValidators.Validators);
     }
   }
 }

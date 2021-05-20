@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using HotChocolate;
@@ -133,22 +134,86 @@ namespace AppAny.HotChocolate.FluentValidation
       /// <summary>
       /// Default <see cref="InputValidator"/> implementation
       /// </summary>
-      public static async Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
+      public static Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
       {
-        var argumentValue = inputValidatorContext
-          .MiddlewareContext
-          .ArgumentValue<object?>(inputValidatorContext.Argument.Name);
+        var argumentValue = ArgumentValue<object>(inputValidatorContext);
 
         if (argumentValue is null)
         {
-          return null;
+          return Task.FromResult<ValidationResult?>(null);
         }
+
+        var validationContext = ValidationContext(inputValidatorContext, argumentValue);
 
         var validatorType = inputValidatorContext.Argument.GetGenericValidatorType();
 
-        var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+        return Validators(inputValidatorContext, validationContext, validatorType);
+      }
 
-        var validationContext = new ValidationContext<object>(argumentValue);
+      /// <summary>
+      /// Default <see cref="GetArgumentValue{TInput}"/> implementation
+      /// </summary>
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static TInput? ArgumentValue<TInput>(InputValidatorContext inputValidatorContext)
+      {
+        return inputValidatorContext
+          .MiddlewareContext
+          .ArgumentValue<TInput?>(inputValidatorContext.Argument.Name);
+      }
+
+      /// <summary>
+      /// Default <see cref="GetValidationContext{TInput}"/> implementation
+      /// </summary>
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static IValidationContext ValidationContext<TInput>(
+        InputValidatorContext inputValidatorContext,
+        TInput argumentValue)
+      {
+        return new ValidationContext<TInput>(argumentValue);
+      }
+
+      /// <summary>
+      /// Default <see cref="GetValidationContext{TInput}"/> implementation with <see cref="ValidationStrategy{TInput}"/>
+      /// </summary>
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static GetValidationContext<TInput> ValidationContextWithStrategy<TInput>(
+        Action<InputValidatorContext, ValidationStrategy<TInput>> validationStrategy)
+      {
+        return (inputValidatorContext, argumentValue) =>
+        {
+          // TODO: Hacks
+          return global::FluentValidation.ValidationContext<TInput>.CreateWithOptions(
+            argumentValue,
+            strategy => validationStrategy(inputValidatorContext, strategy));
+        };
+      }
+
+      /// <summary>
+      /// Default <see cref="GetValidationResult"/> implementation
+      /// </summary>
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static Task<ValidationResult?> Validator(
+        InputValidatorContext inputValidatorContext,
+        IValidationContext validationContext,
+        Type validatorType)
+      {
+        var validator = (IValidator)inputValidatorContext.MiddlewareContext
+          .Services
+          .GetRequiredService(validatorType);
+
+        return validator.ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted);
+      }
+
+      /// <summary>
+      /// Default <see cref="GetValidationResult"/> implementation for multiple <see cref="IValidator"/>
+      /// </summary>
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      public static async Task<ValidationResult?> Validators(
+        InputValidatorContext inputValidatorContext,
+        IValidationContext validationContext,
+        Type validatorType)
+      {
+        var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
 
         ValidationResult? validationResult = null;
 
@@ -160,6 +225,7 @@ namespace AppAny.HotChocolate.FluentValidation
             .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
             .ConfigureAwait(false);
 
+          // Shared ValidationResult
           validationResult = validatorResult;
         }
 
