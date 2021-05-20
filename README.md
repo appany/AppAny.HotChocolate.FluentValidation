@@ -1,4 +1,4 @@
-# 💥 AppAny.HotChocolate.FluentValidation 💥
+# AppAny.HotChocolate.FluentValidation
 
 [![License](https://img.shields.io/github/license/appany/AppAny.HotChocolate.FluentValidation.svg)](https://github.com/appany/AppAny.HotChocolate.FluentValidation/blob/main/LICENSE)
 [![Nuget](https://img.shields.io/nuget/v/AppAny.HotChocolate.FluentValidation.svg)](https://www.nuget.org/packages/AppAny.HotChocolate.FluentValidation)
@@ -7,15 +7,15 @@
 [![codecov](https://codecov.io/gh/appany/AppAny.HotChocolate.FluentValidation/branch/main/graph/badge.svg?token=4ZNLBYOTCI)](https://codecov.io/gh/appany/AppAny.HotChocolate.FluentValidation)
 
 
-⚡️ Feature-rich, but simple, fast and memory efficient input field `HotChocolate` + `FluentValidation` integration ⚡️
+Feature-rich, but simple, fast and memory efficient input field `HotChocolate` + `FluentValidation` integration ⚡️
 
-## 🔧 Installation 🔧
+## 🔧 Installation
 
 ```bash
 $> dotnet add package AppAny.HotChocolate.FluentValidation
 ```
 
-## 💡 Features 💡
+## 💡 Features
 
 🚩 You **don't pay** for validation middleware if the field has **no validatable inputs**
 
@@ -23,13 +23,13 @@ $> dotnet add package AppAny.HotChocolate.FluentValidation
 
 🚩 Most of extensibility points are just **composable delegates**
 
-🚩 **Fine-tuning** of validation for each field: conditional validation skipping, multiple validators or error mappers per input, validation strategy support
+🚩 **Fine-tuning** of validation for each field: conditional validation skipping, multiple validators or error mappers per input
 
 🚩 Strongly typed `ValidationStrategy<T>` support
 
 🚩 First-class **attribute-based approach** support
 
-## 🎨 Usage 🎨
+## 🎨 Usage
 
 ✅ Add **FluentValidation** [validator](https://docs.fluentvalidation.net/en/latest/start.html)
 
@@ -93,7 +93,7 @@ descriptor.Field(x => x.Example(default!))
 ... Example([UseFluentValidation, UseValidator((typeof(ExampleInputValidator))] ExampleInput input) { ... }
 ```
 
-## 📝 Docs 📝
+## 📝 Docs
 
 - 📄 [Abstractions](docs/core-abstractions.md)
 - 📄 [Defaults](docs/defaults.md)
