@@ -4,7 +4,7 @@ using HotChocolate.Resolvers;
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Context for <see cref="InputValidator"/>
+  /// Context for <see cref="ValidateInput"/>
   /// </summary>
   public readonly struct InputValidatorContext
   {

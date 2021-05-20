@@ -82,7 +82,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default <see cref="ErrorMapper"/> implementations
+    /// Default <see cref="MapError"/> implementations
     /// </summary>
     public static class ErrorMappers
     {
@@ -127,12 +127,12 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default <see cref="InputValidator"/> implementations
+    /// Default <see cref="ValidateInput"/> implementations
     /// </summary>
     public static class InputValidators
     {
       /// <summary>
-      /// Default <see cref="InputValidator"/> implementation
+      /// Default <see cref="ValidateInput"/> implementation
       /// </summary>
       public static Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
       {

@@ -26,14 +26,14 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ValidationBuilder UseErrorMapper(ErrorMapper errorMapper)
+    public ValidationBuilder UseErrorMapper(MapError mapError)
     {
-      options.ErrorMapper = errorMapper;
+      options.ErrorMapper = mapError;
 
       return this;
     }
 
-    public ValidationBuilder UseInputValidators(params InputValidator[] inputValidators)
+    public ValidationBuilder UseInputValidators(params ValidateInput[] inputValidators)
     {
       options.InputValidators = inputValidators;
 

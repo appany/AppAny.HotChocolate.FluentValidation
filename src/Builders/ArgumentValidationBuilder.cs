@@ -28,7 +28,7 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ArgumentValidationBuilder UseInputValidators(params InputValidator[] inputValidators)
+    public ArgumentValidationBuilder UseInputValidators(params ValidateInput[] inputValidators)
     {
       if (options.InputValidators is null)
       {
@@ -45,11 +45,11 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ArgumentValidationBuilder UseErrorMapper(ErrorMapper errorMapper)
+    public ArgumentValidationBuilder UseErrorMapper(MapError mapError)
     {
       if (options.ErrorMapper is null)
       {
-        options.ErrorMapper = errorMapper;
+        options.ErrorMapper = mapError;
       }
       else
       {
@@ -58,7 +58,7 @@ namespace AppAny.HotChocolate.FluentValidation
         options.ErrorMapper = (builder, context) =>
         {
           previousErrorMapper(builder, context);
-          errorMapper(builder, context);
+          mapError(builder, context);
         };
       }
 

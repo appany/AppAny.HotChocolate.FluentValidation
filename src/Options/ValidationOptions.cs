@@ -6,9 +6,9 @@ namespace AppAny.HotChocolate.FluentValidation
   {
     public SkipValidation SkipValidation { get; set; } = ValidationDefaults.SkipValidation.Default;
 
-    public ErrorMapper ErrorMapper { get; set; } = ValidationDefaults.ErrorMappers.Default;
+    public MapError ErrorMapper { get; set; } = ValidationDefaults.ErrorMappers.Default;
 
-    public IList<InputValidator> InputValidators { get; set; } = new List<InputValidator>
+    public IList<ValidateInput> InputValidators { get; set; } = new List<ValidateInput>
     {
       ValidationDefaults.InputValidators.Default
     };

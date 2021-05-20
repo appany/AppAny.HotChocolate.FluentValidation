@@ -26,6 +26,8 @@ namespace AppAny.HotChocolate.FluentValidation
 
         var validationContext = getValidationContext(inputValidatorContext, argumentValue);
 
+
+
         var validatorType = getValidatorType(inputValidatorContext);
 
         return getValidationResult(inputValidatorContext, validationContext, validatorType);
