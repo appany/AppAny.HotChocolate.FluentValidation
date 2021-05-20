@@ -8,6 +8,21 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 {
   public static class TestSetup
   {
+    public static ValueTask<IRequestExecutor> CreateRequestExecutor(
+      Action<IRequestExecutorBuilder> configureExecutor,
+      Action<IServiceCollection>? configureServices = null)
+    {
+      var services = new ServiceCollection();
+
+      var executorBuilder = services.AddGraphQL().AddQueryType<TestQuery>();
+
+      configureExecutor.Invoke(executorBuilder);
+
+      configureServices?.Invoke(services);
+
+      return executorBuilder.BuildRequestExecutorAsync();
+    }
+
     public static class Mutations
     {
       public const string WithEmptyName = "mutation { test(input: { name: \"\" }) }";
@@ -26,21 +41,6 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       {
         return $"mutation {{ test(input: {{ name: \"\", address: \"{address}\" }}) }}";
       }
-    }
-
-    public static ValueTask<IRequestExecutor> CreateRequestExecutor(
-      Action<IRequestExecutorBuilder> configureExecutor,
-      Action<IServiceCollection>? configureServices = null)
-    {
-      var services = new ServiceCollection();
-
-      var executorBuilder = services.AddGraphQL().AddQueryType<TestQuery>();
-
-      configureExecutor.Invoke(executorBuilder);
-
-      configureServices?.Invoke(services);
-
-      return executorBuilder.BuildRequestExecutorAsync();
     }
   }
 }

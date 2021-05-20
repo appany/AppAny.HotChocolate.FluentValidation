@@ -1,6 +1,6 @@
-using HotChocolate.Types;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {

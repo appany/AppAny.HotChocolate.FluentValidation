@@ -6,8 +6,8 @@ using HotChocolate.Types.Descriptors;
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Use default validation options.
-  /// To override options use Code-first approach <see cref="ArgumentDescriptorExtensions"/>
+  ///   Use default validation options.
+  ///   To override options use Code-first approach <see cref="ArgumentDescriptorExtensions" />
   /// </summary>
   [AttributeUsage(AttributeTargets.Parameter)]
   public sealed class UseFluentValidationAttribute : ArgumentDescriptorAttribute

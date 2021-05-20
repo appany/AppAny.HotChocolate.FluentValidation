@@ -6,8 +6,8 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class UseValidatorExtensions
   {
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses <see cref="TValidator"/> to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses <see cref="TValidator" /> to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator<TValidator>(this ArgumentValidationBuilder builder)
       where TValidator : class, IValidator
@@ -16,8 +16,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses all <see cref="TValidator"/> to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses all <see cref="TValidator" /> to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators<TValidator>(this ArgumentValidationBuilder builder)
       where TValidator : class, IValidator
@@ -26,8 +26,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidator(
       this ArgumentValidationBuilder builder,
@@ -41,8 +41,8 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides global <see cref="ValidateInput"/>.
-    /// Uses type to resolve <see cref="ValidateInput"/>
+    ///   Overrides global <see cref="ValidateInput" />.
+    ///   Uses type to resolve <see cref="ValidateInput" />
     /// </summary>
     public static ArgumentValidationBuilder UseValidators(
       this ArgumentValidationBuilder builder,

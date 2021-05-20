@@ -6,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class ArgumentDescriptorExtensions
   {
     /// <summary>
-    /// Configures argument for validation
+    ///   Configures argument for validation
     /// </summary>
     public static IArgumentDescriptor UseFluentValidation(
       this IArgumentDescriptor argumentDescriptor,

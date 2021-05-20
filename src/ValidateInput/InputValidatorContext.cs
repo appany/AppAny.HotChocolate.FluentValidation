@@ -1,10 +1,10 @@
-using HotChocolate.Types;
 using HotChocolate.Resolvers;
+using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Context for <see cref="ValidateInput"/>
+  ///   Context for <see cref="ValidateInput" />
   /// </summary>
   public readonly struct InputValidatorContext
   {

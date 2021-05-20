@@ -6,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class UseInputValidatorExtensions
   {
     /// <summary>
-    /// Core extension to generalize input validation
+    ///   Core extension to generalize input validation
     /// </summary>
     public static ArgumentValidationBuilder UseInputValidator<TInput>(
       this ArgumentValidationBuilder builder,

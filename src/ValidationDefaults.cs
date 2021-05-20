@@ -1,10 +1,10 @@
 using System;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-using HotChocolate;
+using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Results;
 using FluentValidation.Internal;
+using FluentValidation.Results;
+using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,27 +14,27 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class ValidationDefaults
   {
     /// <summary>
-    /// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ValidationOptions"/>
+    ///   Default <see cref="IHasContextData.ContextData" /> key for <see cref="ValidationOptions" />
     /// </summary>
     public const string ValidationOptionsKey = "ValidationOptions";
 
     /// <summary>
-    /// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ArgumentValidationOptions"/>
+    ///   Default <see cref="IHasContextData.ContextData" /> key for <see cref="ArgumentValidationOptions" />
     /// </summary>
     public const string ArgumentOptionsKey = "ArgumentValidationOptions";
 
     /// <summary>
-    /// Default <see cref="IHasContextData.ContextData"/> key for <see cref="ObjectFieldValidationOptions"/>
+    ///   Default <see cref="IHasContextData.ContextData" /> key for <see cref="ObjectFieldValidationOptions" />
     /// </summary>
     public const string ObjectFieldOptionsKey = "ObjectFieldValidationOptions";
 
     /// <summary>
-    /// Default validation field middleware
+    ///   Default validation field middleware
     /// </summary>
     public static FieldMiddleware Middleware { get; } = ValidationMiddlewares.Field;
 
     /// <summary>
-    /// Default HotChocolate interceptors
+    ///   Default HotChocolate interceptors
     /// </summary>
     public static class Interceptors
     {
@@ -43,7 +43,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default graphql error extensions keys
+    ///   Default graphql error extensions keys
     /// </summary>
     public static class ExtensionKeys
     {
@@ -58,12 +58,12 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default <see cref="FluentValidation.SkipValidation"/> implementations
+    ///   Default <see cref="FluentValidation.SkipValidation" /> implementations
     /// </summary>
     public static class SkipValidation
     {
       /// <summary>
-      /// Default <see cref="SkipValidation"/> implementation. Never skips validation
+      ///   Default <see cref="SkipValidation" /> implementation. Never skips validation
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static ValueTask<bool> Default(SkipValidationContext skipValidationContext)
@@ -72,7 +72,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
 
       /// <summary>
-      /// Always skip <see cref="SkipValidation"/> implementation
+      ///   Always skip <see cref="SkipValidation" /> implementation
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static ValueTask<bool> Skip(SkipValidationContext skipValidationContext)
@@ -82,12 +82,12 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default <see cref="MapError"/> implementations
+    ///   Default <see cref="MapError" /> implementations
     /// </summary>
     public static class ErrorMappers
     {
       /// <summary>
-      /// Maps graphql error code, path and message
+      ///   Maps graphql error code, path and message
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static void Default(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
@@ -99,7 +99,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
 
       /// <summary>
-      /// Maps useful extensions about input field, property, used validator, invalid value and severity
+      ///   Maps useful extensions about input field, property, used validator, invalid value and severity
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
@@ -112,7 +112,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
 
       /// <summary>
-      /// Maps custom state and formatted message placeholder values
+      ///   Maps custom state and formatted message placeholder values
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static void Extended(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
@@ -127,12 +127,12 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default <see cref="ValidateInput"/> implementations
+    ///   Default <see cref="ValidateInput" /> implementations
     /// </summary>
     public static class InputValidators
     {
       /// <summary>
-      /// Default <see cref="ValidateInput"/> implementation
+      ///   Default <see cref="ValidateInput" /> implementation
       /// </summary>
       public static Task<ValidationResult?> Default(InputValidatorContext inputValidatorContext)
       {
@@ -151,12 +151,12 @@ namespace AppAny.HotChocolate.FluentValidation
       }
 
       /// <summary>
-      /// Default <see cref="ValidateInput"/> steps implementations
+      ///   Default <see cref="ValidateInput" /> steps implementations
       /// </summary>
       public static class Steps
       {
         /// <summary>
-        /// Default <see cref="GetArgumentValue{TInput}"/> implementation
+        ///   Default <see cref="GetArgumentValue{TInput}" /> implementation
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TInput? ArgumentValue<TInput>(InputValidatorContext inputValidatorContext)
@@ -167,7 +167,7 @@ namespace AppAny.HotChocolate.FluentValidation
         }
 
         /// <summary>
-        /// Default <see cref="GetValidationContext{TInput}"/> implementation
+        ///   Default <see cref="GetValidationContext{TInput}" /> implementation
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IValidationContext ValidationContext<TInput>(
@@ -178,7 +178,7 @@ namespace AppAny.HotChocolate.FluentValidation
         }
 
         /// <summary>
-        /// Default <see cref="GetValidationContext{TInput}"/> implementation with <see cref="ValidationStrategy{TInput}"/>
+        ///   Default <see cref="GetValidationContext{TInput}" /> implementation with <see cref="ValidationStrategy{TInput}" />
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GetValidationContext<TInput> ValidationContextWithStrategy<TInput>(
@@ -194,7 +194,7 @@ namespace AppAny.HotChocolate.FluentValidation
         }
 
         /// <summary>
-        /// Default <see cref="GetValidationResult"/> implementation
+        ///   Default <see cref="GetValidationResult" /> implementation
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<ValidationResult?> Validator(
@@ -210,7 +210,7 @@ namespace AppAny.HotChocolate.FluentValidation
         }
 
         /// <summary>
-        /// Default <see cref="GetValidationResult"/> implementation for multiple <see cref="IValidator"/>
+        ///   Default <see cref="GetValidationResult" /> implementation for multiple <see cref="IValidator" />
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async Task<ValidationResult?> Validators(
@@ -240,13 +240,14 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Default <see cref="ValidationStrategy{T}"/> implementations
+    ///   Default <see cref="ValidationStrategy{T}" /> implementations
     /// </summary>
     public static class ValidationStrategies
     {
       /// <summary>
-      /// Doing nothing by default.
-      /// To override validation strategy use <see cref="UseValidatorExtensions.UseValidator{TValidator}(ArgumentValidationBuilder)"/>
+      ///   Doing nothing by default.
+      ///   To override validation strategy use
+      ///   <see cref="UseValidatorExtensions.UseValidator{TValidator}(ArgumentValidationBuilder)" />
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static void Default<TInput>(ValidationStrategy<TInput> validationStrategy)

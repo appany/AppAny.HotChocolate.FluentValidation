@@ -9,10 +9,10 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
   [MemoryDiagnoser]
   public class MultipleArgumentsBenchmarks
   {
+    private IRequestExecutor withFiveArguments = default!;
+    private IRequestExecutor withoutFiveArguments = default!;
     private IRequestExecutor withoutSingleArgument = default!;
     private IRequestExecutor withSingleArgument = default!;
-    private IRequestExecutor withoutFiveArguments = default!;
-    private IRequestExecutor withFiveArguments = default!;
 
     [GlobalSetup]
     public async Task GlobalSetup()

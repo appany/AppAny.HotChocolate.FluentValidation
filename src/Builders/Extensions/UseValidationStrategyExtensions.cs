@@ -6,7 +6,7 @@ namespace AppAny.HotChocolate.FluentValidation
   public static class UseValidationStrategyExtensions
   {
     /// <summary>
-    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    ///   Overrides <see cref="ValidationStrategy{T}" />.
     /// </summary>
     public static ArgumentValidationBuilder UseValidationStrategy(
       this ArgumentValidationBuilder builder,
@@ -16,7 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    ///   Overrides <see cref="ValidationStrategy{T}" />.
     /// </summary>
     public static ArgumentValidationBuilder UseValidationStrategy(
       this ArgumentValidationBuilder builder,
@@ -26,7 +26,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    ///   Overrides <see cref="ValidationStrategy{T}" />.
     /// </summary>
     public static ArgumentValidationBuilder UseValidationStrategy<TInput>(
       this ArgumentValidationBuilder builder,
@@ -36,7 +36,7 @@ namespace AppAny.HotChocolate.FluentValidation
     }
 
     /// <summary>
-    /// Overrides <see cref="ValidationStrategy{T}"/>.
+    ///   Overrides <see cref="ValidationStrategy{T}" />.
     /// </summary>
     public static ArgumentValidationBuilder UseValidationStrategy<TInput>(
       this ArgumentValidationBuilder builder,

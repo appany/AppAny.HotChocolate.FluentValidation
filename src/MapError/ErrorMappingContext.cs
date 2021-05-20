@@ -1,11 +1,11 @@
-using HotChocolate.Types;
-using HotChocolate.Resolvers;
 using FluentValidation.Results;
+using HotChocolate.Resolvers;
+using HotChocolate.Types;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Context for <see cref="MapError"/>
+  ///   Context for <see cref="MapError" />
   /// </summary>
   public readonly ref struct ErrorMappingContext
   {
