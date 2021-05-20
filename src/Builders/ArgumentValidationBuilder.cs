@@ -45,11 +45,11 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ArgumentValidationBuilder UseErrorMapper(MapError mapError)
+    public ArgumentValidationBuilder UseErrorMapper(MapError errorMapper)
     {
       if (options.ErrorMapper is null)
       {
-        options.ErrorMapper = mapError;
+        options.ErrorMapper = errorMapper;
       }
       else
       {
@@ -58,7 +58,7 @@ namespace AppAny.HotChocolate.FluentValidation
         options.ErrorMapper = (builder, context) =>
         {
           previousErrorMapper(builder, context);
-          mapError(builder, context);
+          errorMapper(builder, context);
         };
       }
 

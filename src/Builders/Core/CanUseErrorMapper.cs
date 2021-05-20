@@ -5,6 +5,6 @@ namespace AppAny.HotChocolate.FluentValidation
     /// <summary>
     /// Implementation specific. Can add or override <see cref="MapError"/>
     /// </summary>
-    TBuilder UseErrorMapper(MapError mapError);
+    TBuilder UseErrorMapper(MapError errorMapper);
   }
 }

@@ -26,9 +26,9 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ValidationBuilder UseErrorMapper(MapError mapError)
+    public ValidationBuilder UseErrorMapper(MapError errorMapper)
     {
-      options.ErrorMapper = mapError;
+      options.ErrorMapper = errorMapper;
 
       return this;
     }
