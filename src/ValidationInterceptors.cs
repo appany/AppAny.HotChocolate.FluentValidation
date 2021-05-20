@@ -36,8 +36,9 @@ namespace AppAny.HotChocolate.FluentValidation
             options.MergeValidationOptions(validationOptions);
           }
 
-          objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
           objectFieldDefinition.ContextData.CreateObjectFieldOptions();
+
+          objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
         }
       }
     }
@@ -46,10 +47,10 @@ namespace AppAny.HotChocolate.FluentValidation
     {
       foreach (var objectField in schema.Types.OfType<IObjectType>().SelectMany(type => type.Fields))
       {
+        var objectOptions = objectField.ContextData.TryGetObjectFieldOptions();
+
         foreach (var argument in objectField.Arguments.Where(arg => arg.ContextData.ShouldValidateArgument()))
         {
-          var objectOptions = objectField.ContextData.TryGetObjectFieldOptions();
-
           objectOptions?.Arguments.Add(argument.Name, argument);
         }
       }

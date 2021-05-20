@@ -7,5 +7,5 @@ namespace AppAny.HotChocolate.FluentValidation
   /// <summary>
   /// Abstracts <see cref="IValidator"/> execution
   /// </summary>
-  public delegate Task<ValidationResult?> InputValidator(InputValidatorContext inputValidatorContext);
+  public delegate Task<ValidationResult?> ValidateInput(InputValidatorContext inputValidatorContext);
 }

@@ -28,7 +28,7 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ArgumentValidationBuilder UseInputValidators(params InputValidator[] inputValidators)
+    public ArgumentValidationBuilder UseInputValidators(params ValidateInput[] inputValidators)
     {
       if (options.InputValidators is null)
       {
@@ -45,7 +45,7 @@ namespace AppAny.HotChocolate.FluentValidation
       return this;
     }
 
-    public ArgumentValidationBuilder UseErrorMapper(ErrorMapper errorMapper)
+    public ArgumentValidationBuilder UseErrorMapper(MapError errorMapper)
     {
       if (options.ErrorMapper is null)
       {

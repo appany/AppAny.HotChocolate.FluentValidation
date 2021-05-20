@@ -5,7 +5,7 @@ using FluentValidation.Results;
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>
-  /// Context for <see cref="ErrorMapper"/>
+  /// Context for <see cref="MapError"/>
   /// </summary>
   public readonly ref struct ErrorMappingContext
   {

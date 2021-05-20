@@ -5,5 +5,5 @@ namespace AppAny.HotChocolate.FluentValidation
   /// <summary>
   /// Maps validation result to <see cref="IError"/> properties
   /// </summary>
-  public delegate void ErrorMapper(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext);
+  public delegate void MapError(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext);
 }

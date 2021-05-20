@@ -10,13 +10,13 @@ Input validator is **just a delegate**
 public delegate ValueTask<ValidationResult?> InputValidator(object argument, CancellationToken cancellationToken);
 ```
 
-By default all `InputValidator` implementations is here `ValidationDefaults.InputValidators`
+By default all `ValidateInput` implementations is here `ValidationDefaults.InputValidators`
 
 It is a set of factories with predefined validation scenarios
 
 ## Writing custom input validator
 
-Like other parts of this library, you can write your own factory to create `InputValidator`
+Like other parts of this library, you can write your own factory to create `ValidateInput`
 
 ```cs
 public static InputValidator CreateCustomInputValidator()
