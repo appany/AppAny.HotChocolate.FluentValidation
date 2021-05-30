@@ -53,6 +53,9 @@ public class ExampleInputValidator : AbstractValidator<ExampleInput>
 ✅ Configure **HotChocolate** + **FluentValidation** integration
 
 ```cs
+# Since FluentValidation.AspNetCore@10.2.0 https://github.com/FluentValidation/FluentValidation/releases/tag/10.2.0
+services.AddFluentValidation();
+
 services.AddGraphQLServer()
   .AddFluentValidation();
 
