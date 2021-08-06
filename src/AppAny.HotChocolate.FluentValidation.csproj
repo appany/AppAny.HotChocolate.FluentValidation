@@ -24,7 +24,7 @@
 
   <ItemGroup Label="Packages">
     <PackageReference Include="FluentValidation" Version="10.3.0" />
-    <PackageReference Include="HotChocolate.Execution" Version="11.3.2" />
+    <PackageReference Include="HotChocolate.Execution" Version="11.3.4" />
   </ItemGroup>
 
   <ItemGroup Label="Assets">
