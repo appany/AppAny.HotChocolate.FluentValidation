@@ -38,12 +38,14 @@ namespace AppAny.HotChocolate.FluentValidation
 
           objectFieldDefinition.ContextData.CreateObjectFieldOptions();
 
-          objectFieldDefinition.MiddlewareComponents.Insert(0, ValidationDefaults.Middleware);
+          objectFieldDefinition.MiddlewareDefinitions.Insert(
+            index: 0,
+            new FieldMiddlewareDefinition(ValidationDefaults.Middleware));
         }
       }
     }
 
-    public static void OnAfterSchemaCreate(IDescriptorContext context, ISchema schema)
+    public static void OnAfterSchemaCreate(IDescriptorContext descriptorContext, ISchema schema)
     {
       foreach (var objectField in schema.Types.OfType<IObjectType>().SelectMany(type => type.Fields))
       {

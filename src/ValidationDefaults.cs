@@ -105,7 +105,7 @@ namespace AppAny.HotChocolate.FluentValidation
       public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
       {
         errorBuilder
-          .SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Field.Name)
+          .SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Selection.Field.Name)
           .SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
           .SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
           .SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity);

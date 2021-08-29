@@ -13,7 +13,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
         if (argumentNodes is { Count: > 0 })
         {
-          var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
+          var objectFieldOptions = middlewareContext.Selection.Field.ContextData.GetObjectFieldOptions();
 
           for (var nodeIndex = 0; nodeIndex < argumentNodes.Count; nodeIndex++)
           {
@@ -28,6 +28,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
             var argumentOptions = argument.ContextData.GetArgumentOptions();
 
+            // TODO: Nullable hack. Can't be null at runtime
             var shouldSkipValidation = await argumentOptions.SkipValidation!
               .Invoke(new SkipValidationContext(middlewareContext, argument))
               .ConfigureAwait(false);
@@ -37,6 +38,7 @@ namespace AppAny.HotChocolate.FluentValidation
               continue;
             }
 
+            // TODO: Nullable hack. Can't be null at runtime
             var inputValidators = argumentOptions.InputValidators!;
 
             for (var validatorIndex = 0; validatorIndex < inputValidators.Count; validatorIndex++)
@@ -52,13 +54,16 @@ namespace AppAny.HotChocolate.FluentValidation
                 continue;
               }
 
+              // TODO: Nullable hack. Can't be null at runtime
+              var errorMapper = argumentOptions.ErrorMapper!;
+
               for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
               {
                 var validationFailure = validationResult.Errors[errorIndex];
 
                 var errorBuilder = ErrorBuilder.New();
 
-                argumentOptions.ErrorMapper!.Invoke(
+                errorMapper.Invoke(
                   errorBuilder,
                   new ErrorMappingContext(middlewareContext, argument, validationResult, validationFailure));
 

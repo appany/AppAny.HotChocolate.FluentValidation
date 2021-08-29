@@ -23,8 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="Packages">
-    <PackageReference Include="FluentValidation" Version="10.3.0" />
-    <PackageReference Include="HotChocolate.Execution" Version="11.3.5" />
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
+    <PackageReference Include="HotChocolate.Execution" Version="12.0.0-preview.34" />
   </ItemGroup>
 
   <ItemGroup Label="Assets">
