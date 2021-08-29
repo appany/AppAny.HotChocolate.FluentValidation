@@ -188,7 +188,7 @@ namespace AppAny.HotChocolate.FluentValidation
         {
           return (inputValidatorContext, argumentValue) =>
           {
-            // TODO: Hacks
+            // TODO: ValidationContext aliasing hack
             return global::FluentValidation.ValidationContext<TInput>.CreateWithOptions(
               argumentValue,
               strategy => validationStrategy(inputValidatorContext, strategy));
@@ -232,7 +232,7 @@ namespace AppAny.HotChocolate.FluentValidation
               .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
               .ConfigureAwait(false);
 
-            // Shared ValidationResult
+            // ValidationResult failures are bound to each ValidationContext
             validationResult = validatorResult;
           }
 
