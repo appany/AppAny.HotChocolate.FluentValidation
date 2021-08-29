@@ -1,7 +1,4 @@
-﻿using HotChocolate;
-using HotChocolate.Resolvers;
-
-namespace AppAny.HotChocolate.FluentValidation
+﻿namespace AppAny.HotChocolate.FluentValidation
 {
   internal static class ValidationMiddlewares
   {

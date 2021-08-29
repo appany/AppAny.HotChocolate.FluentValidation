@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
   public class SkipValidationAttribute : FluentValidationAttribute

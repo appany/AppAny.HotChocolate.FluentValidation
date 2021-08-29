@@ -1,5 +1,3 @@
-using System;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
   public sealed class UseValidatorsAttribute : BaseUseValidatorAttribute

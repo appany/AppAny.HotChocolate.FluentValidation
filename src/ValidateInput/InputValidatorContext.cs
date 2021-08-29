@@ -1,6 +1,3 @@
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>

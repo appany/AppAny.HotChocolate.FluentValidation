@@ -1,12 +1,14 @@
-using System;
+global using System;
+global using System.Threading.Tasks;
+global using HotChocolate;
+global using HotChocolate.Types;
+global using HotChocolate.Resolvers;
+global using FluentValidation;
+global using FluentValidation.Results;
+
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using FluentValidation;
 using FluentValidation.Internal;
-using FluentValidation.Results;
-using HotChocolate;
 using HotChocolate.Configuration;
-using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -178,7 +180,7 @@ namespace AppAny.HotChocolate.FluentValidation
         }
 
         /// <summary>
-        ///   Default <see cref="GetValidationContext{TInput}" /> implementation with <see cref="ValidationStrategy{TInput}" />
+        ///   Default <see cref="GetValidationContext{TInput}" /> implementation with <see cref="ValidationStrategy{T}" />
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GetValidationContext<TInput> ValidationContextWithStrategy<TInput>(
