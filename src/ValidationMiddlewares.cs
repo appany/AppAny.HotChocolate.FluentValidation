@@ -26,7 +26,9 @@
             var argumentOptions = argument.ContextData.GetArgumentOptions();
 
             // TODO: Nullable hack. Can't be null at runtime
-            var shouldSkipValidation = await argumentOptions.SkipValidation!
+            var skipValidation = argumentOptions.SkipValidation!;
+
+            var shouldSkipValidation = await skipValidation
               .Invoke(new SkipValidationContext(middlewareContext, argument))
               .ConfigureAwait(false);
 
