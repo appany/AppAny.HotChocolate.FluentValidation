@@ -2,9 +2,9 @@ namespace AppAny.HotChocolate.FluentValidation
 {
   public sealed class UseDefaultErrorMapperWithDetailsAttribute : FluentValidationAttribute
   {
-    protected internal override void Configure(ArgumentValidationBuilder builder)
+    protected internal override void Configure(ArgumentValidationBuilder argumentValidationBuilder)
     {
-      builder.UseDefaultErrorMapperWithDetails();
+      argumentValidationBuilder.UseDefaultErrorMapperWithDetails();
     }
   }
 }
