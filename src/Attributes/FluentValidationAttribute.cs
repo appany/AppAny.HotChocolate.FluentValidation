@@ -2,6 +2,6 @@ namespace AppAny.HotChocolate.FluentValidation
 {
   public abstract class FluentValidationAttribute : Attribute
   {
-    public abstract void Configure(ArgumentValidationBuilder builder);
+    protected internal abstract void Configure(ArgumentValidationBuilder builder);
   }
 }

@@ -3,7 +3,7 @@ namespace AppAny.HotChocolate.FluentValidation
   public sealed class UseValidatorsAttribute<TValidator> : BaseUseValidatorAttribute
     where TValidator : class, IValidator
   {
-    public override void Configure(ArgumentValidationBuilder builder)
+    protected internal override void Configure(ArgumentValidationBuilder builder)
     {
       var validationStrategy = TryGetValidationStrategy();
 

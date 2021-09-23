@@ -2,7 +2,7 @@ namespace AppAny.HotChocolate.FluentValidation
 {
   public class SkipValidationAttribute : FluentValidationAttribute
   {
-    public sealed override void Configure(ArgumentValidationBuilder builder)
+    protected internal sealed override void Configure(ArgumentValidationBuilder builder)
     {
       builder.SkipValidation(SkipValidation);
     }
