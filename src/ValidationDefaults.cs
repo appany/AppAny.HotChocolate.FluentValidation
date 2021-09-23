@@ -74,7 +74,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
 
       /// <summary>
-      ///   Always skip <see cref="SkipValidation" /> implementation
+      ///   Helper <see cref="SkipValidation" /> implementation. Always skips validation
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static ValueTask<bool> Skip(SkipValidationContext skipValidationContext)
