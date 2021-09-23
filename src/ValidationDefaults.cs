@@ -188,7 +188,7 @@ namespace AppAny.HotChocolate.FluentValidation
         {
           return (inputValidatorContext, argumentValue) =>
           {
-            // TODO: ValidationContext aliasing hack
+            // TODO: ValidationContext<T>(...) vs FluentValidation.ValidationContext<T> { ... } aliasing hack
             return global::FluentValidation.ValidationContext<TInput>.CreateWithOptions(
               argumentValue,
               strategy => validationStrategy(inputValidatorContext, strategy));
