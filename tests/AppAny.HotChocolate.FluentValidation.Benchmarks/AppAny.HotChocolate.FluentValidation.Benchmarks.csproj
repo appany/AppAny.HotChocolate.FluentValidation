@@ -6,6 +6,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
