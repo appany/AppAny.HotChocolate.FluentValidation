@@ -232,7 +232,7 @@ namespace AppAny.HotChocolate.FluentValidation
               .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
               .ConfigureAwait(false);
 
-            // ValidationResult failures are bound to each ValidationContext
+            // Shared ValidationContext used. ValidationResult failures are bound to ValidationContext
             validationResult = validatorResult;
           }
 
