@@ -1,6 +1,4 @@
-using System;
 using System.Reflection;
-using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -13,13 +11,13 @@ namespace AppAny.HotChocolate.FluentValidation
   public sealed class UseFluentValidationAttribute : ArgumentDescriptorAttribute
   {
     public override void OnConfigure(
-      IDescriptorContext context,
-      IArgumentDescriptor descriptor,
-      ParameterInfo parameter)
+      IDescriptorContext descriptorContext,
+      IArgumentDescriptor argumentDescriptor,
+      ParameterInfo parameterInfo)
     {
-      var fluentValidationAttributes = parameter.GetCustomAttributes<FluentValidationAttribute>();
+      var fluentValidationAttributes = parameterInfo.GetCustomAttributes<FluentValidationAttribute>();
 
-      descriptor.UseFluentValidation(options =>
+      argumentDescriptor.UseFluentValidation(options =>
       {
         foreach (var fluentValidationAttribute in fluentValidationAttributes)
         {

@@ -1,7 +1,3 @@
-using System.Threading.Tasks;
-using FluentValidation;
-using FluentValidation.Results;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
   /// <summary>

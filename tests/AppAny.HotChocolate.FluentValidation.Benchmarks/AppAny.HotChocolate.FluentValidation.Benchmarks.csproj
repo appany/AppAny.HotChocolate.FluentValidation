@@ -6,11 +6,12 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="FairyBread" Version="7.0.0" />
+    <PackageReference Include="FairyBread" Version="8.0.0-preview.1" />
   </ItemGroup>
 
   <ItemGroup>

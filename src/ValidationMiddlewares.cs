@@ -1,7 +1,4 @@
-﻿using HotChocolate;
-using HotChocolate.Resolvers;
-
-namespace AppAny.HotChocolate.FluentValidation
+﻿namespace AppAny.HotChocolate.FluentValidation
 {
   internal static class ValidationMiddlewares
   {
@@ -13,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
         if (argumentNodes is { Count: > 0 })
         {
-          var objectFieldOptions = middlewareContext.Field.ContextData.GetObjectFieldOptions();
+          var objectFieldOptions = middlewareContext.Selection.Field.ContextData.GetObjectFieldOptions();
 
           for (var nodeIndex = 0; nodeIndex < argumentNodes.Count; nodeIndex++)
           {
@@ -28,7 +25,10 @@ namespace AppAny.HotChocolate.FluentValidation
 
             var argumentOptions = argument.ContextData.GetArgumentOptions();
 
-            var shouldSkipValidation = await argumentOptions.SkipValidation!
+            // TODO: Nullable hack. Can't be null at runtime
+            var skipValidation = argumentOptions.SkipValidation!;
+
+            var shouldSkipValidation = await skipValidation
               .Invoke(new SkipValidationContext(middlewareContext, argument))
               .ConfigureAwait(false);
 
@@ -37,6 +37,7 @@ namespace AppAny.HotChocolate.FluentValidation
               continue;
             }
 
+            // TODO: Nullable hack. Can't be null at runtime
             var inputValidators = argumentOptions.InputValidators!;
 
             for (var validatorIndex = 0; validatorIndex < inputValidators.Count; validatorIndex++)
@@ -52,13 +53,16 @@ namespace AppAny.HotChocolate.FluentValidation
                 continue;
               }
 
+              // TODO: Nullable hack. Can't be null at runtime
+              var errorMapper = argumentOptions.ErrorMapper!;
+
               for (var errorIndex = 0; errorIndex < validationResult.Errors.Count; errorIndex++)
               {
                 var validationFailure = validationResult.Errors[errorIndex];
 
                 var errorBuilder = ErrorBuilder.New();
 
-                argumentOptions.ErrorMapper!.Invoke(
+                errorMapper.Invoke(
                   errorBuilder,
                   new ErrorMappingContext(middlewareContext, argument, validationResult, validationFailure));
 

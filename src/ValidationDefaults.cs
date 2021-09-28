@@ -1,12 +1,14 @@
-using System;
+global using System;
+global using System.Threading.Tasks;
+global using HotChocolate;
+global using HotChocolate.Types;
+global using HotChocolate.Resolvers;
+global using FluentValidation;
+global using FluentValidation.Results;
+
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using FluentValidation;
 using FluentValidation.Internal;
-using FluentValidation.Results;
-using HotChocolate;
 using HotChocolate.Configuration;
-using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -72,7 +74,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
 
       /// <summary>
-      ///   Always skip <see cref="SkipValidation" /> implementation
+      ///   Helper <see cref="SkipValidation" /> implementation. Always skips validation
       /// </summary>
       [MethodImpl(MethodImplOptions.AggressiveInlining)]
       public static ValueTask<bool> Skip(SkipValidationContext skipValidationContext)
@@ -105,7 +107,7 @@ namespace AppAny.HotChocolate.FluentValidation
       public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
       {
         errorBuilder
-          .SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Field.Name)
+          .SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Selection.Field.Name)
           .SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
           .SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)
           .SetExtension(ExtensionKeys.SeverityKey, mappingContext.ValidationFailure.Severity);
@@ -178,7 +180,7 @@ namespace AppAny.HotChocolate.FluentValidation
         }
 
         /// <summary>
-        ///   Default <see cref="GetValidationContext{TInput}" /> implementation with <see cref="ValidationStrategy{TInput}" />
+        ///   Default <see cref="GetValidationContext{TInput}" /> implementation with <see cref="ValidationStrategy{T}" />
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GetValidationContext<TInput> ValidationContextWithStrategy<TInput>(
@@ -186,7 +188,7 @@ namespace AppAny.HotChocolate.FluentValidation
         {
           return (inputValidatorContext, argumentValue) =>
           {
-            // TODO: Hacks
+            // TODO: ValidationContext<T>(...) vs FluentValidation.ValidationContext<T> { ... } aliasing hack
             return global::FluentValidation.ValidationContext<TInput>.CreateWithOptions(
               argumentValue,
               strategy => validationStrategy(inputValidatorContext, strategy));
@@ -230,7 +232,7 @@ namespace AppAny.HotChocolate.FluentValidation
               .ValidateAsync(validationContext, inputValidatorContext.MiddlewareContext.RequestAborted)
               .ConfigureAwait(false);
 
-            // Shared ValidationResult
+            // Shared ValidationContext used. ValidationResult failures are bound to ValidationContext
             validationResult = validatorResult;
           }
 

@@ -11,7 +11,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
     }
 
     public string Test(
-      [UseFluentValidation, UseValidator(typeof(NotEmptyNameValidator), IncludeRulesNotInRuleSet = true)]
+      [UseFluentValidation, UseValidator<NotEmptyNameValidator>(IncludeRulesNotInRuleSet = true)]
       TestPersonInput input)
     {
       return "test";

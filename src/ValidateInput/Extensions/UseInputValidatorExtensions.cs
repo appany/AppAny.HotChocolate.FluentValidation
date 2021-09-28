@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using FluentValidation.Results;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
   public static class UseInputValidatorExtensions

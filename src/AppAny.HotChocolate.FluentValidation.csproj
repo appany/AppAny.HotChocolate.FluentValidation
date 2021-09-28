@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <LangVersion>9</LangVersion>
+    <LangVersion>preview</LangVersion>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -22,9 +22,19 @@
     <PackageTags>.NET Core;ASP.NET Core;HotChocolate;FluentValidation</PackageTags>
   </PropertyGroup>
 
+<!--  <ItemGroup Label="Usings">-->
+<!--    <Using Include="System" />-->
+<!--    <Using Include="System.Threading.Tasks" />-->
+<!--    <Using Include="HotChocolate" />-->
+<!--    <Using Include="HotChocolate.Types" />-->
+<!--    <Using Include="HotChocolate.Resolvers" />-->
+<!--    <Using Include="FluentValidation" />-->
+<!--    <Using Include="FluentValidation.Results" />-->
+<!--  </ItemGroup>-->
+
   <ItemGroup Label="Packages">
-    <PackageReference Include="FluentValidation" Version="10.3.0" />
-    <PackageReference Include="HotChocolate.Execution" Version="11.3.5" />
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
+    <PackageReference Include="HotChocolate.Execution" Version="12.0.0" />
   </ItemGroup>
 
   <ItemGroup Label="Assets">

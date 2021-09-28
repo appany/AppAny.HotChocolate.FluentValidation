@@ -1,5 +1,3 @@
-using System;
-using FluentValidation;
 using FluentValidation.Internal;
 
 namespace AppAny.HotChocolate.FluentValidation

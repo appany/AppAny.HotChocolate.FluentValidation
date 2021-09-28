@@ -1,25 +1,19 @@
-using System;
-
 namespace AppAny.HotChocolate.FluentValidation
 {
-  public sealed class UseValidatorsAttribute : BaseUseValidatorAttribute
+  public sealed class UseValidatorsAttribute<TValidator> : BaseUseValidatorAttribute
+    where TValidator : class, IValidator
   {
-    public UseValidatorsAttribute(Type validatorType)
-      : base(validatorType)
-    {
-    }
-
-    public override void Configure(ArgumentValidationBuilder builder)
+    protected internal override void Configure(ArgumentValidationBuilder argumentValidationBuilder)
     {
       var validationStrategy = TryGetValidationStrategy();
 
       if (validationStrategy is null)
       {
-        builder.UseValidators(ValidatorType);
+        argumentValidationBuilder.UseValidators<TValidator>();
       }
       else
       {
-        builder.UseValidators(ValidatorType, validationStrategy);
+        argumentValidationBuilder.UseValidators<TValidator>(validationStrategy);
       }
     }
   }
