@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="FairyBread" Version="8.0.0-preview.1" />
+    <PackageReference Include="FairyBread" Version="8.0.0-rc.4" />
   </ItemGroup>
 
   <ItemGroup>

@@ -28,13 +28,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -61,13 +61,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -94,13 +94,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -127,13 +127,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         error =>
         {
           Assert.Equal("NotEmptyValidator", error.Code);
           Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
-          Assert.Collection(error.Extensions,
+          Assert.Collection(error.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -180,13 +180,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         error =>
         {
           Assert.Equal("NotEmptyValidator", error.Code);
           Assert.Equal(NotEmptyNameValidator.Message, error.Message);
 
-          Assert.Collection(error.Extensions,
+          Assert.Collection(error.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -263,13 +263,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -315,13 +315,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -367,13 +367,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -385,7 +385,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -412,13 +412,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -445,13 +445,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -478,13 +478,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
@@ -549,13 +549,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);

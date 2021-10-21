@@ -159,13 +159,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         name =>
         {
           Assert.Equal("NotEmptyValidator", name.Code);
           Assert.Equal(NotEmptyNameValidator.Message, name.Message);
 
-          Assert.Collection(name.Extensions,
+          Assert.Collection(name.Extensions!,
             code =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
