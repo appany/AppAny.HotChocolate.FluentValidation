@@ -36,7 +36,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
         addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
     }
@@ -68,7 +68,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
         addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
     }
@@ -99,7 +99,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
         addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
     }
@@ -133,7 +133,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
         addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
     }
@@ -167,7 +167,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
     }
 
@@ -199,7 +199,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
     }
 
@@ -231,7 +231,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
     }
 
@@ -294,7 +294,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message),
         addressIsEmpty => Assert.Equal(NotEmptyAddressValidator.Message, addressIsEmpty.Message));
     }
@@ -328,7 +328,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
       result.AssertNullResult();
 
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
     }
   }

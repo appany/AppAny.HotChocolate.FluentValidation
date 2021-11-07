@@ -10,7 +10,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
   {
     public static void AssertNullResult(this QueryResult result)
     {
-      var (key, value) = Assert.Single(result.Data);
+      var (key, value) = Assert.Single(result.Data!);
 
       Assert.Equal("test", key);
       Assert.Null(value);
@@ -18,7 +18,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
 
     public static void AssertSuceessResult(this QueryResult result)
     {
-      var (key, value) = Assert.Single(result.Data);
+      var (key, value) = Assert.Single(result.Data!);
 
       Assert.Equal("test", key);
       Assert.Equal("test", value);
@@ -32,7 +32,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       string message,
       params Action<KeyValuePair<string, object?>>[] elementInspectors)
     {
-      Assert.Collection(result.Errors,
+      Assert.Collection(result.Errors!,
         error =>
         {
           Assert.Equal(code, error.Code);
@@ -47,7 +47,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             }
           }.Concat(elementInspectors).ToArray();
 
-          Assert.Collection(error.Extensions, extensions);
+          Assert.Collection(error.Extensions!, extensions);
         });
     }
   }
