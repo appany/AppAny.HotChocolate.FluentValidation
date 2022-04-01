@@ -139,6 +139,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
               Assert.Equal("NotEmptyValidator", code.Value);
             },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Null(operation.Value);
+            },
             field =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
@@ -191,6 +196,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
               Assert.Equal("NotEmptyValidator", code.Value);
+            },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Null(operation.Value);
             },
             field =>
             {

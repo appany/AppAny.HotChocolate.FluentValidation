@@ -5,7 +5,6 @@ global using HotChocolate.Types;
 global using HotChocolate.Resolvers;
 global using FluentValidation;
 global using FluentValidation.Results;
-
 using System.Runtime.CompilerServices;
 using FluentValidation.Internal;
 using HotChocolate.Configuration;
@@ -50,6 +49,7 @@ namespace AppAny.HotChocolate.FluentValidation
     public static class ExtensionKeys
     {
       public const string CodeKey = "code";
+      public const string OperationKey = "operation";
       public const string FieldKey = "field";
       public const string ArgumentKey = "argument";
       public const string PropertyKey = "property";
@@ -107,6 +107,7 @@ namespace AppAny.HotChocolate.FluentValidation
       public static void Details(IErrorBuilder errorBuilder, ErrorMappingContext mappingContext)
       {
         errorBuilder
+          .SetExtension(ExtensionKeys.OperationKey, mappingContext.MiddlewareContext.Operation.Name?.Value)
           .SetExtension(ExtensionKeys.FieldKey, mappingContext.MiddlewareContext.Selection.Field.Name)
           .SetExtension(ExtensionKeys.ArgumentKey, mappingContext.Argument.Name)
           .SetExtension(ExtensionKeys.PropertyKey, mappingContext.ValidationFailure.PropertyName)

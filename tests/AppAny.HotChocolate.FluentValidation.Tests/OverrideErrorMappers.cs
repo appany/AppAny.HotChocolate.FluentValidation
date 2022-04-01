@@ -125,6 +125,75 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
               Assert.Equal("NotEmptyValidator", code.Value);
             },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Null(operation.Value);
+            },
+            field =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
+              Assert.Equal(new NameString("test"), field.Value);
+            },
+            argument =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
+              Assert.Equal(new NameString("input"), argument.Value);
+            },
+            property =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.PropertyKey, property.Key);
+              Assert.Equal("Name", property.Value);
+            },
+            severity =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.SeverityKey, severity.Key);
+              Assert.Equal(Severity.Error, severity.Value);
+            });
+        });
+    }
+
+    [Fact]
+    public async Task UseDefaultErrorMapperWithDetailsWithOperationName()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+        {
+          builder.AddFluentValidation(opt => opt.UseDefaultErrorMapperWithDetails())
+            .AddMutationType(new TestMutation(field =>
+            {
+              field.Argument("input", arg =>
+              {
+                arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation();
+              });
+            }));
+        },
+        services =>
+        {
+          services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
+        });
+
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithOperationNameEmptyName));
+
+      result.AssertNullResult();
+
+      Assert.Collection(result.Errors!,
+        error =>
+        {
+          Assert.Equal("NotEmptyValidator", error.Code);
+          Assert.Equal(NotEmptyNameValidator.Message, error.Message);
+
+          Assert.Collection(error.Extensions!,
+            code =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
+              Assert.Equal("NotEmptyValidator", code.Value);
+            },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Equal("OperationName", operation.Value);
+            },
             field =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
@@ -183,6 +252,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
               Assert.Equal("NotEmptyValidator", code.Value);
+            },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Null(operation.Value);
             },
             field =>
             {
@@ -275,6 +349,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
               Assert.Equal("NotEmptyValidator", code.Value);
+            },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Null(operation.Value);
             },
             field =>
             {
@@ -370,6 +449,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.CodeKey, code.Key);
               Assert.Equal("NotEmptyValidator", code.Value);
+            },
+            operation =>
+            {
+              Assert.Equal(ValidationDefaults.ExtensionKeys.OperationKey, operation.Key);
+              Assert.Null(operation.Value);
             },
             field =>
             {
