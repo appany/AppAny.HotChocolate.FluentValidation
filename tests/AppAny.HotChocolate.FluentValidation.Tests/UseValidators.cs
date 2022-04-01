@@ -331,5 +331,50 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       Assert.Collection(result.Errors!,
         nameIsEmpty => Assert.Equal(NotEmptyNameValidator.Message, nameIsEmpty.Message));
     }
+
+    [Fact]
+    public async Task UseValidatorWithoutRegisteredServiceDescriptor()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+      {
+        builder.AddFluentValidation()
+          .AddMutationType(new TestMutation(field =>
+          {
+            field.Argument("input",
+              arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation(argument =>
+              {
+                argument.UseValidator<NotEmptyNameValidator>();
+              }));
+          }));
+      });
+
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+      var error = Assert.Single(result.Errors!);
+
+      Assert.Contains("No service", error.Exception!.Message);
+    }
+
+    [Fact]
+    public async Task UseValidatorsWithoutRegisteredServiceDescriptor()
+    {
+      var executor = await TestSetup.CreateRequestExecutor(builder =>
+      {
+        builder.AddFluentValidation()
+          .AddMutationType(new TestMutation(field =>
+          {
+            field.Argument("input",
+              arg => arg.Type<NonNullType<TestPersonInputType>>().UseFluentValidation());
+          }));
+      });
+
+      var result = Assert.IsType<QueryResult>(
+        await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
+
+      var error = Assert.Single(result.Errors!);
+
+      Assert.Contains("No service", error.Exception!.Message);
+    }
   }
 }
