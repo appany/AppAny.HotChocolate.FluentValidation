@@ -223,6 +223,12 @@ namespace AppAny.HotChocolate.FluentValidation
         {
           var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
 
+          if (validators is { Length: 0 })
+          {
+            throw new InvalidOperationException(
+              $"No service for type '{validatorType.FullName}' has been registered");
+          }
+
           ValidationResult? validationResult = null;
 
           for (var validatorIndex = 0; validatorIndex < validators.Length; validatorIndex++)
