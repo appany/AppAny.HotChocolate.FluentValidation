@@ -6,9 +6,7 @@
     {
       return async middlewareContext =>
       {
-        var argumentNodes = middlewareContext.Selection.SyntaxNode.Arguments;
-
-        if (argumentNodes is { Count: > 0 })
+        if (middlewareContext.Selection.SyntaxNode.Arguments is { Count: > 0 } argumentNodes)
         {
           var objectFieldOptions = middlewareContext.Selection.Field.ContextData.GetObjectFieldOptions();
 
