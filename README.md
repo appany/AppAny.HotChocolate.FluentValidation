@@ -113,5 +113,7 @@ descriptor.Field(x => x.Example(default!))
 🚧 [I **swear** I will check correctness, run these benchmarks on my own environment and only after that I will make conclusions](tests/AppAny.HotChocolate.FluentValidation.Benchmarks/README.md) 🚧
 
 ## Breaking changes
+- From 0.9.x to 0.10.x
+  - Update HC version to 13 preview
 - From 0.6.x to 0.7.x
   - Default input validator throws `InvalidOperationException` if argument has `[UseFluentValidation]`, but no validator registered in `IServiceCollection`
