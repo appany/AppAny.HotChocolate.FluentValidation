@@ -61,12 +61,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             field =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
-              Assert.Equal(new NameString("test"), field.Value);
+              Assert.Equal("test", field.Value);
             },
             argument =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
-              Assert.Equal(new NameString("input"), argument.Value);
+              Assert.Equal("input", argument.Value);
             },
             property =>
             {
@@ -98,12 +98,12 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
             field =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.FieldKey, field.Key);
-              Assert.Equal(new NameString("test"), field.Value);
+              Assert.Equal("test", field.Value);
             },
             argument =>
             {
               Assert.Equal(ValidationDefaults.ExtensionKeys.ArgumentKey, argument.Key);
-              Assert.Equal(new NameString("input"), argument.Value);
+              Assert.Equal("input", argument.Value);
             },
             property =>
             {
