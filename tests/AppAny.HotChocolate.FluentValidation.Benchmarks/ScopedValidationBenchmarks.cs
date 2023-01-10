@@ -26,10 +26,10 @@ namespace AppAny.HotChocolate.FluentValidation.Benchmarks
             .Type<TestInputType>().UseFluentValidation(opt => opt.UseValidator<TestInputValidator>()))))
           .Services.AddScoped<TestInputValidator>());
 
-      fairyBreadValidation = await BenchmarkSetup.CreateRequestExecutor(
-        builder => builder.AddFairyBread()
-          .AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>())))
-          .Services.AddScoped<TestInputValidator>().AddScoped<IValidator<TestInput>, TestInputValidator>());
+      // fairyBreadValidation = await BenchmarkSetup.CreateRequestExecutor(
+      //   builder => builder.AddFairyBread()
+      //     .AddMutationType(new TestMutationType(field => field.Argument("input", arg => arg.Type<TestInputType>())))
+      //     .Services.AddScoped<TestInputValidator>().AddScoped<IValidator<TestInput>, TestInputValidator>());
     }
 
     [Benchmark]
