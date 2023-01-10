@@ -7,7 +7,6 @@ global using FluentValidation;
 global using FluentValidation.Results;
 using System.Runtime.CompilerServices;
 using FluentValidation.Internal;
-using HotChocolate.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AppAny.HotChocolate.FluentValidation
@@ -35,13 +34,9 @@ namespace AppAny.HotChocolate.FluentValidation
     public static FieldMiddleware Middleware { get; } = ValidationMiddlewares.Field;
 
     /// <summary>
-    ///   Default HotChocolate interceptors
+    ///   Default HotChocolate interceptor
     /// </summary>
-    public static class Interceptors
-    {
-      public static OnCompleteType OnBeforeCompleteType { get; } = ValidationInterceptors.OnBeforeCompleteType;
-      public static OnAfterSchemaCreate OnAfterSchemaCreate { get; } = ValidationInterceptors.OnAfterSchemaCreate;
-    }
+    public static Type Interceptor { get; } = typeof(ValidationInterceptor);
 
     /// <summary>
     ///   Default graphql error extensions keys

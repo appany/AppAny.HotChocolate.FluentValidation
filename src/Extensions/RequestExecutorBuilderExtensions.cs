@@ -18,9 +18,7 @@ namespace AppAny.HotChocolate.FluentValidation
 
       builder.SetContextData(ValidationDefaults.ValidationOptionsKey, validationOptions);
 
-      builder.OnBeforeCompleteType(ValidationDefaults.Interceptors.OnBeforeCompleteType);
-
-      builder.OnAfterSchemaCreate(ValidationDefaults.Interceptors.OnAfterSchemaCreate);
+      builder.TryAddTypeInterceptor(ValidationDefaults.Interceptor);
 
       return builder;
     }

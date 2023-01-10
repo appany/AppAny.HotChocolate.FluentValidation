@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using HotChocolate.Configuration;
 using HotChocolate.Types.Descriptors;
@@ -6,12 +5,11 @@ using HotChocolate.Types.Descriptors.Definitions;
 
 namespace AppAny.HotChocolate.FluentValidation
 {
-  internal sealed class ValidationInterceptors
+  internal sealed class ValidationInterceptor : TypeInterceptor
   {
-    public static void OnBeforeCompleteType(
+    public override void OnBeforeCompleteType(
       ITypeCompletionContext completionContext,
-      DefinitionBase? definition,
-      IDictionary<string, object?> contextData)
+      DefinitionBase? definition)
     {
       if (definition is not ObjectTypeDefinition objectTypeDefinition)
       {
@@ -43,7 +41,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
     }
 
-    public static void OnAfterSchemaCreate(IDescriptorContext descriptorContext, ISchema schema)
+    public override void OnAfterCreateSchema(IDescriptorContext descriptorContext, ISchema schema)
     {
       foreach (var objectField in schema.Types.OfType<IObjectType>().SelectMany(type => type.Fields))
       {
