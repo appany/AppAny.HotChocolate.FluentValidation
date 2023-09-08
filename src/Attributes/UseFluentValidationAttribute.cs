@@ -10,7 +10,8 @@ namespace AppAny.HotChocolate.FluentValidation
   [AttributeUsage(AttributeTargets.Parameter)]
   public sealed class UseFluentValidationAttribute : ArgumentDescriptorAttribute
   {
-    public override void OnConfigure(
+
+    protected override void OnConfigure(
       IDescriptorContext descriptorContext,
       IArgumentDescriptor argumentDescriptor,
       ParameterInfo parameterInfo)
