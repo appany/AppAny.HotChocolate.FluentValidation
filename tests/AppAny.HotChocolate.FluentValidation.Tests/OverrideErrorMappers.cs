@@ -306,6 +306,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
                 {
                   Assert.Equal("PropertyValue", Assert.IsType<string>(propertyValue.Key));
                   Assert.Equal("", Assert.IsType<string>(propertyValue.Value));
+                },
+                propertyValue =>
+                {
+                  Assert.Equal("PropertyPath", Assert.IsType<string>(propertyValue.Key));
+                  Assert.Equal("Name", Assert.IsType<string>(propertyValue.Value));
                 });
             });
         });
@@ -403,6 +408,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
                 {
                   Assert.Equal("PropertyValue", Assert.IsType<string>(propertyValue.Key));
                   Assert.Equal("", Assert.IsType<string>(propertyValue.Value));
+                },
+                propertyValue =>
+                {
+                  Assert.Equal("PropertyPath", Assert.IsType<string>(propertyValue.Key));
+                  Assert.Equal("Name", Assert.IsType<string>(propertyValue.Value));
                 });
             },
             test =>
