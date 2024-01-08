@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="FairyBread" Version="10.0.0-preview.2" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+    <PackageReference Include="FairyBread" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
