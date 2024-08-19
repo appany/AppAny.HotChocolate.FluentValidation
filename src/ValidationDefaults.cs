@@ -5,6 +5,7 @@ global using HotChocolate.Types;
 global using HotChocolate.Resolvers;
 global using FluentValidation;
 global using FluentValidation.Results;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using FluentValidation.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -216,7 +217,14 @@ namespace AppAny.HotChocolate.FluentValidation
           IValidationContext validationContext,
           Type validatorType)
         {
-          var validators = (IValidator[])inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+          // The default DI container returns IValidator[] as the actual underlying type
+          // However, this is not the case for some custom DI containers, so we add a fallback to cast the array manually
+          var validatorsEnumerable = inputValidatorContext.MiddlewareContext.Services.GetServices(validatorType);
+
+          var validators = validatorsEnumerable as IValidator[]
+                           ?? validatorsEnumerable
+                             .OfType<IValidator>()
+                             .ToArray();
 
           if (validators is { Length: 0 })
           {
