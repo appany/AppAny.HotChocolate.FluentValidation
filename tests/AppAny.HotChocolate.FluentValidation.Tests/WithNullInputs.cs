@@ -25,7 +25,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -46,7 +46,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -68,7 +68,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -93,7 +93,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -118,7 +118,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -143,7 +143,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -168,7 +168,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -193,7 +193,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -218,7 +218,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -243,7 +243,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -268,7 +268,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -294,7 +294,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -320,7 +320,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithNullInput));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
   }
 }

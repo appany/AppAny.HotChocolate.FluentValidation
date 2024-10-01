@@ -132,7 +132,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithMultipleInputsEmptyName));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
   }
 }

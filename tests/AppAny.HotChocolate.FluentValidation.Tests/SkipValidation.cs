@@ -32,11 +32,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
-    public async Task FieldSkipValidationPredecate()
+    public async Task FieldSkipValidationPredicate()
     {
       var executor = await TestSetup.CreateRequestExecutor(builder =>
         {
@@ -58,7 +58,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -80,11 +80,11 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
-    public async Task GlobalSkipValidationPredecate()
+    public async Task GlobalSkipValidationPredicate()
     {
       var executor = await TestSetup.CreateRequestExecutor(builder =>
         {
@@ -105,7 +105,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]
@@ -131,7 +131,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
-      result.AssertSuceessResult();
+      result.AssertSuccessResult();
     }
 
     [Fact]

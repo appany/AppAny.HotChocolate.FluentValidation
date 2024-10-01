@@ -288,13 +288,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
               Assert.Equal(ValidationDefaults.ExtensionKeys.CustomStateKey, customState.Key);
               Assert.Null(customState.Value);
             },
-            formattedMessagePlaceholerValues =>
+            formattedMessagePlaceholderValues =>
             {
               Assert.Equal(
                 ValidationDefaults.ExtensionKeys.FormattedMessagePlaceholderValuesKey,
-                formattedMessagePlaceholerValues.Key);
+                formattedMessagePlaceholderValues.Key);
 
-              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholerValues.Value);
+              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholderValues.Value);
 
               Assert.Collection(values,
                 propertyName =>
@@ -390,13 +390,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
               Assert.Equal(ValidationDefaults.ExtensionKeys.CustomStateKey, customState.Key);
               Assert.Null(customState.Value);
             },
-            formattedMessagePlaceholerValues =>
+            formattedMessagePlaceholderValues =>
             {
               Assert.Equal(
                 ValidationDefaults.ExtensionKeys.FormattedMessagePlaceholderValuesKey,
-                formattedMessagePlaceholerValues.Key);
+                formattedMessagePlaceholderValues.Key);
 
-              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholerValues.Value);
+              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholderValues.Value);
 
               Assert.Collection(values,
                 propertyName =>

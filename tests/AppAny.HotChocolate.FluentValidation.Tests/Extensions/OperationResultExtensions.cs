@@ -16,7 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       Assert.Null(value);
     }
 
-    public static void AssertSuceessResult(this OperationResult result)
+    public static void AssertSuccessResult(this OperationResult result)
     {
       var (key, value) = Assert.Single(result.Data!);
 
