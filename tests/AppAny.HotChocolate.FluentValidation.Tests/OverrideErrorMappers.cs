@@ -34,7 +34,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -74,7 +74,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -108,7 +108,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -172,7 +172,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithOperationNameEmptyName));
 
       result.AssertNullResult();
@@ -236,7 +236,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -288,13 +288,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
               Assert.Equal(ValidationDefaults.ExtensionKeys.CustomStateKey, customState.Key);
               Assert.Null(customState.Value);
             },
-            formattedMessagePlaceholerValues =>
+            formattedMessagePlaceholderValues =>
             {
               Assert.Equal(
                 ValidationDefaults.ExtensionKeys.FormattedMessagePlaceholderValuesKey,
-                formattedMessagePlaceholerValues.Key);
+                formattedMessagePlaceholderValues.Key);
 
-              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholerValues.Value);
+              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholderValues.Value);
 
               Assert.Collection(values,
                 propertyName =>
@@ -338,7 +338,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -390,13 +390,13 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
               Assert.Equal(ValidationDefaults.ExtensionKeys.CustomStateKey, customState.Key);
               Assert.Null(customState.Value);
             },
-            formattedMessagePlaceholerValues =>
+            formattedMessagePlaceholderValues =>
             {
               Assert.Equal(
                 ValidationDefaults.ExtensionKeys.FormattedMessagePlaceholderValuesKey,
-                formattedMessagePlaceholerValues.Key);
+                formattedMessagePlaceholderValues.Key);
 
-              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholerValues.Value);
+              var values = Assert.IsType<Dictionary<string, object>>(formattedMessagePlaceholderValues.Value);
 
               Assert.Collection(values,
                 propertyName =>
@@ -443,7 +443,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
