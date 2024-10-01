@@ -23,7 +23,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -56,7 +56,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -89,7 +89,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -122,7 +122,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -180,7 +180,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -273,7 +273,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -306,7 +306,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertSuceessResult();
@@ -325,7 +325,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -358,7 +358,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<IValidator<TestPersonInput>, NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithName("Custom")));
 
       result.AssertSuceessResult();
@@ -377,7 +377,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>().AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -422,7 +422,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -455,7 +455,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -488,7 +488,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -521,7 +521,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertSuceessResult();
@@ -540,7 +540,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertSuceessResult();
@@ -559,7 +559,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertNullResult();
@@ -592,7 +592,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
           services.AddTransient<NotEmptyNameValidator>();
         });
 
-      var result = Assert.IsType<QueryResult>(
+      var result = Assert.IsType<OperationResult>(
         await executor.ExecuteAsync(TestSetup.Mutations.WithEmptyName));
 
       result.AssertSuceessResult();

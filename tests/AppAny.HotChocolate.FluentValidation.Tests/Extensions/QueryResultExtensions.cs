@@ -6,9 +6,9 @@ using Xunit;
 
 namespace AppAny.HotChocolate.FluentValidation.Tests
 {
-  public static class QueryResultExtensions
+  public static class OperationResultExtensions
   {
-    public static void AssertNullResult(this QueryResult result)
+    public static void AssertNullResult(this OperationResult result)
     {
       var (key, value) = Assert.Single(result.Data!);
 
@@ -16,7 +16,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
       Assert.Null(value);
     }
 
-    public static void AssertSuceessResult(this QueryResult result)
+    public static void AssertSuceessResult(this OperationResult result)
     {
       var (key, value) = Assert.Single(result.Data!);
 
@@ -27,7 +27,7 @@ namespace AppAny.HotChocolate.FluentValidation.Tests
     }
 
     public static void AssertDefaultErrorMapper(
-      this QueryResult result,
+      this OperationResult result,
       string code,
       string message,
       params Action<KeyValuePair<string, object?>>[] elementInspectors)
