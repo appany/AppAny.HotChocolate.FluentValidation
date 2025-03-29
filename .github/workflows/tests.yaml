@@ -20,7 +20,7 @@ jobs:
       - name: Tests | Setup
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 9.0.x
           include-prerelease: true
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

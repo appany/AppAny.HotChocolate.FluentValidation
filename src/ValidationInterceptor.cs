@@ -41,6 +41,7 @@ namespace AppAny.HotChocolate.FluentValidation
       }
     }
 
+    [Obsolete]
     public override void OnAfterCreateSchema(IDescriptorContext descriptorContext, ISchema schema)
     {
       foreach (var objectField in schema.Types.OfType<IObjectType>().SelectMany(type => type.Fields))

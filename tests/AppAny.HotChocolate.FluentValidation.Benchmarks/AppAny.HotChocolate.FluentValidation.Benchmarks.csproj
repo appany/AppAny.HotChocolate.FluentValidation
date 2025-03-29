@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <OutputType>Exe</OutputType>
@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
-    <PackageReference Include="FairyBread" Version="10.0.0" />
+    <PackageReference Include="FairyBread" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
